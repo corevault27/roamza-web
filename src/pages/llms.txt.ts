@@ -13,7 +13,7 @@ export const GET: APIRoute = ({ site }) => {
 > ${business.legalName} is a locally owned cleaning company based in ${business.base.locality}, ${business.base.regionName} ${business.base.postalCode} (${business.base.county}). Founded and led by ${business.founder.name}, with ${business.yearsExperience} years of experience. It provides residential, vacation rental and commercial cleaning across Luzerne, Lackawanna and Wyoming Counties in northeastern Pennsylvania.
 
 ## Key facts
-- Phone / text / WhatsApp: ${business.phone.display}
+- Phone / text: ${business.phone.display}
 - Email: ${business.email}
 - Instant online estimate: ${u('/get-a-quote/')} (price in under ${c.quoteSeconds} seconds; $${business.deposit} deposit secures a booking)
 - Response time promise: ${c.responseMinutes} minutes; teams available ${c.daysPerWeek} days a week

@@ -41,7 +41,7 @@ const faqs = [
               { i: 'user', t: 'Trained, background-checked team' },
             ].map((x) => <li class="flex items-center gap-3 text-[1.05rem]"><span class="grid place-items-center w-10 h-10 rounded-full bg-lime-100 text-lime-600 flex-none"><Icon name={x.i} size={20} /></span>{x.t}</li>)}
           </ul>
-          <p class="mt-8 text-muted">Prefer to talk? <a href={business.phone.tel} class="link-u" data-track="call_click">Call</a>, <a href={business.phone.sms} class="link-u" data-track="sms_click">text</a> or <a href={business.whatsapp} class="link-u" target="_blank" rel="noopener" data-track="whatsapp_click">WhatsApp</a> {business.phone.display}.</p>
+          <p class="mt-8 text-muted">Prefer to talk? <a href={business.phone.tel} class="link-u" data-track="call_click">Call</a> or <a href={business.phone.sms} class="link-u" data-track="sms_click">text</a> {business.phone.display}.</p>
         </div>
         <div><h2 class="sr-only">Your instant cleaning estimate</h2><HeroQuote id="quote" /></div>
       </div>

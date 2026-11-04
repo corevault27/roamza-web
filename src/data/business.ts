@@ -13,7 +13,6 @@ export const business = {
   founder: { name: 'Miriam Rodriguez', role: 'Owner & Founder' },
   yearsExperience: 10,
   phone: { display: '(272) 203-3263', e164: '+12722033263', sms: 'sms:+12722033263', tel: 'tel:+12722033263' },
-  whatsapp: 'https://wa.me/12722033263',
   email: 'info@roamzacleaningservices.com',
   base: { locality: 'Dallas', region: 'PA', regionName: 'Pennsylvania', postalCode: '18612', country: 'US', county: 'Luzerne County' },
   geo: { lat: 41.3362, lng: -75.9636 },

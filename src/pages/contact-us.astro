@@ -10,13 +10,12 @@ const crumbs = [{ name: 'Home', href: '/' }, { name: 'Contact', href: '/contact-
 const channels = [
   { icon: 'phone', label: 'Call', value: business.phone.display, href: business.phone.tel, track: 'call_click' },
   { icon: 'sms', label: 'Text', value: business.phone.display, href: business.phone.sms, track: 'sms_click' },
-  { icon: 'whatsapp', label: 'WhatsApp', value: business.phone.display, href: business.whatsapp, track: 'whatsapp_click' },
   { icon: 'mail', label: 'Email', value: business.email, href: `mailto:${business.email}`, track: 'email_click' },
 ];
 ---
 <Base
   title="Contact Roamza Cleaning Services | Dallas, PA"
-  description="Call or text (272) 203-3263, WhatsApp or email Roamza Cleaning Services in Dallas, PA. We respond within 15 minutes, 7 days a week. Request your cleaning quote."
+  description="Call, text or email Roamza Cleaning Services in Dallas, PA. We respond within 15 minutes, 7 days a week. Request your cleaning quote."
   image={img('team/roamza-team-uniforms.jpg')}
   breadcrumbs={crumbs}
   schema={[{ '@context': 'https://schema.org', '@type': 'ContactPage', url: abs('/contact-us/'), about: { '@id': abs('/#organization') } }]}
@@ -37,11 +36,11 @@ const channels = [
         </div>
 
         <div>
-          <h2 class="text-[clamp(1.6rem,1.3rem+1vw,2.1rem)]">Call, text, WhatsApp or email</h2>
+          <h2 class="text-[clamp(1.6rem,1.3rem+1vw,2.1rem)]">Call, text or email</h2>
           <p class="text-muted mt-2">A real person answers — usually within 15 minutes, 7 days a week.</p>
           <ul class="mt-6 grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
             {channels.map((c) => (
-              <li><a href={c.href} class="card flex items-center gap-4 p-5 hover:shadow-[var(--shadow-lift)] transition-shadow" data-track={c.track} target={c.icon === 'whatsapp' ? '_blank' : undefined} rel={c.icon === 'whatsapp' ? 'noopener' : undefined}>
+              <li><a href={c.href} class="card flex items-center gap-4 p-5 hover:shadow-[var(--shadow-lift)] transition-shadow" data-track={c.track}>
                 <span class="grid place-items-center w-12 h-12 rounded-full bg-lime-100 text-lime-600 flex-none"><Icon name={c.icon} size={22} /></span>
                 <span class="min-w-0"><span class="block text-sm text-muted">{c.label}</span><span class="block font-semibold text-navy break-words">{c.value}</span></span>
               </a></li>
