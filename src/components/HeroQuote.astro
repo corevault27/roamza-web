@@ -1,79 +1,23 @@
 ---
 /**
- * Hero quote stage: the official FastQuoted widget sitting inside a framed,
- * transparent stage, with the real team photo layered behind it.
- * - The iframe is injected when the browser is idle (never blocks first paint / LCP).
- * - Until then (or without JS) a lightweight placeholder with a working link shows.
- * - Video-ready: set `business.heroMedia.video` (mp4/webm) and it replaces the photo layer.
+ * Hero quote: the official FastQuoted widget, alone, sitting directly on the
+ * hero (no frame, no photo behind it) — like the original site.
+ * - The iframe is in the HTML from the start (loads in parallel with the page);
+ *   preconnect hints live in Base.astro. The bridge script is injected right
+ *   after first paint so it never blocks rendering.
+ * - Without JS the iframe still works; a plain link is offered as fallback.
  */
-import { Image } from 'astro:assets';
-import Icon from './Icon.astro';
 import { business } from '../data/business';
-import { img } from '../lib/images';
 const fq = business.fastQuote;
-const media = business.heroMedia;
 ---
-<div class="hq relative">
-  <!-- media layer behind the widget (photo now, short muted video later) -->
-  <div class="hq-media" data-parallax="0.05" aria-hidden={media.video ? 'true' : undefined}>
-    <div class="hq-media-inner roof-mask">
-      {media.video ? (
-        <video class="w-full h-full object-cover" autoplay muted loop playsinline preload="none" poster={media.poster} data-hero-video>
-          <source src={media.video} type="video/mp4" />
-        </video>
-      ) : (
-        <Image src={img(media.image)} alt="Roamza owner Miriam and her cleaning team" widths={[420, 640, 840]} sizes="(min-width: 1024px) 26rem, 80vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
-      )}
-    </div>
-  </div>
-
-  <div class="hq-seal" data-parallax="0.1">
-    <Image src={img('brand/licensed-bonded-insured-seal.png')} alt="Licensed, bonded and insured seal" width={140} height={121} class="w-full h-auto drop-shadow-xl" />
-  </div>
-
-  <!-- the widget frame -->
-  <div id="hero-quote" class="hq-frame" data-fastquote="idle" data-bridge={fq.bridge}>
-    <div class="hq-bar">
-      <span class="flex items-center gap-2"><span class="hq-dot"></span> Fast Quote · live</span>
-      <span>Free · ~15 sec</span>
-    </div>
-    <div data-fq-placeholder class="hq-ph">
-      <p class="font-display text-2xl text-navy">What type of cleaning do you need?</p>
-      <ul class="hq-grid">
-        {['Home maintenance', 'Signature deep', 'Move-in / out', 'Airbnb turnover', 'Post-construction'].map((t) => <li class="hq-skel">{t}</li>)}
-      </ul>
-      <a href={fq.src} target="_blank" rel="noopener" class="btn btn-primary w-full" data-track="quote_start"><Icon name="bolt" size={18} /> Open the quote calculator</a>
-    </div>
-    <template>
-      <div id="fastquoted-root"></div>
-      <iframe data-fastquoted-widget="true" src={fq.src} title="Roamza instant cleaning quote" width="100%" height="640" style="border:0;background:transparent;display:block" allowtransparency="true" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    </template>
-  </div>
+<div id="hero-quote" class="hq" data-fastquote="eager" data-bridge={fq.bridge}>
+  <div id="fastquoted-root"></div>
+  <iframe data-fastquoted-widget="true" src={fq.src} title="Roamza instant cleaning quote" width="100%" height="640" loading="eager" style="border:0;background:transparent;display:block" allowtransparency="true" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <noscript><p class="mt-3 text-sm"><a href={fq.src} target="_blank" rel="noopener" class="link-u">Open the quote calculator</a></p></noscript>
 </div>
 
 <style>
-  .hq { padding: 0 0 0 1.5rem; min-height: 44rem; }
-  .hq-media { position: absolute; left: 0; top: 0; width: 58%; aspect-ratio: 4 / 4.9; z-index: 0; }
-  .hq-media-inner { width: 100%; height: 100%; border-radius: 0 0 2rem 2rem; overflow: hidden; box-shadow: 0 30px 60px -28px rgb(21 14 117 / .5); }
-  .hq-media::after { content: ''; position: absolute; inset: 0; translate: -14px 14px; z-index: -1; border: 1.5px solid var(--color-lime); clip-path: polygon(0 14%, 50% 0, 100% 14%, 100% 100%, 0 100%); border-radius: 0 0 2rem 2rem; }
-  .hq-seal { position: absolute; left: -1rem; bottom: 1rem; width: 6.5rem; z-index: 3; rotate: -8deg; }
-  .hq-frame { position: relative; z-index: 2; margin-left: auto; margin-top: 4.5rem; width: min(100%, 29rem); border-radius: 1.75rem; background: rgb(255 255 255 / .72); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .9), 0 2px 8px rgb(21 14 117 / .06), 0 40px 80px -30px rgb(21 14 117 / .45); overflow: hidden; }
-  .hq-bar { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1.1rem; font: 650 .74rem/1 var(--font-sans); letter-spacing: .12em; text-transform: uppercase; color: #fff; background: var(--color-navy); }
-  .hq-dot { width: .5rem; height: .5rem; border-radius: 999px; background: var(--color-lime); box-shadow: 0 0 0 0 rgb(119 185 0 / .6); animation: live 1.8s ease-out infinite; }
-  @keyframes live { 70%, 100% { box-shadow: 0 0 0 8px rgb(119 185 0 / 0); } }
-  .hq-ph { display: grid; gap: 1.1rem; padding: 1.5rem 1.25rem 1.4rem; min-height: 32rem; align-content: start; }
-  .hq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
-  .hq-skel { padding: 1.1rem .9rem; border-radius: 1rem; background: #fff; box-shadow: inset 0 0 0 1px var(--color-line); font-weight: 600; color: var(--color-navy); font-size: .92rem; }
-  .hq-skel:last-child { grid-column: 1 / -1; }
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .hq-skel { background: linear-gradient(100deg, #fff 30%, var(--color-cloud) 50%, #fff 70%) 0 0 / 250% 100%; animation: sk 1.6s linear infinite; }
-  }
-  @keyframes sk { to { background-position: -150% 0; } }
-  .hq-frame :global(iframe) { min-height: 640px; }
-  @media (max-width: 1023.98px) {
-    .hq { padding: 0; min-height: 0; }
-    .hq-media { position: relative; width: 78%; margin-inline: auto; aspect-ratio: 4 / 3.6; }
-    .hq-seal { left: auto; right: 0; top: 0; bottom: auto; width: 5rem; }
-    .hq-frame { margin-top: -4.5rem; margin-inline: auto; width: min(100%, 29rem); }
-  }
+  .hq { position: relative; z-index: 2; width: min(100%, 31rem); margin-inline: auto; scroll-margin-top: 6rem; }
+  .hq :global(iframe) { min-height: 640px; }
+  @media (min-width: 1024px) { .hq { margin-right: 0; } }
 </style>

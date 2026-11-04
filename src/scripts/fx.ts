@@ -271,6 +271,16 @@ function initMap() {
 /* -------- FastQuote: load the iframe only on demand / near viewport -------- */
 function initFastQuote() {
   $$('[data-fastquote]').forEach((box) => {
+    if (box.dataset.fastquote === 'eager') {
+      // iframe is already in the HTML; only add the resize bridge, right after first paint
+      const addBridge = () => {
+        if (document.querySelector('script[data-fq-bridge]')) return;
+        const s = document.createElement('script'); s.src = box.dataset.bridge!; s.async = true; s.dataset.fqBridge = '1';
+        document.body.appendChild(s);
+      };
+      requestAnimationFrame(() => setTimeout(addBridge, 0));
+      return;
+    }
     const load = () => {
       if (box.dataset.loaded) return; box.dataset.loaded = '1';
       const tpl = box.querySelector<HTMLTemplateElement>('template');
@@ -456,7 +466,37 @@ function initMore() {
   });
 }
 
+/* -------- horizontal strip driven by vertical scroll (desktop only) -------- */
+function initHScroll() {
+  const mq = window.matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)');
+  $$('[data-hscroll]').forEach((sec) => {
+    const stage = sec.querySelector<HTMLElement>('[data-hscroll-stage]');
+    const track = sec.querySelector<HTMLElement>('[data-hscroll-track]');
+    if (!stage || !track) return;
+    let dist = 0;
+    const update = () => {
+      if (!sec.classList.contains('hs-on')) return;
+      const p = Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / (dist || 1)));
+      track.style.transform = `translate3d(${-p * dist}px,0,0)`;
+    };
+    const layout = () => {
+      track.style.transform = '';
+      if (!mq.matches) { sec.classList.toggle('hs-on', false); sec.style.height = ''; return; }
+      sec.classList.toggle('hs-on', true);
+      dist = Math.max(0, track.scrollWidth - track.clientWidth);
+      sec.style.height = `${stage.offsetHeight + dist}px`;
+      update();
+    };
+    layout();
+    window.addEventListener('resize', layout);
+    mq.addEventListener?.('change', layout);
+    window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+    window.addEventListener('load', layout, { once: true });
+  });
+}
+
 export function initFx() {
+  initHScroll();
   initMore();
   initWordReveal();
   initScrub();

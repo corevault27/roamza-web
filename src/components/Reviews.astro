@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Backdrop from './Backdrop.astro';
+import GoogleG from './GoogleG.astro';
 import { business } from '../data/business';
 import { featuredReviews, type Review } from '../data/reviews';
 interface Props { heading?: string; items?: Review[]; dark?: boolean; chapter?: string }
@@ -14,13 +15,17 @@ const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('
       {chapter ? <p class="chapter" data-reveal><b>{chapter}</b><i></i>Google reviews</p> : <p class="eyebrow" data-reveal>Google reviews</p>}
       <h2 id="reviews-heading" class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-words>{heading}</h2>
     </div>
-    <div class="flex items-center gap-4" data-reveal style="--d:120">
-      <div>
-        <p class="flex items-center gap-1 text-lime" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={20} />)}</p>
-        <p class:list={['mt-1 font-semibold', dark ? 'text-white' : 'text-navy']}><span class="font-display text-3xl">5.0</span> on Google · {business.claims.reviewCount}+ reviews</p>
-      </div>
-      <a href={business.social.google} target="_blank" rel="noopener" class="btn btn-ghost">Read on Google <Icon name="arrow-up-right" size={18} /></a>
-    </div>
+    <a href={business.social.google} target="_blank" rel="noopener" class="g-badge" data-reveal style="--d:120">
+      <span class="g-logo"><GoogleG size={34} /></span>
+      <span class="grid">
+        <span class="text-[.8rem] font-semibold tracking-[.08em] uppercase text-muted">Google Reviews</span>
+        <span class="flex items-center gap-2">
+          <span class="font-display text-[2rem] leading-none text-navy">5.0</span>
+          <span class="flex gap-0.5 g-stars" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={18} />)}</span>
+        </span>
+        <span class="text-sm text-muted">{business.claims.reviewCount}+ reviews · Read on Google ↗</span>
+      </span>
+    </a>
   </div>
 
   <div class="relative mt-12 marquee" id="reviews-marquee" role="region" aria-label="Customer reviews">
@@ -28,13 +33,13 @@ const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('
       <ul class="marquee__track" aria-hidden={dup === 1 ? 'true' : undefined}>
         {items.map((r) => (
           <li class:list={['rv-card', dark ? 'bg-white/[.06] ring-1 ring-white/15' : 'bg-white ring-1 ring-line']}>
-            <p class="flex gap-0.5 text-lime" role="img" aria-label="5 out of 5 stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={16} />)}</p>
+            <p class="flex gap-0.5 g-stars" role="img" aria-label="5 out of 5 stars">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={16} />)}</p>
             <blockquote class:list={['mt-4 text-[1.02rem] leading-relaxed', dark ? 'text-white/90' : 'text-ink']} lang={r.lang === 'es' ? 'es' : undefined}>“{r.text}”</blockquote>
             <p class="mt-auto pt-5 flex items-center gap-3">
               <span class="grid place-items-center w-10 h-10 rounded-full bg-lime text-navy font-bold text-sm" aria-hidden="true">{initials(r.name)}</span>
               <span>
                 <span class:list={['block font-semibold', dark ? 'text-white' : 'text-navy']}>{r.name}</span>
-                <span class:list={['block text-xs', dark ? 'text-white/60' : 'text-muted']}>Google review</span>
+                <span class:list={['flex items-center gap-1.5 text-xs', dark ? 'text-white/70' : 'text-muted']}><GoogleG size={13} /> Google review</span>
               </span>
             </p>
           </li>
@@ -48,5 +53,10 @@ const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('
 </section>
 
 <style>
+  .g-badge { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.4rem 1rem 1rem; border-radius: 1.25rem; background: #fff; box-shadow: 0 20px 40px -20px rgb(0 0 0 / .45); transition: transform .45s var(--ease-out-soft), box-shadow .45s; }
+  .g-badge:hover { transform: translateY(-3px); box-shadow: 0 26px 50px -20px rgb(0 0 0 / .55); }
+  .g-badge:focus-visible { outline: 3px solid var(--color-lime); outline-offset: 4px; }
+  .g-logo { display: grid; place-items: center; width: 3.6rem; height: 3.6rem; border-radius: 1rem; background: #fff; box-shadow: inset 0 0 0 1px var(--color-line); }
+  .g-stars { color: #FBBC05; }
   .rv-card { display: flex; flex-direction: column; width: min(24rem, 82vw); flex: none; border-radius: 1.25rem; padding: 1.6rem; }
 </style>

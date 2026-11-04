@@ -5,16 +5,17 @@ import { img, realAlt, realGallery } from '../lib/images';
 interface Props { photos?: string[]; heading?: string; intro?: string; headingId?: string; chapter?: string }
 const { photos = realGallery.slice(0, 8), heading = 'Real homes, really clean', intro = 'Every photo on this strip is from an actual Roamza job — no stock images.', headingId = 'gallery-heading', chapter } = Astro.props;
 ---
-<section class="py-20 lg:py-28 overflow-hidden" aria-labelledby={headingId}>
+<section class="rg" aria-labelledby={headingId} data-hscroll>
+  <div class="rg-stage py-20 lg:py-28" data-hscroll-stage>
   <div class="container-x flex flex-col md:flex-row md:items-end justify-between gap-4">
     <div class="max-w-2xl">
       {chapter ? <p class="chapter" data-reveal><b>{chapter}</b><i></i>Real Roamza work</p> : <p class="eyebrow" data-reveal>Real Roamza work</p>}
       <h2 id={headingId} class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-words>{heading}</h2>
       <p class="lead mt-4" data-reveal style="--d:120">{intro}</p>
     </div>
-    <p class="text-sm text-muted" aria-hidden="true">Scroll sideways →</p>
+    <p class="text-sm text-muted lg:hidden" aria-hidden="true">Swipe to see more →</p>
   </div>
-  <ul class="gallery mt-10" tabindex="0" aria-label="Photos of real Roamza cleaning jobs">
+  <ul class="gallery mt-10" tabindex="0" data-hscroll-track aria-label="Photos of real Roamza cleaning jobs">
     {photos.map((p, i) => (
       <li class="g-item" data-reveal style={`--d:${(i % 4) * 80}`}>
         <figure class="g-fig">
@@ -23,9 +24,15 @@ const { photos = realGallery.slice(0, 8), heading = 'Real homes, really clean', 
       </li>
     ))}
   </ul>
+  </div>
 </section>
 
 <style>
+  .rg { position: relative; overflow-x: clip; }
+  /* desktop: the strip moves sideways as the page scrolls down (set up in fx.ts) */
+  :global(.hs-on) > .rg-stage { position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-block: 5.5rem 1.5rem; }
+  :global(.hs-on) .gallery { overflow: visible; will-change: transform; margin-top: 2rem; }
+  :global(.hs-on) .g-item { width: min(20rem, calc((100vh - 27rem) * .75)); }
   .gallery { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .5rem max(1.25rem, calc((100vw - 78rem) / 2 + 2rem)) 1.5rem; scrollbar-width: thin; }
   .g-item { flex: none; width: min(22rem, 70vw); scroll-snap-align: center; }
   .g-item:nth-child(even) { margin-top: 2.5rem; }
