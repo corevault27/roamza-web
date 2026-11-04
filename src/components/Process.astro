@@ -1,18 +1,20 @@
 ---
 import Icon from './Icon.astro';
-interface Props { heading?: string }
-const { heading = 'Getting started is simple' } = Astro.props;
+import Backdrop from './Backdrop.astro';
+interface Props { heading?: string; chapter?: string }
+const { heading = 'Getting started is simple', chapter } = Astro.props;
 const steps = [
   { icon: 'bolt', title: 'Get your instant quote', text: 'Answer a few questions about your home and see an estimated price in under 15 seconds.' },
   { icon: 'calendar', title: 'Choose your schedule', text: 'Pick a date and frequency — weekly, bi-weekly, every 3 weeks or monthly. A $50 deposit secures it.' },
   { icon: 'home', title: 'Enjoy a clean home', text: 'Our background-checked team arrives on time and cleans to the same standard every visit.' },
 ];
 ---
-<section class="py-20 lg:py-28" aria-labelledby="process-heading">
-  <div class="container-x">
+<section class="relative py-20 lg:py-28 overflow-hidden" aria-labelledby="process-heading">
+  <Backdrop variant={['roofs']} />
+  <div class="container-x relative">
     <div class="max-w-2xl">
-      <p class="eyebrow" data-reveal>How it works</p>
-      <h2 id="process-heading" class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-reveal style="--d:60">{heading}</h2>
+      {chapter ? <p class="chapter" data-reveal><b>{chapter}</b><i></i>How it works</p> : <p class="eyebrow" data-reveal>How it works</p>}
+      <h2 id="process-heading" class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-words>{heading}</h2>
     </div>
     <div class="relative mt-14" data-draw-host>
       <svg class="hidden md:block absolute left-0 right-0 top-[2.1rem] w-full h-6 overflow-visible" viewBox="0 0 1000 20" preserveAspectRatio="none" aria-hidden="true">

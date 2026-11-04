@@ -57,3 +57,35 @@ Validado con axe-core (WCAG 2.2 AA + best practices) en las 31 páginas, a 1280,
 - **`rooms/`:** renders por habitación. Se usan solo como ilustración y se aclara así en la sección "Room by room".
 - **`team/`, `brand/`, `proof/`:** material del cliente.
 - Astro genera WebP responsivo. La carpeta `../Recursos` (436 MB, incluido el volcado de WordPress) **no** entra en el repo.
+
+## v2 — Capa premium (home, 04/nov/2026)
+**Diagnóstico de la v1:** fondos lisos en casi todas las secciones, recorrido sin narrativa, la misma intensidad todo el tiempo, fotos como miniaturas planas, títulos estáticos y un cierre en caja.
+
+**Sistema aplicado (todo derivado de la marca, sin estrellas ni chispas):**
+- `Backdrop.astro`: capas de fondo con parallax.
+  - Patrón de **tejados** (el chevron del logo), con los bordes desvanecidos.
+  - **Nube festoneada** (la silueta que rodea la casa del logo), en trazo lima.
+  - **Wordmark** gigante en contorno, que se desliza con el scroll.
+  - **Luz** de marca (lima, cielo y royal).
+- `ChapterRail.astro`: la home es una historia de 12 capítulos. Hay un riel lateral de capítulos (≥1440 px) y una barra de progreso de página en todos los tamaños. Cada sección lleva su encabezado numerado (`.chapter`).
+- **Ritmo de intensidades:**
+  - Hero (claro) → franja de pruebas (oscura, superpuesta) → 01 frase que se ilumina con el scroll (clara).
+  - Banda gigante con los nombres de los servicios → 02 servicios → 03 Room by room (**escena oscura**) → 04 antes/después.
+  - 05 "Your neighbors" (degradado cielo) → 06 proceso → 07 trabajos reales (lino) → 08 reseñas (oscura) → 09 zonas → 10 FAQ (lino) → cierre (escena oscura a sangre).
+- **Tipografía en movimiento:**
+  - H2 que se revelan palabra a palabra (`data-words`).
+  - Frase que se ilumina con el scroll (`data-scrub`): las palabras sin iluminar mantienen un contraste ≥ 3:1 (texto grande, AA).
+  - Marcador lima en las palabras clave.
+  - Cifras reales animadas.
+- **Fotos como objetos:** `.photo-obj`, con marco desplazado en lima o navy, sombra profunda, tilt al cursor, zoom suave y revelado con forma de tejado (`data-roofwipe`). La galería real usa marcos blancos con rotaciones alternas que se enderezan al pasar el cursor.
+- **Botones:**
+  - Principal: lima con brillo de "recién limpio" y flecha que avanza.
+  - Secundario: contorno con relleno que barre de izquierda a derecha.
+  - Enlace: subrayado animado.
+- **Cierre:** escena navy a sangre con lema gigante en movimiento, spotlight que sigue al cursor, foto del equipo con revelado de tejado y los tres canales (texto, WhatsApp, email).
+
+**Verificado:**
+- QA SEO/GEO: 0 errores.
+- axe WCAG 2.2 AA: 0 violaciones en home, about y deep-cleaning, a 1440, 768 y 375 px.
+- Sin desbordamiento horizontal.
+- Con reduced motion todo queda estático y visible. Sin JS, el texto está completo: el split en palabras solo ocurre con JS.

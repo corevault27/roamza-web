@@ -1,16 +1,18 @@
 ---
 import Icon from './Icon.astro';
+import Backdrop from './Backdrop.astro';
 import { business } from '../data/business';
 import { featuredReviews, type Review } from '../data/reviews';
-interface Props { heading?: string; items?: Review[]; dark?: boolean }
-const { heading = 'Neighbors who trust us with their homes', items = featuredReviews, dark = true } = Astro.props;
+interface Props { heading?: string; items?: Review[]; dark?: boolean; chapter?: string }
+const { heading = 'Neighbors who trust us with their homes', items = featuredReviews, dark = true, chapter } = Astro.props;
 const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('');
 ---
-<section class:list={['py-20 lg:py-28 overflow-hidden', dark ? 'on-dark bg-navy text-white' : 'bg-cloud']} aria-labelledby="reviews-heading">
-  <div class="container-x flex flex-col lg:flex-row lg:items-end gap-6 justify-between">
+<section class:list={['relative py-20 lg:py-28 overflow-hidden', dark ? 'on-dark bg-navy text-white' : 'bg-cloud']} aria-labelledby="reviews-heading">
+  <Backdrop variant={['wordmark', 'glow']} tone={dark ? 'dark' : 'light'} />
+  <div class="relative container-x flex flex-col lg:flex-row lg:items-end gap-6 justify-between">
     <div class="max-w-2xl">
-      <p class="eyebrow" data-reveal>Google reviews</p>
-      <h2 id="reviews-heading" class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-reveal style="--d:60">{heading}</h2>
+      {chapter ? <p class="chapter" data-reveal><b>{chapter}</b><i></i>Google reviews</p> : <p class="eyebrow" data-reveal>Google reviews</p>}
+      <h2 id="reviews-heading" class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-words>{heading}</h2>
     </div>
     <div class="flex items-center gap-4" data-reveal style="--d:120">
       <div>
@@ -21,7 +23,7 @@ const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('
     </div>
   </div>
 
-  <div class="mt-12 marquee" id="reviews-marquee" role="region" aria-label="Customer reviews">
+  <div class="relative mt-12 marquee" id="reviews-marquee" role="region" aria-label="Customer reviews">
     {[0, 1].map((dup) => (
       <ul class="marquee__track" aria-hidden={dup === 1 ? 'true' : undefined}>
         {items.map((r) => (
@@ -40,7 +42,7 @@ const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('
       </ul>
     ))}
   </div>
-  <div class="container-x mt-6">
+  <div class="relative container-x mt-6">
     <button type="button" class:list={['text-sm font-semibold underline underline-offset-4', dark ? 'text-white/80 hover:text-white' : 'text-navy']} aria-controls="reviews-marquee" aria-pressed="false" data-marquee-toggle><span data-label>Pause reviews</span></button>
   </div>
 </section>

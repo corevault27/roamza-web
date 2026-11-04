@@ -86,7 +86,7 @@ function initMobileMenu() {
 
 /* -------- reveals -------- */
 function initReveals() {
-  const els = $$('[data-reveal], [data-split], [data-wipe]');
+  const els = $$('[data-reveal], [data-split], [data-wipe], [data-roofwipe]');
   if (reduce() || !('IntersectionObserver' in window)) { els.forEach((e) => e.classList.add('is-in')); return; }
   const io = new IntersectionObserver((entries) => {
     entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
@@ -336,7 +336,112 @@ function initForms() {
   });
 }
 
+/* -------- split text nodes into word spans (keeps inner <em>/<mark>/<strong>) -------- */
+function splitWords(root: HTMLElement, cls: string) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes: Text[] = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+  const words: HTMLElement[] = [];
+  nodes.forEach((t) => {
+    if (!t.nodeValue || !t.nodeValue.trim()) return;
+    const frag = document.createDocumentFragment();
+    t.nodeValue.split(/(\s+)/).forEach((part) => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+      const w = document.createElement('span'); w.className = cls;
+      const inner = document.createElement('span'); inner.textContent = part; w.appendChild(inner);
+      frag.appendChild(w); words.push(w);
+    });
+    t.parentNode!.replaceChild(frag, t);
+  });
+  return words;
+}
+
+/* -------- headings revealed word by word -------- */
+function initWordReveal() {
+  const els = $$('[data-words]');
+  if (!els.length || reduce() || !('IntersectionObserver' in window)) return;
+  els.forEach((el) => {
+    const label = el.textContent?.replace(/\s+/g, ' ').trim();
+    const words = splitWords(el, 'wr');
+    if (label) el.setAttribute('aria-label', label);
+    words.forEach((w, i) => { w.setAttribute('aria-hidden', 'true'); w.style.setProperty('--i', String(i)); });
+    el.classList.add('wr-ready');
+  });
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (en.isIntersecting) { en.target.classList.add('wr-in'); io.unobserve(en.target); }
+  }), { rootMargin: '0px 0px -10% 0px' });
+  els.forEach((e) => io.observe(e));
+  window.setTimeout(() => els.forEach((e) => e.classList.add('wr-in')), 5000);
+}
+
+/* -------- statements that light up word by word as you scroll -------- */
+function initScrub() {
+  const els = $$('[data-scrub]');
+  if (!els.length || reduce()) return;
+  const sets = els.map((el) => {
+    // words stay in the accessibility tree (no aria-label on <p>, which is not allowed)
+    const words = splitWords(el, 'sw');
+    el.classList.add('sw-ready');
+    return { el, words };
+  });
+  const update = () => {
+    const vh = window.innerHeight;
+    sets.forEach(({ el, words }) => {
+      const r = el.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (vh * 0.82 - r.top) / (r.height + vh * 0.35)));
+      const lit = Math.round(p * words.length * 1.15);
+      words.forEach((w, i) => w.classList.toggle('is-lit', i < lit));
+    });
+  };
+  window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  update();
+}
+
+/* -------- giant text that slides horizontally with scroll -------- */
+function initScrollX() {
+  const els = $$('[data-scroll-x]');
+  if (!els.length || reduce()) return;
+  const update = () => {
+    const vh = window.innerHeight;
+    els.forEach((el) => {
+      const r = (el.parentElement || el).getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      const speed = Number(el.dataset.scrollX || -0.3);
+      el.style.transform = `translate3d(${((r.top - vh) * speed).toFixed(1)}px,0,0)`;
+    });
+  };
+  window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  update();
+}
+
+/* -------- page progress + active chapter -------- */
+function initChapters() {
+  const bar = document.querySelector<HTMLElement>('[data-page-progress]');
+  if (bar) {
+    const upd = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.setProperty('--p', String(max > 0 ? window.scrollY / max : 0));
+    };
+    window.addEventListener('scroll', () => requestAnimationFrame(upd), { passive: true });
+    upd();
+  }
+  const links = $$<HTMLAnchorElement>('[data-chapter-link]');
+  if (!links.length) return;
+  const map = new Map(links.map((a) => [a.dataset.chapterLink!, a]));
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (!en.isIntersecting) return;
+    links.forEach((a) => { a.classList.remove('is-active'); a.removeAttribute('aria-current'); });
+    const a = map.get(en.target.id); if (a) { a.classList.add('is-active'); a.setAttribute('aria-current', 'true'); }
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+}
+
 export function initFx() {
+  initWordReveal();
+  initScrub();
+  initScrollX();
+  initChapters();
   initTracking();
   initHeader();
   initDropdown();

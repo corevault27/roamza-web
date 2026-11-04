@@ -179,3 +179,60 @@
 }
 @keyframes hero-rise { from { transform: translateY(22px); } }
 @keyframes hero-zoom { from { transform: scale(1.08); } }
+
+/* ---------- Premium layer: word reveal, scroll scrub, framed photos, chapter heads ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .wr-ready .wr { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
+  .wr-ready .wr > span { display: inline-block; transform: translateY(105%) rotate(4deg); transform-origin: left bottom; transition: transform .95s var(--ease-out-soft); transition-delay: calc(var(--i, 0) * 45ms); }
+  .wr-ready.wr-in .wr > span { transform: none; }
+}
+/* unlit words keep >= 3:1 (large text AA) so the statement is always readable */
+.sw-ready .sw { transition: color .45s ease; color: #8b88ad; }
+.sw-ready .sw.is-lit { color: var(--color-navy); }
+.on-dark .sw-ready .sw { color: rgb(255 255 255 / .55); }
+.on-dark .sw-ready .sw.is-lit { color: #fff; }
+.scrub-mark { background: linear-gradient(transparent 62%, rgb(119 185 0 / .45) 62%, rgb(119 185 0 / .45) 92%, transparent 92%); color: inherit; padding: 0 .06em; }
+.on-dark .scrub-mark { background: linear-gradient(transparent 62%, rgb(119 185 0 / .55) 62%, rgb(119 185 0 / .55) 92%, transparent 92%); }
+
+/* Chapter heading: number + rule + label */
+.chapter { display: flex; align-items: center; gap: .9rem; font: 600 .78rem/1 var(--font-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--color-royal); }
+.chapter b { font: 500 2.4rem/1 var(--font-display); letter-spacing: -.02em; color: var(--color-lime-600); text-transform: none; }
+.chapter i { flex: none; width: 2.75rem; height: 1px; background: currentColor; opacity: .5; }
+.on-dark .chapter { color: rgb(255 255 255 / .8); }
+.on-dark .chapter b { color: var(--color-lime); }
+
+/* Photos as objects: offset frame + soft depth */
+.photo-obj { position: relative; isolation: isolate; }
+.photo-obj::before { content: ''; position: absolute; inset: 0; translate: 14px 14px; border-radius: inherit; border: 1.5px solid var(--color-lime); z-index: -1; transition: translate .6s var(--ease-out-soft); }
+.photo-obj:hover::before { translate: 20px 20px; }
+.photo-obj.frame-navy::before { border-color: var(--color-navy); opacity: .35; }
+.photo-obj > .photo-inner { border-radius: inherit; overflow: hidden; box-shadow: 0 2px 6px rgb(21 14 117 / .08), 0 30px 60px -24px rgb(21 14 117 / .45); }
+.photo-obj img { transition: transform 1.4s var(--ease-out-soft); }
+.photo-obj:hover img { transform: scale(1.045); }
+
+/* Roof-wipe reveal for images (clip-path from roof line) */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-roofwipe] { clip-path: polygon(0 100%, 50% 100%, 100% 100%, 100% 100%, 0 100%); transition: clip-path 1.3s var(--ease-out-soft); }
+  .js [data-roofwipe].is-in { clip-path: polygon(0 14%, 50% 0, 100% 14%, 100% 100%, 0 100%); }
+}
+
+/* Buttons: arrow nudge + secondary fill sweep */
+.btn :is(svg) { transition: transform .45s var(--ease-out-soft); }
+.btn:hover svg:last-child { transform: translateX(3px); }
+.btn-ghost { background-image: linear-gradient(var(--color-navy), var(--color-navy)); background-size: 0% 100%; background-repeat: no-repeat; transition: background-size .5s var(--ease-out-soft), color .3s, box-shadow .3s; }
+.btn-ghost:hover { background-size: 100% 100%; background-color: transparent; }
+.on-dark .btn-ghost { background-image: linear-gradient(#fff, #fff); }
+
+/* Giant outline marquee band */
+.mega-band { position: relative; overflow: hidden; padding-block: 1.25rem; white-space: nowrap; }
+.mega-band p { display: inline-block; font: 600 clamp(3.2rem, 2rem + 6vw, 7.5rem)/1 var(--font-display); letter-spacing: -.03em; will-change: transform; }
+.mega-band .o { color: transparent; -webkit-text-stroke: 1.5px var(--color-navy); }
+.mega-band .f { color: var(--color-navy); }
+.mega-band .dot { display: inline-block; width: .32em; height: .32em; margin: 0 .35em .12em; vertical-align: middle; background: var(--color-lime); clip-path: polygon(50% 0, 100% 45%, 100% 100%, 0 100%, 0 45%); }
+
+/* White cards inside dark sections keep dark text */
+.on-dark .card :is(h2, h3, h4) { color: var(--color-navy); }
+.on-dark .card :is(p, li) { color: var(--color-ink); }
+.on-dark .card .text-muted { color: var(--color-muted); }
+.on-dark .card .text-lime-600 { color: var(--color-lime-600); }
+.on-dark .card .text-navy { color: var(--color-navy); }

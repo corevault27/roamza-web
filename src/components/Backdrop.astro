@@ -1,0 +1,66 @@
+---
+/**
+ * Brand-derived background layers (decorative, aria-hidden).
+ * Shapes come from the Roamza logo: the roof chevron and the scalloped
+ * "cloud" that surrounds the house. They drift slightly with scroll
+ * (data-parallax) and are static with reduced motion.
+ *
+ * variant:
+ *  roofs    → fine repeating roof-line pattern, faded at the edges
+ *  cloud    → large scalloped cloud-house outline
+ *  wordmark → giant outlined "Roamza" set in the display face
+ *  glow     → soft brand light (lime / sky)
+ */
+interface Props {
+  variant?: ('roofs' | 'cloud' | 'wordmark' | 'glow')[];
+  tone?: 'light' | 'dark';
+  cloudPos?: 'left' | 'right' | 'center';
+  class?: string;
+}
+const { variant = ['roofs'], tone = 'light', cloudPos = 'right', class: cls = '' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
+const stroke = tone === 'dark' ? 'rgb(255 255 255 / .07)' : 'rgb(21 14 117 / .055)';
+const cloudStroke = tone === 'dark' ? 'rgb(119 185 0 / .22)' : 'rgb(119 185 0 / .35)';
+const cloudPath = 'M120 520 C 60 520 30 470 52 425 C 18 400 22 340 70 325 C 62 270 112 236 160 252 C 170 196 230 170 275 196 C 300 140 380 130 420 176 C 470 150 530 180 532 236 C 585 240 610 300 585 340 C 625 370 615 440 565 455 C 570 500 530 528 490 520 Z M170 470 V 330 L 320 215 L 470 330 V 470';
+---
+<div class:list={['backdrop pointer-events-none absolute inset-0 overflow-hidden', cls]} aria-hidden="true">
+  {variant.includes('glow') && (
+    <div class="absolute inset-0">
+      <div class:list={['bd-glow glow-drift', tone === 'dark' ? 'bd-glow-dark' : '']}></div>
+    </div>
+  )}
+  {variant.includes('roofs') && (
+    <svg class="bd-roofs absolute -inset-x-10 -top-20 -bottom-20 w-[calc(100%+5rem)] h-[calc(100%+10rem)]" data-parallax="0.06">
+      <defs>
+        <pattern id={`roof-${uid}`} width="84" height="56" patternUnits="userSpaceOnUse">
+          <path d="M6 40 L42 14 L78 40" fill="none" stroke={stroke} stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </pattern>
+        <radialGradient id={`fade-${uid}`} cx="50%" cy="45%" r="65%">
+          <stop offset="0" stop-color="#fff" stop-opacity="1" />
+          <stop offset="1" stop-color="#fff" stop-opacity="0" />
+        </radialGradient>
+        <mask id={`mask-${uid}`}><rect width="100%" height="100%" fill={`url(#fade-${uid})`} /></mask>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#roof-${uid})`} mask={`url(#mask-${uid})`} />
+    </svg>
+  )}
+  {variant.includes('cloud') && (
+    <svg viewBox="0 0 640 560" class:list={['bd-cloud absolute', `bd-cloud-${cloudPos}`]} data-parallax="-0.12">
+      <path d={cloudPath} fill="none" stroke={cloudStroke} stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )}
+  {variant.includes('wordmark') && (
+    <p class:list={['bd-word font-display', tone === 'dark' ? 'bd-word-dark' : '']} data-scroll-x="-0.25">Roamza · Roamza · Roamza</p>
+  )}
+</div>
+
+<style>
+  .bd-glow { position: absolute; inset: -20%; background: radial-gradient(38% 42% at 78% 22%, rgb(213 231 247 / .9), transparent 70%), radial-gradient(30% 34% at 12% 82%, rgb(238 247 220 / .85), transparent 70%); }
+  .bd-glow-dark { background: radial-gradient(36% 40% at 82% 18%, rgb(29 11 240 / .55), transparent 70%), radial-gradient(28% 32% at 10% 88%, rgb(119 185 0 / .22), transparent 70%); }
+  .bd-cloud { width: min(46rem, 85vw); height: auto; }
+  .bd-cloud-right { right: -10rem; top: 8%; }
+  .bd-cloud-left { left: -12rem; top: 14%; }
+  .bd-cloud-center { left: 50%; top: 50%; translate: -50% -50%; }
+  .bd-word { position: absolute; left: 0; bottom: -0.18em; white-space: nowrap; font-size: clamp(7rem, 4rem + 14vw, 19rem); font-weight: 700; line-height: 1; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1.5px rgb(21 14 117 / .08); }
+  .bd-word-dark { -webkit-text-stroke-color: rgb(255 255 255 / .09); }
+</style>
