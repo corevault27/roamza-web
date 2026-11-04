@@ -1,0 +1,79 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FastQuote from '../components/FastQuote.astro';
+import Faq from '../components/Faq.astro';
+import { img } from '../lib/images';
+import { articleSchema, faqSchema, abs } from '../lib/schema';
+import type { Faq as FaqT } from '../data/services';
+
+interface Props {
+  title: string; description: string; h1: string; eyebrow: string; answer: string; image: string; imageAlt: string;
+  datePublished: string; dateModified?: string; faqs?: FaqT[]; toc?: { id: string; label: string }[];
+  crumbs: { name: string; href: string }[]; related?: { href: string; label: string }[];
+}
+const p = Astro.props;
+const path = Astro.url.pathname;
+const og = await getImage({ src: img(p.image), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const schema = [articleSchema({ headline: p.h1, description: p.description, path, image: abs(og.src), datePublished: p.datePublished, dateModified: p.dateModified }), ...(p.faqs ? [faqSchema(p.faqs)] : [])];
+const fmt = (d: string) => new Date(d + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Base title={p.title} description={p.description} image={img(p.image)} breadcrumbs={p.crumbs} schema={schema} ogType="article">
+  <div class="read-progress" aria-hidden="true"></div>
+  <article>
+    <header class="relative overflow-hidden pt-6 pb-12">
+      <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
+      <div class="container-x relative">
+        <Breadcrumbs items={p.crumbs} />
+        <div class="max-w-4xl mt-8">
+          <p class="eyebrow hero-rise">{p.eyebrow}</p>
+          <h1 class="mt-4 text-[clamp(2.3rem,1.5rem+3.2vw,4.2rem)] hero-rise">{p.h1}</h1>
+          <p class="mt-5 text-sm text-muted">By Roamza Cleaning Services · Updated <time datetime={p.dateModified ?? p.datePublished}>{fmt(p.dateModified ?? p.datePublished)}</time></p>
+          <div class="mt-8 rounded-[1.25rem] bg-lime-50 ring-1 ring-lime-100 p-6 md:p-7">
+            <p class="text-xs font-semibold tracking-[.16em] uppercase text-lime-600">Quick answer</p>
+            <p class="mt-2 text-[1.12rem] leading-relaxed text-ink">{p.answer}</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container-x grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16 pb-20">
+      <div class="prose-roamza max-w-3xl min-w-0">
+        <figure class="rounded-[1.5rem] overflow-hidden aspect-[16/9] mb-10">
+          <Image src={img(p.image)} alt={p.imageAlt} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 48rem, 100vw" class="w-full h-full object-cover" loading="eager" />
+        </figure>
+        <slot />
+      </div>
+      <aside class="grid gap-6 content-start lg:sticky lg:top-28">
+        {p.toc && (
+          <nav aria-label="On this page" class="card p-6">
+            <p class="font-semibold text-navy">On this page</p>
+            <ol class="mt-3 grid gap-2 text-[.95rem]">{p.toc.map((t) => <li><a href={`#${t.id}`} class="text-muted hover:text-royal">{t.label}</a></li>)}</ol>
+          </nav>
+        )}
+        <FastQuote heading="Want it done for you?" />
+        {p.related && (
+          <nav aria-label="Related" class="card p-6">
+            <p class="font-semibold text-navy">Related</p>
+            <ul class="mt-3 grid gap-2">{p.related.map((r) => <li><a href={r.href} class="link-u">{r.label}</a></li>)}</ul>
+          </nav>
+        )}
+      </aside>
+    </div>
+  </article>
+  {p.faqs && (
+    <section class="py-20 lg:py-28 bg-linen" aria-label="Frequently asked questions">
+      <div class="container-x"><Faq faqs={p.faqs} /></div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .read-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 70; background: var(--color-lime); transform-origin: left; transform: scaleX(0); }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .read-progress { animation: read linear both; animation-timeline: scroll(root); }
+    }
+  }
+  @keyframes read { to { transform: scaleX(1); } }
+</style>

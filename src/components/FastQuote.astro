@@ -1,0 +1,47 @@
+---
+/**
+ * HomeSuite Pro FastQuoted widget — official embed, loaded on demand.
+ * mode="auto"  → loads when scrolled near (dedicated quote page)
+ * mode="click" → loads when the visitor taps the button (everywhere else)
+ * Surrounding text is real HTML so humans, Google and AI understand the offer.
+ */
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+interface Props { mode?: 'auto' | 'click'; heading?: string; id?: string; level?: 'h2' | 'h3' }
+const { mode = 'click', heading = 'Get your price in about 15 seconds', id = 'fast-quote', level = 'h3' } = Astro.props;
+const H = level;
+const fq = business.fastQuote;
+---
+<div id={id} class="fq card overflow-hidden" data-fastquote={mode} data-bridge={fq.bridge}>
+  <div class="fq-head bg-navy text-white px-6 py-5 on-dark">
+    <p class="text-lime text-xs font-semibold tracking-[.16em] uppercase">Fast Quote · free · instant</p>
+    <H class="text-2xl mt-1 text-white">{heading}</H>
+  </div>
+  <div data-fq-placeholder class="p-6 grid gap-5">
+    <ol class="grid gap-3 text-[0.98rem]">
+      <li class="flex gap-3"><span class="fq-num">1</span><span><strong class="text-navy">Pick your service</strong> — regular, deep, move-in/out, Airbnb or post-construction.</span></li>
+      <li class="flex gap-3"><span class="fq-num">2</span><span><strong class="text-navy">Tell us about your home</strong> — size, rooms and frequency.</span></li>
+      <li class="flex gap-3"><span class="fq-num">3</span><span><strong class="text-navy">See your estimate &amp; book</strong> — a ${business.deposit} deposit secures your date.</span></li>
+    </ol>
+    {mode === 'click' ? (
+      <button type="button" class="btn btn-primary btn-lg w-full" data-fq-load data-track="quote_start">
+        <Icon name="bolt" size={20} /> Start my instant quote
+      </button>
+    ) : (
+      <p class="text-muted text-sm flex items-center gap-2"><Icon name="clock" size={16} /> Loading the quote calculator…</p>
+    )}
+    <p class="text-sm text-muted">
+      Prefer to talk? <a class="link-u" href={business.phone.tel} data-track="call_click">Call</a> or
+      <a class="link-u" href={business.phone.sms} data-track="sms_click">text {business.phone.display}</a> — we respond within 15 minutes, 7 days a week.
+      <noscript> Or <a class="link-u" href={fq.src} target="_blank" rel="noopener">open the quote calculator</a>.</noscript>
+    </p>
+  </div>
+  <template>
+    <div id="fastquoted-root"></div>
+    <iframe data-fastquoted-widget="true" src={fq.src} title="Roamza instant cleaning quote" width="100%" height="680" style="border:0;background:transparent;display:block" allowtransparency="true" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </template>
+</div>
+
+<style>
+  .fq-num { flex: none; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 999px; background: var(--color-lime-100); color: var(--color-lime-600); font-weight: 700; font-size: .85rem; }
+</style>

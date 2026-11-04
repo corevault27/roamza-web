@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import AreaMap from '../../components/AreaMap.astro';
+import Faq from '../../components/Faq.astro';
+import CtaFinal from '../../components/CtaFinal.astro';
+import Icon from '../../components/Icon.astro';
+import { counties, citiesIn, cityUrl, type CountySlug } from '../../data/areas';
+import { img } from '../../lib/images';
+import { faqSchema } from '../../lib/schema';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Service Areas', href: '/service-areas/' }];
+const faqs = [
+  { q: 'Where is Roamza based?', a: 'Roamza Cleaning Services is based in Dallas, PA 18612, in the Back Mountain area of Luzerne County.' },
+  { q: 'Which counties do you serve?', a: 'Luzerne County, Lackawanna County and Wyoming County in northeastern Pennsylvania.' },
+  { q: 'My town isn’t listed. Can you still clean my home?', a: 'Possibly. Request a quote online or call or text (347) 335-1042 with your address and we’ll confirm availability.' },
+];
+---
+<Base
+  title="Service Areas: Luzerne, Lackawanna & Wyoming Co. | Roamza"
+  description="Roamza cleans homes, rentals and offices in Dallas, Kingston, Wilkes-Barre, Mountain Top, Scranton and 20+ towns across Luzerne, Lackawanna & Wyoming Counties."
+  image={img('real/sliding-door-deck-view.jpg')}
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <section class="relative pt-6 pb-20 lg:pb-28">
+    <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
+    <div class="container-x relative">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16 items-start">
+        <div>
+          <p class="eyebrow hero-rise">Service areas</p>
+          <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.4rem)] hero-rise">Cleaning services across Luzerne, Lackawanna &amp; Wyoming Counties</h1>
+          <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Roamza Cleaning Services is based in Dallas, PA and serves homes, vacation rentals and businesses across three northeastern Pennsylvania counties — from the Back Mountain and Harveys Lake to the Wyoming Valley, Mountain Top, Scranton and Tunkhannock.</p>
+          <div class="mt-10 grid gap-10">
+            {(Object.keys(counties) as CountySlug[]).map((slug) => {
+              const c = counties[slug];
+              return (
+                <div data-reveal>
+                  <h2 class="text-2xl"><a href={`/service-areas/${slug}/`} class="hover:text-royal inline-flex items-center gap-2">{c.name} <Icon name="arrow" size={20} /></a></h2>
+                  <p class="text-muted mt-1 text-[.95rem]">County seat: {c.seat}</p>
+                  <ul class="mt-4 flex flex-wrap gap-2">
+                    {citiesIn(slug).map((city) => city.status === 'published'
+                      ? <li><a href={cityUrl(city)} class="inline-flex items-center gap-1.5 rounded-full bg-navy text-white px-4 py-2 text-sm font-semibold hover:bg-royal transition-colors"><Icon name="pin" size={14} />{city.name}</a></li>
+                      : <li class="inline-flex rounded-full bg-cloud px-4 py-2 text-sm">{city.name}</li>)}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+          <p class="mt-10 text-sm text-muted">Towns with a pin have a dedicated local page. All listed towns are within our service area.</p>
+        </div>
+        <div data-reveal="scale"><AreaMap /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 lg:py-28 bg-linen" aria-label="Frequently asked questions">
+    <div class="container-x"><Faq faqs={faqs} heading="Service area questions" /></div>
+  </section>
+  <CtaFinal />
+</Base>

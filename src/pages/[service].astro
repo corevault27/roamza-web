@@ -1,0 +1,166 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import RoomByRoom from '../components/RoomByRoom.astro';
+import FastQuote from '../components/FastQuote.astro';
+import Faq from '../components/Faq.astro';
+import Reviews from '../components/Reviews.astro';
+import RealGallery from '../components/RealGallery.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Icon from '../components/Icon.astro';
+import { services, serviceBySlug, type Service } from '../data/services';
+import { publishedCities, cityUrl } from '../data/areas';
+import { reviews } from '../data/reviews';
+import { business } from '../data/business';
+import { img, realGallery } from '../lib/images';
+import { serviceSchema, faqSchema } from '../lib/schema';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { service: s.slug }, props: { s } }));
+}
+interface Props { s: Service }
+const { s } = Astro.props;
+const path = `/${s.slug}/`;
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Services', href: '/cleaning-services/' }, { name: s.name, href: path }];
+const related = s.related.map(serviceBySlug);
+const svcReviews = reviews.filter((r) => r.service === s.slug);
+const reviewItems = svcReviews.length ? [...svcReviews, ...reviews.filter((r) => r.featured && r.service !== s.slug)].slice(0, 6) : undefined;
+const galleryBySvc: Record<string, string[]> = {
+  'move-out-in-cleaning': ['real/empty-room-move-out.jpg', 'real/bathtub-move-out.jpg', 'real/hardwood-room-blue-walls.jpg', 'real/bathroom-vanity-cabinets.jpg', 'real/empty-bedroom-carpet.jpg', 'real/hardwood-living-room-empty.jpg', 'real/hallway-move-out.jpg', 'real/bathroom-vanity-granite.jpg'],
+  'construction-cleaning': ['real/hardwood-living-room-empty.jpg', 'real/hardwood-room-blue-walls.jpg', 'real/wood-staircase.jpg', 'real/open-kitchen-quartz-counter.jpg', 'real/empty-room-move-out.jpg', 'real/bathroom-vanity-cabinets.jpg'],
+  'airbnb-cleaning': ['real/bedroom-guest-ready.jpg', 'real/living-room-white-sofa.jpg', 'real/kitchen-white-cabinets.jpg', 'real/dining-area.jpg', 'real/bathroom-shower-vanity.jpg', 'real/bedroom-made-bed.jpg', 'real/entry-sitting-area.jpg'],
+};
+const photos = galleryBySvc[s.slug] ?? realGallery.slice(0, 8);
+---
+<Base title={s.title} description={s.description} image={img(s.hero)} breadcrumbs={crumbs} schema={[serviceSchema(s, path), faqSchema(s.faqs)]}>
+  <PageHero eyebrow={s.eyebrow} h1={s.h1} line={s.heroLine} answer={s.answer} image={s.hero} imageAlt={`${s.name} by Roamza Cleaning Services`} breadcrumbs={crumbs} />
+
+  <!-- Who it's for + highlights -->
+  <section class="py-16 lg:py-24" aria-labelledby="who-heading">
+    <div class="container-x grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+      <div>
+        <p class="eyebrow" data-reveal>Who it’s for</p>
+        <h2 id="who-heading" class="mt-4 text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal style="--d:60">Made for</h2>
+        <ul class="check-list mt-6 grid gap-3 text-[1.05rem]" data-reveal style="--d:120">
+          {s.audience.map((a) => <li>{a}</li>)}
+        </ul>
+        {s.slug === 'regular-cleaning' && (
+          <div class="mt-8 rounded-2xl bg-lime-50 ring-1 ring-lime-100 p-5" data-reveal>
+            <p class="font-semibold text-navy">Available frequencies</p>
+            <p class="mt-1 text-muted">{business.frequencies.join(' · ')}</p>
+          </div>
+        )}
+      </div>
+      <ul class="grid sm:grid-cols-2 gap-5">
+        {s.highlights.map((h, i) => (
+          <li class="hl-card card p-6 lg:p-7" data-reveal style={`--d:${i * 80}`} data-spotlight>
+            <span class="font-display text-lime-600 text-lg">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="text-xl mt-2">{h.title}</h3>
+            <p class="text-muted mt-2">{h.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <RoomByRoom
+    rooms={s.rooms}
+    heading={`What’s included in ${s.name}`}
+    intro={s.roomsIntro ?? 'A clear, room-by-room checklist so you know exactly what to expect.'}
+    note={s.notIncluded}
+  />
+
+  {s.addOns && (
+    <section class="py-16 lg:py-20" aria-labelledby="addons-heading">
+      <div class="container-x grid gap-8 lg:grid-cols-[1fr_2fr] lg:gap-16">
+        <div>
+          <p class="eyebrow" data-reveal>Customize it</p>
+          <h2 id="addons-heading" class="mt-4 text-[clamp(1.9rem,1.4rem+1.8vw,2.8rem)]" data-reveal style="--d:60">Optional add-ons</h2>
+          <p class="text-muted mt-4" data-reveal style="--d:100">{s.addOnsNote}</p>
+        </div>
+        <ul class="flex flex-wrap gap-2.5 content-start">
+          {s.addOns.map((a, i) => <li class="addon" data-reveal style={`--d:${i * 30}`}><Icon name="plus" size={16} /> {a}</li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {s.process && (
+    <section class="pb-4" aria-label="How service starts">
+      <div class="container-x">
+        <div class="rounded-[1.5rem] bg-cloud p-6 md:p-8 flex gap-4 items-start" data-reveal>
+          <span class="grid place-items-center w-11 h-11 rounded-full bg-white text-royal flex-none shadow-[var(--shadow-soft)]"><Icon name="key" size={20} /></span>
+          <p class="text-[1.05rem]"><strong class="text-navy">How service starts:</strong> {s.process}</p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Quote -->
+  <section class="py-16 lg:py-24" aria-labelledby="quote-heading">
+    <div class="container-x grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16 items-start">
+      <div>
+        <p class="eyebrow" data-reveal>Pricing</p>
+        <h2 id="quote-heading" class="mt-4 text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal style="--d:60">How much does {s.name} cost?</h2>
+        <p class="lead mt-5" data-reveal style="--d:120">
+          {s.process
+            ? `Pricing depends on the property and scope, so ${s.name} is priced after a walkthrough or review. Start with Fast Quote or call us, and our team will respond within 15 minutes.`
+            : `Every home is different, so your price depends on its size, condition and the frequency you choose. Fast Quote shows your estimated price in under 15 seconds, and a $${business.deposit} deposit secures your booking.`}
+        </p>
+        <ul class="mt-7 grid gap-3" data-reveal style="--d:160">
+          <li class="flex gap-3"><Icon name="clock" class="text-royal mt-1 flex-none" /> Response within 15 minutes, 7 days a week</li>
+          <li class="flex gap-3"><Icon name="shield" class="text-royal mt-1 flex-none" /> Licensed, bonded &amp; insured · satisfaction guaranteed</li>
+          <li class="flex gap-3"><Icon name="user" class="text-royal mt-1 flex-none" /> Trained, background-checked team</li>
+        </ul>
+      </div>
+      <div data-reveal="scale"><FastQuote /></div>
+    </div>
+  </section>
+
+  <RealGallery photos={photos} heading="Recent Roamza work" intro="Photos from real Roamza jobs — the same team and standard you’ll get." />
+
+  <Reviews items={reviewItems} heading="What our clients say" />
+
+  <section class="py-20 lg:py-28 bg-linen" aria-label="Frequently asked questions">
+    <div class="container-x"><Faq faqs={s.faqs} heading={`${s.name} FAQ`} /></div>
+  </section>
+
+  <!-- Related + areas (internal linking) -->
+  <section class="py-20 lg:py-24" aria-labelledby="related-heading">
+    <div class="container-x">
+      <h2 id="related-heading" class="text-[clamp(1.9rem,1.4rem+1.8vw,2.8rem)]" data-reveal>Related services</h2>
+      <ul class="mt-8 grid md:grid-cols-3 gap-5">
+        {related.map((r, i) => (
+          <li data-reveal style={`--d:${i * 80}`}>
+            <a href={`/${r.slug}/`} class="group block card overflow-hidden h-full">
+              <div class="aspect-[16/10] overflow-hidden"><Image src={img(r.card)} alt="" widths={[400, 640]} sizes="(min-width: 768px) 24rem, 100vw" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /></div>
+              <div class="p-6">
+                <h3 class="text-xl group-hover:text-royal transition-colors">{r.name}</h3>
+                <p class="text-muted mt-2 text-[.98rem]">{r.short}</p>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-14 rounded-[1.5rem] ring-1 ring-line p-6 md:p-8" data-reveal>
+        <h3 class="text-xl">{s.name} near you</h3>
+        <p class="text-muted mt-2">Available across Luzerne, Lackawanna and Wyoming Counties, including:</p>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {publishedCities.map((c) => <li><a href={cityUrl(c)} class="inline-flex rounded-full bg-cloud px-4 py-2 text-sm font-semibold text-navy hover:bg-navy hover:text-white transition-colors">{s.name.split(' ')[0] === 'Office' ? 'Office cleaning' : 'Cleaning'} in {c.name}, PA</a></li>)}
+          <li><a href="/service-areas/" class="inline-flex rounded-full px-4 py-2 text-sm font-semibold text-royal hover:underline">All service areas →</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CtaFinal />
+</Base>
+
+<style>
+  .addon { display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1rem; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--color-line); font-weight: 600; color: var(--color-navy); font-size: .95rem; transition: box-shadow .3s, transform .4s var(--ease-out-soft); }
+  .addon:hover { box-shadow: inset 0 0 0 1.5px var(--color-lime); transform: translateY(-2px); }
+  .addon :global(svg) { color: var(--color-lime-600); }
+  .hl-card { position: relative; overflow: hidden; }
+  .hl-card::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(240px circle at var(--mx, -100px) var(--my, -100px), rgb(119 185 0 / .12), transparent 70%); }
+</style>

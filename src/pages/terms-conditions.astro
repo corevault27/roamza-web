@@ -1,0 +1,28 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { business } from '../data/business';
+---
+<Legal title="Terms & Conditions | Roamza Cleaning Services" description="Terms for quotes, bookings, deposits, add-ons and cleaning services provided by Roamza Cleaning Services LLC in Luzerne, Lackawanna and Wyoming Counties, PA." h1="Terms & Conditions" updated="November 4, 2026">
+  <p>These terms apply to the use of roamzacleaningservices.com and to cleaning services provided by {business.legalName}. By requesting a quote or booking a service you agree to them.</p>
+  <h2>Quotes and pricing</h2>
+  <p>Online Fast Quote prices are estimates based on the information you provide. The final scope may be adjusted if the property’s size, condition or requested tasks differ from the details submitted. Office and commercial, post-construction and recurring Airbnb or vacation rental services are priced after a walkthrough or property review.</p>
+  <h2>Bookings and deposit</h2>
+  <p>A ${business.deposit} deposit is required to secure a booking. Deposits are paid through our booking platform’s secure checkout. Cancellation and rescheduling terms are confirmed with you at the time of booking.</p>
+  <h2>Add-on services</h2>
+  <p>Add-on services must be requested in advance so we can allow enough time for your appointment. Additional charges may apply.</p>
+  <h2>Scope limitations</h2>
+  <ul class="check-list">
+    <li>Furniture and appliances are moved only when safe and accessible.</li>
+    <li>Move-In / Move-Out Cleaning is designed for empty or mostly empty properties; heavy debris removal, hauling, carpet shampooing, exterior window cleaning and specialty restoration are not included.</li>
+    <li>Post-construction cleaning does not include large construction debris, hazardous materials, paint removal, hardened grout or cement removal or specialty restoration unless evaluated and approved in advance.</li>
+    <li>We do not provide landscaping, yard work, pest control, plumbing, electrical or handyman services.</li>
+  </ul>
+  <h2>Satisfaction</h2>
+  <p>Your satisfaction is guaranteed. If something isn’t right, contact us with the details and our team will review it with you.</p>
+  <h2>Access and safety</h2>
+  <p>Please provide safe access to the property at the scheduled time and let us know about pets, alarms or special instructions in advance.</p>
+  <h2>Website use</h2>
+  <p>Website content is provided for general information. Photos labeled as real jobs show actual Roamza work; room illustrations show the type of areas included in a service.</p>
+  <h2>Contact</h2>
+  <p>{business.legalName} · {business.base.locality}, {business.base.region} {business.base.postalCode} · <a href={business.phone.tel}>{business.phone.display}</a> · <a href={`mailto:${business.email}`}>{business.email}</a></p>
+</Legal>

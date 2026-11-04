@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { generalFaqs } from '../data/faqs';
+import { services } from '../data/services';
+import { faqSchema } from '../lib/schema';
+import { img } from '../lib/images';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'FAQ', href: '/faq/' }];
+const all = [...generalFaqs, ...services.flatMap((s) => s.faqs)];
+---
+<Base title="Cleaning FAQ: Pricing, Booking & Services | Roamza" description="Answers about Roamza Cleaning Services in Dallas, PA: pricing, the $50 deposit, response time, frequencies, service areas, add-ons and every cleaning service." breadcrumbs={crumbs} schema={[faqSchema(all)]} image={img('real/kitchen-white-cabinets.jpg')}>
+  <section class="relative pt-6 pb-12">
+    <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
+    <div class="container-x relative">
+      <Breadcrumbs items={crumbs} />
+      <div class="max-w-3xl mt-8">
+        <p class="eyebrow hero-rise">FAQ</p>
+        <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.4rem)] hero-rise">Frequently asked questions</h1>
+        <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Everything you need to know about booking Roamza Cleaning Services — one question at a time.</p>
+        <nav aria-label="FAQ topics" class="mt-8 flex flex-wrap gap-2">
+          <a href="#general" class="rounded-full bg-navy text-white px-4 py-2 text-sm font-semibold">General</a>
+          {services.map((s) => <a href={`#${s.slug}`} class="rounded-full bg-cloud px-4 py-2 text-sm font-semibold text-navy hover:bg-navy hover:text-white transition-colors">{s.name}</a>)}
+        </nav>
+      </div>
+    </div>
+  </section>
+  <section id="general" class="py-16" aria-label="General questions">
+    <div class="container-x"><Faq faqs={generalFaqs} heading="General questions" /></div>
+  </section>
+  {services.map((s, i) => (
+    <section id={s.slug} class:list={['py-16', i % 2 === 0 && 'bg-linen']} aria-label={`${s.name} questions`}>
+      <div class="container-x">
+        <Faq faqs={s.faqs} heading={s.name} intro={s.short} />
+        <p class="mt-8"><a href={`/${s.slug}/`} class="link-u">Learn more about {s.name} →</a></p>
+      </div>
+    </section>
+  ))}
+  <CtaFinal />
+</Base>

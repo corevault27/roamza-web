@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+import { img } from '../lib/images';
+interface Props { heading?: string; text?: string }
+const { heading = 'Stop thinking about cleaning. Start enjoying your home again.', text = 'See your estimated price in under 15 seconds. Weekly spots are limited — ask about our first cleaning discount.' } = Astro.props;
+---
+<section class="py-16 lg:py-24" aria-labelledby="cta-heading">
+  <div class="container-x">
+    <div class="cta on-dark relative overflow-hidden rounded-[2rem] bg-navy text-white px-6 py-14 md:px-14 md:py-20 lg:grid lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:items-center" data-spotlight>
+      <div class="cta-light glow-drift" aria-hidden="true"></div>
+      <div class="relative">
+        <p class="eyebrow" data-reveal>Your space, our cleaning mission</p>
+        <h2 id="cta-heading" class="mt-4 text-[clamp(2.1rem,1.3rem+3vw,4rem)]" data-reveal style="--d:60">{heading}</h2>
+        <p class="lead mt-5 max-w-xl" data-reveal style="--d:120">{text}</p>
+        <div class="mt-8 flex flex-wrap gap-3" data-reveal style="--d:180">
+          <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get a Fast Quote <Icon name="arrow" size={18} /></a>
+          <a href={business.phone.tel} class="btn btn-ghost btn-lg" data-track="call_click"><Icon name="phone" size={18} /> {business.phone.display}</a>
+        </div>
+        <p class="mt-6 text-sm text-white/65 flex flex-wrap gap-x-5 gap-y-1">
+          <span class="inline-flex items-center gap-1.5"><Icon name="clock" size={16} /> 15-minute response</span>
+          <span class="inline-flex items-center gap-1.5"><Icon name="calendar" size={16} /> 7 days a week</span>
+          <span class="inline-flex items-center gap-1.5"><Icon name="shield" size={16} /> Licensed, bonded &amp; insured</span>
+        </p>
+      </div>
+      <div class="relative hidden lg:block" data-reveal="scale" style="--d:150">
+        <Image src={img('team/roamza-team-uniforms.jpg')} alt="The Roamza Cleaning Services team in uniform" width={520} height={520} class="roof-mask w-full max-w-md ml-auto rounded-b-[1.5rem] object-cover aspect-square" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-light { position: absolute; inset: -30%; background: radial-gradient(35% 35% at 75% 30%, rgb(119 185 0 / .28), transparent 70%), radial-gradient(40% 40% at 20% 80%, rgb(29 11 240 / .45), transparent 70%); pointer-events: none; }
+  .cta::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(300px circle at var(--mx, 70%) var(--my, 30%), rgb(255 255 255 / .1), transparent 70%); z-index: 1; }
+</style>

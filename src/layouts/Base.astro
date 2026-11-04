@@ -1,0 +1,85 @@
+---
+import '@fontsource-variable/fraunces/soft.css';
+import '@fontsource-variable/instrument-sans';
+import '../styles/global.css';
+import frauncesWoff from '@fontsource-variable/fraunces/files/fraunces-latin-soft-normal.woff2?url';
+import instrumentWoff from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
+import { getImage } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { business, SITE_URL } from '../data/business';
+import { organization, website, breadcrumbSchema } from '../lib/schema';
+import { img } from '../lib/images';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+  schema?: object[];
+  breadcrumbs?: { name: string; href: string }[];
+  ogType?: 'website' | 'article';
+}
+const { title, description, image, noindex = false, schema = [], breadcrumbs, ogType = 'website' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
+
+const ogImg = await getImage({ src: image ?? img('team/roamza-cleaning-team.jpg'), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(ogImg.src, SITE_URL).toString();
+const logoImg = await getImage({ src: img('brand/roamza-logo.png'), width: 512, format: 'png' });
+const logoUrl = new URL(logoImg.src, SITE_URL).toString();
+
+const graph = [organization(logoUrl, ogUrl), website(), ...(breadcrumbs ? [breadcrumbSchema(breadcrumbs)] : []), ...schema];
+---
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#150E75" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href={frauncesWoff} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={instrumentWoff} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    <meta name="geo.region" content="US-PA" />
+    <meta name="geo.placename" content="Dallas, Pennsylvania" />
+
+    {graph.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
+    <script is:inline>document.documentElement.classList.add('js');setTimeout(function(){document.querySelectorAll('[data-reveal],[data-split],[data-wipe]').forEach(function(e){e.classList.add('is-in')})},4500);</script>
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] btn btn-navy">Skip to content</a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <script>
+      import { initFx } from '../scripts/fx';
+      initFx();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+---
+import Article from '../../layouts/Article.astro';
+import { serviceBySlug } from '../../data/services';
+import { reviews } from '../../data/reviews';
+const air = serviceBySlug('airbnb-cleaning');
+const dale = reviews.find((r) => r.name === 'Dale Newman')!;
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Resources', href: '/resources/' }, { name: 'Airbnb Turnover Checklist', href: '/resources/airbnb-turnover-cleaning-checklist/' }];
+const faqs = [
+  { q: 'What is an Airbnb turnover cleaning?', a: 'It is the cleaning and reset done between one guest’s check-out and the next guest’s check-in: cleaning every room, resetting beds and towels, staging the space, restocking supplies and checking for damage.' },
+  { q: 'Does Roamza restock supplies and report damage?', a: 'Yes. We restock owner-provided guest supplies, notify the host of missing or low supplies, and report visible damage or maintenance concerns after a visual inspection.' },
+  { q: 'Do you handle linens and laundry?', a: 'Linens are changed when included in your property service agreement, and laundry service can be arranged depending on the property’s turnover needs.' },
+  { q: 'How do I start turnover service with Roamza?', a: 'Recurring turnover service starts with a walkthrough or property review so we can learn your setup, linen process, supplies and specific instructions.' },
+];
+---
+<Article
+  title="Airbnb Turnover Cleaning Checklist for Hosts | Roamza"
+  description="The Airbnb and vacation rental turnover checklist Roamza uses in Luzerne & Lackawanna Counties: every room, staging, restocking and damage reporting."
+  h1="Airbnb turnover cleaning checklist for hosts"
+  eyebrow="For hosts & property managers"
+  answer="A complete Airbnb turnover covers five areas: the kitchen (surfaces, sink, appliance exteriors, microwave, stovetop, trash), bathrooms (toilet, shower or tub, sink and vanity, mirrors, towels reset), bedrooms (linens per agreement, beds made, surfaces dusted), living areas (dusting, floors, cushions and furniture reset) and turnover support (inspection, damage reporting, low-supply alerts, restocking owner-provided supplies and final staging)."
+  image="real/bedroom-guest-ready.jpg"
+  imageAlt="Guest-ready bedroom after a vacation rental turnover by Roamza"
+  datePublished="2026-11-04"
+  crumbs={crumbs}
+  faqs={faqs}
+  toc={[{ id: 'why', label: 'Why a checklist matters' }, { id: 'checklist', label: 'The turnover checklist' }, { id: 'setup', label: 'Setting up recurring turnovers' }]}
+  related={[{ href: '/airbnb-cleaning/', label: 'Airbnb & Vacation Rental Cleaning' }, { href: '/service-areas/shavertown-pa/', label: 'Back Mountain & Harveys Lake' }, { href: '/service-areas/wilkes-barre-pa/', label: 'Wilkes-Barre' }]}
+>
+  <h2 id="why">Why a checklist matters</h2>
+  <p>Guests judge a stay in the first minutes. A consistent checklist means every check-in looks the same — and problems like damage or missing supplies are caught before the next guest finds them.</p>
+  <blockquote class="border-l-4 border-lime pl-5 my-6 text-[1.08rem] italic text-navy">“{dale.text}” <span class="block not-italic text-sm text-muted mt-2">— {dale.name}, Google review</span></blockquote>
+
+  <h2 id="checklist">The turnover checklist</h2>
+  {air.rooms.map((r) => (<><h3>{r.name}</h3><ul class="check-list">{r.tasks.map((t) => <li>{t}</li>)}</ul></>))}
+
+  <h2 id="setup">Setting up recurring turnovers</h2>
+  <p>{air.process}</p>
+  <ul class="check-list">
+    {air.highlights.map((h) => <li><strong>{h.title}:</strong> {h.text}</li>)}
+  </ul>
+  <p>Hosting around Harveys Lake, the Back Mountain, Wilkes-Barre or Scranton? <a href="/airbnb-cleaning/">See Roamza’s Airbnb turnover service</a> or call or text (347) 335-1042.</p>
+</Article>

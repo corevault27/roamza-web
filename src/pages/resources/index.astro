@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaFinal from '../../components/CtaFinal.astro';
+import Icon from '../../components/Icon.astro';
+import { img } from '../../lib/images';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Resources', href: '/resources/' }];
+const guides = [
+  { href: '/resources/regular-vs-deep-cleaning/', title: 'Regular vs. deep cleaning: what’s the difference?', text: 'What each includes, room by room, and which one to book first.', image: 'rooms/deep-throughout.jpg', tag: 'Guide' },
+  { href: '/resources/move-out-cleaning-checklist/', title: 'Move-out cleaning checklist: room by room', text: 'The checklist our team uses for empty homes — plus what’s not included.', image: 'real/empty-room-move-out.jpg', tag: 'Checklist' },
+  { href: '/resources/airbnb-turnover-cleaning-checklist/', title: 'Airbnb turnover cleaning checklist for hosts', text: 'Cleaning, staging, restocking and damage reporting between guests.', image: 'real/bedroom-guest-ready.jpg', tag: 'For hosts' },
+  { href: '/roamza-cleaning-services-partners-with-cleaning-for-a-reason-to-support-cancer-patients/', title: 'Roamza partners with Cleaning for a Reason', text: 'How we donate home cleanings to cancer patients in Luzerne and Lackawanna Counties.', image: 'team/miriam-rodriguez-founder.jpg', tag: 'Community' },
+];
+---
+<Base title="Cleaning Guides & Checklists | Roamza Cleaning Services" description="Practical cleaning guides from Roamza in Dallas, PA: regular vs. deep cleaning, move-out checklist and Airbnb turnover checklist for hosts." breadcrumbs={crumbs} image={img('rooms/deep-throughout.jpg')}>
+  <section class="relative pt-6 pb-16">
+    <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
+    <div class="container-x relative">
+      <Breadcrumbs items={crumbs} />
+      <div class="max-w-3xl mt-8">
+        <p class="eyebrow hero-rise">Resources</p>
+        <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.4rem)] hero-rise">Cleaning guides &amp; checklists</h1>
+        <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Straight answers from the Roamza team — the same checklists we use in homes, rentals and offices across Luzerne, Lackawanna and Wyoming Counties.</p>
+      </div>
+    </div>
+  </section>
+  <section class="pb-24">
+    <ul class="container-x grid md:grid-cols-2 gap-6">
+      {guides.map((g, i) => (
+        <li data-reveal style={`--d:${i * 80}`}>
+          <a href={g.href} class="group card overflow-hidden grid sm:grid-cols-[14rem_1fr] h-full">
+            <div class="aspect-[16/10] sm:aspect-auto overflow-hidden"><Image src={img(g.image)} alt="" widths={[360, 560]} sizes="(min-width: 640px) 14rem, 100vw" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /></div>
+            <div class="p-6 flex flex-col">
+              <span class="text-xs font-semibold tracking-[.14em] uppercase text-royal">{g.tag}</span>
+              <h2 class="text-2xl mt-2 group-hover:text-royal transition-colors">{g.title}</h2>
+              <p class="text-muted mt-2">{g.text}</p>
+              <span class="mt-auto pt-4 inline-flex items-center gap-2 font-semibold text-navy">Read <Icon name="arrow" size={18} /></span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <CtaFinal />
+</Base>

@@ -1,0 +1,179 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import AreaMap from '../../components/AreaMap.astro';
+import FastQuote from '../../components/FastQuote.astro';
+import Faq from '../../components/Faq.astro';
+import Reviews from '../../components/Reviews.astro';
+import CtaFinal from '../../components/CtaFinal.astro';
+import Icon from '../../components/Icon.astro';
+import ServiceList from '../../components/ServiceList.astro';
+import { counties, citiesIn, cityUrl, cityBySlug, publishedCities, type City, type CountySlug } from '../../data/areas';
+import { serviceBySlug } from '../../data/services';
+import { reviews } from '../../data/reviews';
+import { img } from '../../lib/images';
+import { faqSchema, abs } from '../../lib/schema';
+import { business } from '../../data/business';
+
+export function getStaticPaths() {
+  const countyPaths = (Object.keys(counties) as CountySlug[]).map((slug) => ({ params: { area: slug }, props: { kind: 'county' as const, slug } }));
+  const cityPaths = publishedCities.map((c) => ({ params: { area: c.slug }, props: { kind: 'city' as const, slug: c.slug } }));
+  return [...countyPaths, ...cityPaths];
+}
+type Props = { kind: 'county' | 'city'; slug: string };
+const { kind, slug } = Astro.props;
+
+const heroImg: Record<string, string> = {
+  'dallas-pa': 'real/sliding-door-deck-view.jpg',
+  'wilkes-barre-pa': 'real/kitchen-white-cabinets.jpg',
+  'kingston-pa': 'real/entry-sitting-area.jpg',
+  'shavertown-pa': 'real/living-room-fresh-carpet.jpg',
+  'mountain-top-pa': 'real/bedroom-made-bed.jpg',
+  'scranton-pa': 'real/dining-area.jpg',
+  'luzerne-county': 'real/open-kitchen-quartz-counter.jpg',
+  'lackawanna-county': 'real/bathroom-shower-vanity.jpg',
+  'wyoming-county': 'real/entryway-hardwood-floor.jpg',
+};
+
+let city: City | undefined;
+let countySlug: CountySlug;
+if (kind === 'city') { city = cityBySlug(slug)!; countySlug = city.county; } else { countySlug = slug as CountySlug; }
+const county = counties[countySlug];
+const path = `/service-areas/${slug}/`;
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Service Areas', href: '/service-areas/' }, ...(city ? [{ name: county.name, href: `/service-areas/${countySlug}/` }] : []), { name: city ? `${city.name}, PA` : county.name, href: path }];
+const p = city?.page;
+const countyFaqs = [
+  { q: `Which towns in ${county.name} does Roamza serve?`, a: `We serve ${citiesIn(countySlug).map((c) => c.name).join(', ')} and surrounding communities in ${county.name}.` },
+  { q: `What cleaning services are available in ${county.name}?`, a: 'Regular house cleaning, Signature Deep Cleaning, Move-In / Move-Out Cleaning, Airbnb & Vacation Rental Turnover Cleaning, Office & Commercial Cleaning and Post-Construction Cleaning.' },
+  { q: 'How do I get a price?', a: 'Use Fast Quote for an estimate in under 15 seconds, or call or text (347) 335-1042. We respond within 15 minutes, 7 days a week.' },
+];
+const faqs = p ? p.faqs : countyFaqs;
+const placeSchema = {
+  '@context': 'https://schema.org', '@type': 'Service', name: city ? `Cleaning services in ${city.name}, PA` : `Cleaning services in ${county.name}, PA`,
+  serviceType: 'House cleaning', provider: { '@id': abs('/#organization') }, url: abs(path),
+  areaServed: city ? { '@type': 'City', name: `${city.name}, PA`, containedInPlace: { '@type': 'AdministrativeArea', name: `${county.name}, PA` } } : { '@type': 'AdministrativeArea', name: `${county.name}, PA` },
+};
+const nearby = p?.nearby.map((s) => cityBySlug(s)!).filter(Boolean) ?? [];
+const localReview = reviews.find((r) => city && r.text.includes(`${city.name}, PA`));
+---
+<Base
+  title={p ? p.title : county.title}
+  description={p ? p.description : county.description}
+  image={img(heroImg[slug] ?? 'real/living-room-white-sofa.jpg')}
+  breadcrumbs={crumbs}
+  schema={[placeSchema, faqSchema(faqs)]}
+>
+  <PageHero
+    eyebrow={city ? `${county.name} · ${city.name}, PA` : `County seat: ${county.seat}`}
+    h1={p ? p.h1 : county.h1}
+    answer={p ? p.answer : county.answer}
+    image={heroImg[slug] ?? 'real/living-room-white-sofa.jpg'}
+    imageAlt={city ? `Home cleaned by Roamza — serving ${city.name}, PA` : `Home cleaned by Roamza — serving ${county.name}`}
+    breadcrumbs={crumbs}
+  />
+
+  <section class="py-16 lg:py-24" aria-labelledby="local-heading">
+    <div class="container-x grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
+      <div class="prose-roamza">
+        <p class="eyebrow" data-reveal>{city ? 'Local to you' : 'Across the county'}</p>
+        <h2 id="local-heading" class="!mt-4 text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>{city ? `Your local cleaning team for ${city.name}` : `Cleaning in ${county.name}`}</h2>
+        {(p ? p.intro : county.intro).map((t) => <p data-reveal>{t}</p>)}
+        {p && <>
+          <h3 data-reveal>Homes and spaces we clean in {city!.name}</h3>
+          <p data-reveal>{p.homes}</p>
+        </>}
+      </div>
+      <aside class="grid gap-5 content-start">
+        {p && (
+          <div class="card p-6" data-reveal>
+            <h3 class="text-xl">Why {city!.name} chooses Roamza</h3>
+            <ul class="check-list mt-4 grid gap-3">{p.localProof.map((x) => <li>{x}</li>)}</ul>
+          </div>
+        )}
+        <div class="rounded-[1.25rem] bg-navy on-dark p-6" data-reveal>
+          <p class="text-lime text-xs font-semibold tracking-[.16em] uppercase">Fast facts</p>
+          <ul class="mt-3 grid gap-2 text-white/90">
+            <li class="flex gap-2"><Icon name="clock" class="text-lime mt-1 flex-none" /> 15-minute response, 7 days a week</li>
+            <li class="flex gap-2"><Icon name="bolt" class="text-lime mt-1 flex-none" /> Price estimate in under 15 seconds</li>
+            <li class="flex gap-2"><Icon name="shield" class="text-lime mt-1 flex-none" /> Licensed, bonded &amp; insured</li>
+            <li class="flex gap-2"><Icon name="home" class="text-lime mt-1 flex-none" /> Locally owned in {business.base.locality}, PA</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {p ? (
+    <section class="pb-16 lg:pb-24" aria-labelledby="svc-heading">
+      <div class="container-x">
+        <h2 id="svc-heading" class="text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>Popular services in {city!.name}</h2>
+        <ul class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {p.services.map((sl, i) => { const s = serviceBySlug(sl); return (
+            <li data-reveal style={`--d:${i * 70}`}>
+              <a href={`/${s.slug}/`} class="group card overflow-hidden flex flex-col h-full">
+                <div class="aspect-[16/10] overflow-hidden"><Image src={img(s.card)} alt="" widths={[400, 640]} sizes="(min-width: 1024px) 24rem, 100vw" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /></div>
+                <div class="p-6">
+                  <h3 class="text-xl group-hover:text-royal transition-colors">{s.name} in {city!.name}</h3>
+                  <p class="text-muted mt-2 text-[.98rem]">{s.short}</p>
+                </div>
+              </a>
+            </li>
+          ); })}
+        </ul>
+      </div>
+    </section>
+  ) : (
+    <section class="pb-16 lg:pb-24" aria-labelledby="svc-heading">
+      <div class="container-x">
+        <h2 id="svc-heading" class="text-[clamp(2rem,1.4rem+2.2vw,3.2rem)] mb-8" data-reveal>Services available in {county.name}</h2>
+        <ServiceList />
+      </div>
+    </section>
+  )}
+
+  <section class="py-16 lg:py-24 bg-cloud" aria-labelledby="towns-heading">
+    <div class="container-x grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16 items-start">
+      <div>
+        <h2 id="towns-heading" class="text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>{city ? `Also serving near ${city.name}` : `Towns we serve in ${county.name}`}</h2>
+        {city && nearby.length > 0 && (
+          <ul class="mt-6 grid gap-3" data-reveal>
+            {nearby.map((n) => <li><a href={cityUrl(n)} class="card flex items-center justify-between gap-4 px-5 py-4 font-semibold text-navy hover:text-royal"><span class="inline-flex items-center gap-2"><Icon name="pin" size={18} /> Cleaning services in {n.name}, PA</span><Icon name="arrow" size={18} /></a></li>)}
+          </ul>
+        )}
+        <p class="mt-8 font-semibold text-navy" data-reveal>{county.name}:</p>
+        <ul class="mt-3 flex flex-wrap gap-2" data-reveal>
+          {citiesIn(countySlug).map((c) => c.status === 'published'
+            ? <li><a href={cityUrl(c)} class:list={['inline-flex rounded-full px-4 py-2 text-sm font-semibold transition-colors', c.slug === slug ? 'bg-lime text-navy' : 'bg-navy text-white hover:bg-royal']} aria-current={c.slug === slug ? 'page' : undefined}>{c.name}</a></li>
+            : <li class="inline-flex rounded-full bg-white px-4 py-2 text-sm">{c.name}</li>)}
+        </ul>
+        <p class="mt-6"><a href={city ? `/service-areas/${countySlug}/` : '/service-areas/'} class="link-u">{city ? `All of ${county.name} →` : 'All service areas →'}</a></p>
+      </div>
+      <div data-reveal="scale"><AreaMap compact /></div>
+    </div>
+  </section>
+
+  <section class="py-16 lg:py-24" aria-labelledby="q-heading">
+    <div class="container-x grid gap-10 lg:grid-cols-2 lg:gap-16 items-start">
+      <div>
+        <h2 id="q-heading" class="text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>Get your {city ? city.name : county.name} cleaning price</h2>
+        <p class="lead mt-5" data-reveal>See an estimate in under 15 seconds and secure your date with a ${business.deposit} deposit. Office, post-construction and recurring Airbnb service are priced after a walkthrough.</p>
+        {localReview && (
+          <figure class="mt-8 card p-6" data-reveal>
+            <blockquote class="text-[1.05rem]">“{localReview.text}”</blockquote>
+            <figcaption class="mt-3 font-semibold text-navy">{localReview.name} · Google review</figcaption>
+          </figure>
+        )}
+      </div>
+      <div data-reveal="scale"><FastQuote /></div>
+    </div>
+  </section>
+
+  <Reviews heading={city ? `What clients say about Roamza` : 'Trusted by local families'} />
+
+  <section class="py-20 lg:py-28 bg-linen" aria-label="Frequently asked questions">
+    <div class="container-x"><Faq faqs={faqs} heading={city ? `${city.name} cleaning FAQ` : `${county.name} FAQ`} /></div>
+  </section>
+
+  <CtaFinal />
+</Base>

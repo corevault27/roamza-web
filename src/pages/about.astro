@@ -1,0 +1,122 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Stats from '../components/Stats.astro';
+import Reviews from '../components/Reviews.astro';
+import RealGallery from '../components/RealGallery.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Icon from '../components/Icon.astro';
+import { business } from '../data/business';
+import { publishedCities, counties, cityUrl } from '../data/areas';
+import { img } from '../lib/images';
+import { personSchema, abs } from '../lib/schema';
+import { getImage } from 'astro:assets';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'About', href: '/about/' }];
+const founderImg = await getImage({ src: img('team/miriam-rodriguez-founder.jpg'), width: 800, format: 'jpg' });
+const facts = [
+  ['Legal name', business.legalName],
+  ['Founder & owner', business.founder.name],
+  ['Based in', `${business.base.locality}, ${business.base.regionName} ${business.base.postalCode}`],
+  ['Experience', `${business.yearsExperience} years`],
+  ['Service area', business.counties.join(', ')],
+  ['Phone / text', business.phone.display],
+  ['Email', business.email],
+  ['Credentials', 'Licensed, bonded & insured · background-checked team'],
+  ['Availability', '7 days a week · 15-minute response time'],
+  ['Community', 'Cleaning for a Reason Premium Partner · Back Mountain Chamber member'],
+];
+---
+<Base
+  title="About Roamza Cleaning Services | Locally Owned in Dallas, PA"
+  description="Meet Roamza Cleaning Services: a locally owned cleaning company in Dallas, PA led by founder Miriam Rodriguez. 10 years of experience, 500+ families served."
+  image={img('team/roamza-cleaning-team.jpg')}
+  breadcrumbs={crumbs}
+  schema={[personSchema(abs(founderImg.src)), { '@context': 'https://schema.org', '@type': 'AboutPage', url: abs('/about/'), about: { '@id': abs('/#organization') } }]}
+>
+  <section class="relative overflow-hidden pt-6 pb-16 lg:pb-24">
+    <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
+    <div class="container-x relative">
+      <Breadcrumbs items={crumbs} />
+      <div class="mt-8 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 items-center">
+        <div>
+          <p class="eyebrow hero-rise">About Roamza</p>
+          <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.6rem)] hero-rise">A local cleaning company built one home at a time</h1>
+          <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Roamza Cleaning Services LLC is a locally owned cleaning company based in Dallas, Pennsylvania, founded and led by Miriam Rodriguez. With {business.yearsExperience} years of experience, our trained, background-checked team cleans homes, vacation rentals and offices across Luzerne, Lackawanna and Wyoming Counties — trusted by more than 500 local families.</p>
+        </div>
+        <div class="relative hero-zoom">
+          <div class="roof-mask overflow-hidden rounded-b-[1.75rem] aspect-[4/4.2] shadow-[var(--shadow-lift)]">
+            <Image src={img('team/roamza-cleaning-team.jpg')} alt="Miriam Rodriguez with the Roamza cleaning team" widths={[480, 720, 960]} sizes="(min-width: 1024px) 32rem, 100vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x" aria-label="Roamza by the numbers"><Stats /></section>
+
+  <section class="py-20 lg:py-28" aria-labelledby="story-heading">
+    <div class="container-x grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20 items-start">
+      <div class="lg:sticky lg:top-28" data-reveal="scale">
+        <div class="rounded-[1.5rem] overflow-hidden aspect-[3/4] shadow-[var(--shadow-soft)] max-w-md">
+          <Image src={img('team/miriam-rodriguez-founder.jpg')} alt="Miriam Rodriguez, founder and owner of Roamza Cleaning Services" widths={[360, 540, 720]} sizes="(min-width: 1024px) 26rem, 100vw" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <p class="mt-3 text-sm text-muted">Miriam Rodriguez, Owner &amp; Founder</p>
+      </div>
+      <div class="prose-roamza">
+        <p class="eyebrow" data-reveal>Our story</p>
+        <h2 id="story-heading" class="!mt-4 text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>Not a franchise. Not a call center.</h2>
+        <p class="lead" data-reveal>Roamza started with a simple idea: cleaning shouldn’t be another weight you carry every week. Families, hosts and business owners deserve a team that shows up on time, communicates clearly and treats every space with respect.</p>
+        <p data-reveal>Today Roamza is a real local team based in Dallas, PA. When you call or text, you reach the people who actually plan and do your cleaning — not a national call center. Our reputation is built one home at a time, which is why so many clients keep us on a weekly, bi-weekly, every-3-weeks or monthly schedule.</p>
+        <h3 data-reveal>What we stand for</h3>
+        <ul class="check-list" data-reveal>
+          <li><strong>Real reliability.</strong> We show up. On time. Every time.</li>
+          <li><strong>A professional team.</strong> Trained, background-checked cleaners — not random workers.</li>
+          <li><strong>Respect for your space.</strong> We clean like we’re cleaning our own home.</li>
+          <li><strong>Easy communication.</strong> Call. Text. Book. Done.</li>
+        </ul>
+        <h3 data-reveal>Giving back</h3>
+        <p data-reveal>Roamza is a Premium Partner of <a href="/roamza-cleaning-services-partners-with-cleaning-for-a-reason-to-support-cancer-patients/">Cleaning for a Reason</a>, the nonprofit that provides free home cleaning to people undergoing cancer treatment. Through the program we donate cleanings to qualifying patients in Luzerne and Lackawanna Counties. We are also a proud member of the Back Mountain Chamber.</p>
+        <div class="flex flex-wrap items-center gap-6 mt-6" data-reveal>
+          <Image src={img('brand/cleaning-for-a-reason-premium-partner.png')} alt="Cleaning for a Reason Premium Partner badge" width={110} height={110} class="w-24 h-24" />
+          <Image src={img('brand/licensed-bonded-insured-seal.png')} alt="Licensed, bonded and insured seal" width={130} height={112} class="w-28 h-auto" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 lg:py-24 bg-cloud" aria-labelledby="facts-heading">
+    <div class="container-x grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+      <div>
+        <p class="eyebrow" data-reveal>Quick facts</p>
+        <h2 id="facts-heading" class="mt-4 text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>Roamza at a glance</h2>
+        <p class="text-muted mt-4" data-reveal>Verified details about our company, for clients, partners and anyone researching local cleaning services.</p>
+      </div>
+      <dl class="card divide-y divide-line" data-reveal>
+        {facts.map(([k, v]) => (
+          <div class="grid sm:grid-cols-[12rem_1fr] gap-1 sm:gap-6 px-6 py-4">
+            <dt class="font-semibold text-navy">{k}</dt>
+            <dd class="text-ink">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <RealGallery heading="Our work speaks for itself" />
+
+  <section class="pb-20 lg:pb-28" aria-labelledby="where-heading">
+    <div class="container-x">
+      <h2 id="where-heading" class="text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal>Where we work</h2>
+      <p class="lead mt-4 max-w-3xl" data-reveal>Based in Dallas, we serve {Object.values(counties).map((c) => c.name).join(', ').replace(/, ([^,]*)$/, ' and $1')}.</p>
+      <ul class="mt-6 flex flex-wrap gap-2" data-reveal>
+        {publishedCities.map((c) => <li><a href={cityUrl(c)} class="inline-flex items-center gap-2 rounded-full bg-cloud px-4 py-2 font-semibold text-navy hover:bg-navy hover:text-white transition-colors"><Icon name="pin" size={16} /> {c.name}, PA</a></li>)}
+        <li><a href="/service-areas/" class="inline-flex rounded-full px-4 py-2 font-semibold text-royal hover:underline">All areas →</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <Reviews />
+  <CtaFinal />
+</Base>

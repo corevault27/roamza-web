@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceList from '../components/ServiceList.astro';
+import Process from '../components/Process.astro';
+import Faq from '../components/Faq.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { business } from '../data/business';
+import { img } from '../lib/images';
+import { faqSchema } from '../lib/schema';
+
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Cleaning Services', href: '/cleaning-services/' }];
+const rows = [
+  { label: 'Best for', vals: ['Keeping a home consistently clean', 'First visits, seasonal resets, extra attention', 'Empty or mostly empty homes', 'Short-term & vacation rentals', 'Offices & commercial spaces', 'New builds & remodels'] },
+  { label: 'Frequency', vals: ['Weekly, bi-weekly, every 3 weeks, monthly', 'One-time or before recurring', 'One-time, around moving day', 'Every turnover, per booking calendar', 'Customized to your facility', 'One-time per project'] },
+  { label: 'Baseboards, doors & blinds', vals: ['Blinds lightly dusted; detailed work as add-on', 'Included', 'Included', '—', '—', 'Doors, trim & baseboards included'] },
+  { label: 'Inside cabinets & drawers', vals: ['—', 'Add-on (interior cabinets)', 'Included (empty)', '—', '—', 'Included (empty)'] },
+  { label: 'How pricing works', vals: ['Instant online estimate', 'Instant online estimate', 'Instant online estimate', 'Walkthrough / property review', 'Walkthrough before pricing', 'Walkthrough / project review'] },
+];
+const cols = [
+  { name: 'Regular', href: '/regular-cleaning/' },
+  { name: 'Signature Deep', href: '/deep-cleaning/' },
+  { name: 'Move-In / Out', href: '/move-out-in-cleaning/' },
+  { name: 'Airbnb Turnover', href: '/airbnb-cleaning/' },
+  { name: 'Office & Commercial', href: '/office-cleaning/' },
+  { name: 'Post-Construction', href: '/construction-cleaning/' },
+];
+const faqs = [
+  { q: 'Which cleaning service should I choose?', a: 'Choose Regular Cleaning to keep a home consistently clean, Signature Deep Cleaning for a first visit or seasonal reset, Move-In / Move-Out for empty homes, Airbnb Turnover for short-term rentals, Office & Commercial for workplaces and Post-Construction after a build or remodel. Not sure? Call or text (347) 335-1042.' },
+  { q: 'What is the difference between regular and deep cleaning?', a: 'Regular Cleaning maintains your home on a recurring schedule. Signature Deep Cleaning includes everything in Regular plus baseboards, doors and door frames, blinds, ceiling fans, interior window frames and cleaning behind and under appliances and furniture when safe.' },
+  { q: 'Do you offer other cleaning services?', a: 'Yes. We also offer before and after party cleaning and home organization services. Contact us to describe what you need.' },
+  { q: 'Which areas do you serve?', a: 'Luzerne, Lackawanna and Wyoming Counties in northeastern Pennsylvania, from our base in Dallas, PA.' },
+];
+---
+<Base
+  title="Cleaning Services in Dallas, PA & NEPA | Roamza"
+  description="Compare Roamza’s cleaning services: regular, Signature Deep, move-in/move-out, Airbnb turnover, office and post-construction cleaning in Luzerne County and nearby."
+  image={img('real/living-room-white-sofa.jpg')}
+  breadcrumbs={crumbs}
+  schema={[faqSchema(faqs)]}
+>
+  <PageHero
+    eyebrow="All cleaning services"
+    h1="Home, Rental & Office Cleaning Services in Northeastern PA"
+    line="Six services. One standard."
+    answer="Roamza Cleaning Services offers six cleaning services from our base in Dallas, PA: Regular house cleaning, Signature Deep Cleaning, Move-In / Move-Out Cleaning, Airbnb & Vacation Rental Turnover Cleaning, Office & Commercial Cleaning and Post-Construction Cleaning — across Luzerne, Lackawanna and Wyoming Counties."
+    image="real/kitchen-white-cabinets.jpg"
+    imageAlt="Clean kitchen with white cabinets after a Roamza cleaning"
+    breadcrumbs={crumbs}
+  />
+
+  <section class="py-16 lg:py-24" aria-labelledby="list-heading">
+    <div class="container-x">
+      <h2 id="list-heading" class="text-[clamp(2rem,1.4rem+2.2vw,3.2rem)] mb-8" data-reveal>Choose your service</h2>
+      <ServiceList />
+      <p class="mt-8 text-muted" data-reveal>Also available: {business.otherServices.join(' and ').toLowerCase()}.</p>
+    </div>
+  </section>
+
+  <section class="py-16 lg:py-24 bg-linen" aria-labelledby="compare-heading">
+    <div class="container-x">
+      <p class="eyebrow" data-reveal>Side by side</p>
+      <h2 id="compare-heading" class="mt-4 text-[clamp(2rem,1.4rem+2.2vw,3.2rem)]" data-reveal style="--d:60">Compare Roamza cleaning services</h2>
+      <div class="mt-10 overflow-x-auto rounded-[1.25rem] ring-1 ring-line bg-white" data-reveal tabindex="0" role="region" aria-label="Service comparison table (scrolls sideways)">
+        <table class="w-full min-w-[56rem] text-left text-[.95rem]">
+          <caption class="sr-only">Comparison of Roamza cleaning services</caption>
+          <thead>
+            <tr class="bg-navy text-white">
+              <th scope="col" class="p-4 font-semibold w-44">Service</th>
+              {cols.map((c) => <th scope="col" class="p-4 font-semibold"><a href={c.href} class="hover:text-lime underline-offset-4 hover:underline">{c.name}</a></th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr class:list={[i % 2 ? 'bg-cloud/60' : 'bg-white']}>
+                <th scope="row" class="p-4 font-semibold text-navy align-top">{r.label}</th>
+                {r.vals.map((v) => <td class="p-4 align-top text-ink">{v}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <Process />
+
+  <section class="py-20 lg:py-28 bg-linen" aria-label="Frequently asked questions">
+    <div class="container-x"><Faq faqs={faqs} heading="Choosing a service" /></div>
+  </section>
+
+  <CtaFinal />
+</Base>

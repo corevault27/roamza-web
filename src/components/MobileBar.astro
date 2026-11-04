@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+---
+<nav class="mobile-bar sm:hidden" aria-label="Quick contact" data-mobile-bar>
+  <a href={business.phone.tel} class="mb-btn" data-track="call_click"><Icon name="phone" size={20} /><span>Call</span></a>
+  <a href={business.phone.sms} class="mb-btn" data-track="sms_click"><Icon name="sms" size={20} /><span>Text</span></a>
+  <a href="/get-a-quote/" class="mb-btn mb-primary" data-track="quote_start"><Icon name="bolt" size={20} /><span>Get a Fast Quote</span></a>
+</nav>
+<div class="h-[4.75rem] sm:hidden" aria-hidden="true"></div>
+
+<style>
+  .mobile-bar { display: none; }
+  @media (max-width: 639.98px) { .mobile-bar { display: grid; } }
+  .mobile-bar { position: fixed; z-index: 40; left: .75rem; right: .75rem; bottom: calc(.75rem + env(safe-area-inset-bottom)); grid-template-columns: 1fr 1fr 2fr; gap: .4rem; padding: .4rem; border-radius: 1.25rem; background: rgb(21 14 117 / .96); backdrop-filter: blur(10px); box-shadow: 0 18px 40px -16px rgb(14 10 79 / .6); transition: transform .45s var(--ease-out-soft); }
+  .mobile-bar.is-hidden { transform: translateY(140%); }
+  .mb-btn { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: 3rem; border-radius: .9rem; color: #fff; font-weight: 650; font-size: .95rem; text-decoration: none; }
+  .mb-btn:active { transform: scale(.97); }
+  .mb-primary { background: var(--color-lime); color: var(--color-navy); }
+</style>

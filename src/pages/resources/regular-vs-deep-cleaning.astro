@@ -1,0 +1,57 @@
+---
+import Article from '../../layouts/Article.astro';
+import { serviceBySlug } from '../../data/services';
+const regular = serviceBySlug('regular-cleaning');
+const deep = serviceBySlug('deep-cleaning');
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Resources', href: '/resources/' }, { name: 'Regular vs. Deep Cleaning', href: '/resources/regular-vs-deep-cleaning/' }];
+const faqs = [
+  { q: 'Is deep cleaning worth it before starting regular cleaning?', a: 'For most homes, yes. A Signature Deep Cleaning resets the areas a recurring visit doesn’t reach every time — baseboards, doors, blinds, fans and behind appliances — so regular visits can keep the home at that level.' },
+  { q: 'How often should I get a deep clean?', a: 'Many households book a deep clean as their first visit and then for seasonal resets, before hosting, or whenever the home needs extra attention. Regular visits in between keep it consistent.' },
+  { q: 'Does Roamza’s deep cleaning include the inside of the oven and fridge?', a: 'Inside oven and inside refrigerator are optional add-ons for both Regular and Signature Deep Cleaning. Request them in advance; additional charges may apply.' },
+];
+---
+<Article
+  title="Regular vs. Deep Cleaning: What’s the Difference? | Roamza"
+  description="Regular cleaning vs. deep cleaning, explained room by room: what each includes, when to choose each, and how Roamza handles both in Dallas, PA and Luzerne County."
+  h1="Regular vs. deep cleaning: what’s the difference?"
+  eyebrow="Cleaning guide"
+  answer="Regular cleaning maintains a home on a recurring schedule (weekly, bi-weekly, every 3 weeks or monthly) by cleaning kitchens, bathrooms, bedrooms, living areas and floors. Deep cleaning includes all of that plus detailed work that recurring visits don’t cover every time: baseboards, doors and door frames, blinds, ceiling fans, interior window frames and cleaning behind and under appliances and furniture when it’s safe to move them."
+  image="rooms/deep-throughout.jpg"
+  imageAlt="Illustration of a living area prepared for a detailed deep cleaning"
+  datePublished="2026-11-04"
+  crumbs={crumbs}
+  faqs={faqs}
+  toc={[{ id: 'at-a-glance', label: 'At a glance' }, { id: 'regular', label: 'What regular cleaning covers' }, { id: 'deep', label: 'What deep cleaning adds' }, { id: 'choose', label: 'Which one should you book?' }]}
+  related={[{ href: '/regular-cleaning/', label: 'Regular House Cleaning' }, { href: '/deep-cleaning/', label: 'Signature Deep Cleaning' }, { href: '/resources/move-out-cleaning-checklist/', label: 'Move-out cleaning checklist' }]}
+>
+  <h2 id="at-a-glance">At a glance</h2>
+  <div class="overflow-x-auto rounded-2xl ring-1 ring-line not-prose" tabindex="0" role="region" aria-label="Regular vs. deep cleaning comparison (scrolls sideways)">
+    <table class="w-full min-w-[34rem] text-left text-[.97rem]">
+      <caption class="sr-only">Regular cleaning compared with deep cleaning</caption>
+      <thead><tr class="bg-navy text-white"><th scope="col" class="p-4"><span class="sr-only">Feature</span></th><th scope="col" class="p-4">Regular Cleaning</th><th scope="col" class="p-4">Signature Deep Cleaning</th></tr></thead>
+      <tbody>
+        <tr><th scope="row" class="p-4 text-navy">Purpose</th><td class="p-4">Keep the home consistently clean</td><td class="p-4">Top-to-bottom reset</td></tr>
+        <tr class="bg-cloud/60"><th scope="row" class="p-4 text-navy">Frequency</th><td class="p-4">Weekly, bi-weekly, every 3 weeks or monthly</td><td class="p-4">First visit, seasonal resets, extra attention</td></tr>
+        <tr><th scope="row" class="p-4 text-navy">Baseboards, doors, blinds, fans</th><td class="p-4">Blinds lightly dusted; detailed work as add-ons</td><td class="p-4">Included</td></tr>
+        <tr class="bg-cloud/60"><th scope="row" class="p-4 text-navy">Behind / under appliances</th><td class="p-4">—</td><td class="p-4">Included when safe and accessible</td></tr>
+        <tr><th scope="row" class="p-4 text-navy">Inside oven / fridge</th><td class="p-4">Add-on</td><td class="p-4">Add-on</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="regular">What regular cleaning covers</h2>
+  <p>Regular Cleaning is designed for homes that need consistent upkeep. At Roamza, every visit follows a room-by-room checklist:</p>
+  {regular.rooms.map((r) => (<><h3>{r.name}</h3><ul class="check-list">{r.tasks.map((t) => <li>{t}</li>)}</ul></>))}
+
+  <h2 id="deep">What deep cleaning adds</h2>
+  <p>Signature Deep Cleaning includes everything in Regular Cleaning, plus:</p>
+  {deep.rooms.map((r) => (<><h3>{r.name}</h3><ul class="check-list">{r.tasks.map((t) => <li>{t}</li>)}</ul></>))}
+
+  <h2 id="choose">Which one should you book?</h2>
+  <ul class="check-list">
+    <li><strong>Book a deep clean</strong> if it’s your first professional cleaning in a while, before hosting guests or the holidays, or for a seasonal reset.</li>
+    <li><strong>Book regular cleaning</strong> if your home is already in good shape and you want it to stay that way without spending weekends cleaning.</li>
+    <li><strong>Do both:</strong> many Roamza clients start with Signature Deep Cleaning and continue with bi-weekly or every-3-weeks regular visits.</li>
+  </ul>
+  <p>Not sure which fits your home? <a href="/get-a-quote/">Get a Fast Quote</a> and see your estimate in under 15 seconds, or call or text (347) 335-1042.</p>
+</Article>

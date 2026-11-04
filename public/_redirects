@@ -1,0 +1,28 @@
+# Roamza — 301 redirects from the old WordPress site (see docs/REDIRECTS.md)
+# Commercial page slugs were KEPT, so they need no redirect.
+
+/special-offer               /get-a-quote/            301
+/special-offer/              /get-a-quote/            301
+/house-cleaning              /regular-cleaning/       301
+/house-cleaning/             /regular-cleaning/       301
+/vsl-cleaning-services       /                        301
+/vsl-cleaning-services/      /                        301
+/category/*                  /resources/              301
+/author/*                    /about/                  301
+/feed                        /                        301
+/feed/                       /                        301
+/comments/feed/              /                        301
+/wp-sitemap.xml              /sitemap-index.xml       301
+/wp-sitemap-*                /sitemap-index.xml       301
+/sitemap.xml                 /sitemap-index.xml       301
+/sitemap_index.xml           /sitemap-index.xml       301
+/wp-admin/*                  /                        301
+/wp-login.php                /                        301
+/ojnivvtmxcwc/*              /                        301
+/contact                     /contact-us/             301
+/contact/                    /contact-us/             301
+/airbnb                      /airbnb-cleaning/        301
+/move-in-cleaning/           /move-out-in-cleaning/   301
+/move-out-cleaning/          /move-out-in-cleaning/   301
+/post-construction-cleaning/ /construction-cleaning/  301
+/commercial-cleaning/        /office-cleaning/        301

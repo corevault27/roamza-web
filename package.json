@@ -1,0 +1,29 @@
+{
+  "name": "roamza-cleaning-services",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Roamza Cleaning Services LLC — static, SEO + GEO first website (Astro).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "qa": "node scripts/qa.mjs",
+    "images": "node scripts/prepare-images.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.4",
+    "astro": "^5.18.2",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "axe-core": "^4.14.0",
+    "typescript": "^5.9.3"
+  }
+}

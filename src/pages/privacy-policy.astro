@@ -1,0 +1,31 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { business } from '../data/business';
+---
+<Legal title="Privacy Policy | Roamza Cleaning Services" description="How Roamza Cleaning Services LLC collects, uses and protects personal information shared through our website, quotes, calls, texts and email." h1="Privacy Policy" updated="November 4, 2026">
+  <p>This Privacy Policy explains how {business.legalName} (“Roamza,” “we,” “us”) collects, uses and protects information when you visit roamzacleaningservices.com, request a quote, or contact us by phone, text, WhatsApp or email.</p>
+  <h2>Information we collect</h2>
+  <ul class="check-list">
+    <li><strong>Information you give us:</strong> your name, phone number, email, address or town, property details, preferred dates and any message you send.</li>
+    <li><strong>Quote and booking information:</strong> details you enter in our Fast Quote tool, which is provided by HomeSuite Pro, our booking and quoting platform. Deposits are processed through that platform’s secure checkout; we do not store full payment card numbers on this website.</li>
+    <li><strong>Technical information:</strong> basic data your browser sends (such as device type and pages visited). If we enable analytics, it is used in aggregate to understand how the website is used.</li>
+  </ul>
+  <h2>How we use information</h2>
+  <ul class="check-list">
+    <li>To respond to your requests and provide quotes.</li>
+    <li>To schedule, perform and follow up on cleaning services.</li>
+    <li>To send service-related messages by phone, text or email.</li>
+    <li>To improve our website and services.</li>
+  </ul>
+  <p>We do not sell your personal information.</p>
+  <h2>Text messages</h2>
+  <p>If you text us or provide your phone number, we may text you about your quote or appointment. Message and data rates may apply. You can reply STOP at any time to stop receiving texts.</p>
+  <h2>Sharing</h2>
+  <p>We share information only with service providers that help us operate (for example, our quoting/booking platform, website hosting and form processing), when required by law, or to protect our rights and the safety of our clients and team.</p>
+  <h2>Retention and security</h2>
+  <p>We keep information only as long as needed for the purposes above and use reasonable safeguards to protect it. No method of transmission over the internet is 100% secure.</p>
+  <h2>Your choices</h2>
+  <p>You may ask us to access, correct or delete your personal information by contacting us below.</p>
+  <h2>Contact</h2>
+  <p>{business.legalName}<br />{business.base.locality}, {business.base.regionName} {business.base.postalCode}<br /><a href={business.phone.tel}>{business.phone.display}</a> · <a href={`mailto:${business.email}`}>{business.email}</a></p>
+</Legal>

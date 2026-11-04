@@ -1,0 +1,51 @@
+---
+/** Editorial numbered service index with a cursor-following preview (desktop). */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { services } from '../data/services';
+import { img } from '../lib/images';
+interface Props { headingLevel?: 'h2' | 'h3' }
+const { headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+---
+<div class="relative" data-hover-list>
+  <ol class="border-t border-line">
+    {services.map((s, i) => (
+      <li data-hover-item={s.slug} data-reveal style={`--d:${i * 60}`}>
+        <a href={`/${s.slug}/`} class="svc-row group">
+          <span class="svc-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span class="min-w-0">
+            <H class="svc-title">{s.name}</H>
+            <span class="block text-muted mt-1.5 max-w-2xl">{s.short}</span>
+          </span>
+          <span class="svc-arrow" aria-hidden="true"><Icon name="arrow-up-right" size={22} /></span>
+        </a>
+      </li>
+    ))}
+  </ol>
+  <div class="hover-float" data-hover-float aria-hidden="true">
+    {services.map((s) => (
+      <div class="hover-img" data-hover-img={s.slug}>
+        <Image src={img(s.card)} alt="" width={420} height={300} class="w-full h-full object-cover" loading="lazy" />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .svc-row { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; padding: 1.6rem .25rem; border-bottom: 1px solid var(--color-line); text-decoration: none; position: relative; }
+  @media (min-width: 768px) { .svc-row { grid-template-columns: 6rem minmax(0, 1fr) auto; padding: 2rem .5rem; } }
+  .svc-num { font-family: var(--font-display); font-size: clamp(1.6rem, 1rem + 2.5vw, 3.2rem); line-height: 1; color: transparent; -webkit-text-stroke: 1.5px var(--color-navy); transition: color .4s, -webkit-text-stroke-color .4s; }
+  .svc-title { font-family: var(--font-display); font-size: clamp(1.45rem, 1.1rem + 1.4vw, 2.3rem); font-weight: 560; color: var(--color-navy); line-height: 1.1; letter-spacing: -.02em; transition: color .3s, transform .5s var(--ease-out-soft); }
+  .svc-arrow { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--color-line); color: var(--color-navy); transition: background-color .35s, color .35s, transform .5s var(--ease-out-soft), box-shadow .35s; }
+  .svc-row::before { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--color-lime); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease-out-soft); }
+  .svc-row:hover::before, .svc-row:focus-visible::before { transform: scaleX(1); }
+  .svc-row:hover .svc-num { color: var(--color-lime); -webkit-text-stroke-color: var(--color-lime); }
+  .svc-row:hover .svc-title { color: var(--color-royal); transform: translateX(6px); }
+  .svc-row:hover .svc-arrow { background: var(--color-lime); color: var(--color-navy); box-shadow: none; transform: rotate(45deg); }
+  .hover-float { position: absolute; left: 0; top: 0; width: 17rem; aspect-ratio: 7 / 5; pointer-events: none; z-index: 5; opacity: 0; scale: .85; transition: opacity .35s, scale .45s var(--ease-out-soft); border-radius: 1rem; overflow: hidden; box-shadow: var(--shadow-lift); display: none; }
+  @media (hover: hover) and (pointer: fine) and (min-width: 1024px) { .hover-float { display: block; } }
+  .hover-float:global(.is-on) { opacity: 1; scale: 1; }
+  .hover-img { position: absolute; inset: 0; opacity: 0; transition: opacity .35s; }
+  .hover-img:global(.is-active) { opacity: 1; }
+</style>

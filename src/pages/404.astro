@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/services';
+---
+<Base title="Page Not Found | Roamza Cleaning Services" description="The page you’re looking for doesn’t exist. Explore Roamza’s cleaning services or get a fast quote." noindex>
+  <section class="py-24 lg:py-32">
+    <div class="container-x max-w-3xl">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="mt-4 text-[clamp(2.6rem,1.6rem+4vw,5rem)]">This room is already clean — and empty.</h1>
+      <p class="lead mt-5">We couldn’t find that page. Here’s where you probably wanted to go:</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start">Get a Fast Quote <Icon name="arrow" size={18} /></a>
+        <a href="/" class="btn btn-ghost btn-lg">Back to home</a>
+      </div>
+      <ul class="mt-12 grid sm:grid-cols-2 gap-3">
+        {services.map((s) => <li><a href={`/${s.slug}/`} class="card flex items-center justify-between px-5 py-4 font-semibold text-navy hover:text-royal">{s.name}<Icon name="arrow" size={18} /></a></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>

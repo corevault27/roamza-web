@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import Article from '../layouts/Article.astro';
+import { reviews } from '../data/reviews';
+import { img } from '../lib/images';
+const erin = reviews.find((r) => r.name === 'Erin Wysocki')!;
+const path = '/roamza-cleaning-services-partners-with-cleaning-for-a-reason-to-support-cancer-patients/';
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Resources', href: '/resources/' }, { name: 'Cleaning for a Reason partnership', href: path }];
+---
+<Article
+  title="Roamza Partners with Cleaning for a Reason | Community"
+  description="Roamza Cleaning Services partners with Cleaning for a Reason to donate free home cleanings to cancer patients in Luzerne and Lackawanna Counties, PA."
+  h1="Roamza Cleaning Services partners with Cleaning for a Reason to support cancer patients"
+  eyebrow="Community"
+  answer="Roamza Cleaning Services is a Premium Partner of Cleaning for a Reason, a nonprofit that provides free home cleaning to people undergoing cancer treatment. Qualifying patients in Luzerne and Lackawanna Counties — including Wilkes-Barre, Scranton, Dallas, Mountain Top and the Back Mountain — may receive two free home cleanings. Patients apply through cleaningforareason.org."
+  image="team/miriam-rodriguez-founder.jpg"
+  imageAlt="Miriam Rodriguez, owner of Roamza Cleaning Services"
+  datePublished="2026-03-12"
+  dateModified="2026-11-04"
+  crumbs={crumbs}
+  related={[{ href: '/about/', label: 'About Roamza' }, { href: '/service-areas/', label: 'Our service areas' }]}
+>
+  <p>Roamza Cleaning Services is proud to partner with <a href="https://cleaningforareason.org/" target="_blank" rel="noopener">Cleaning for a Reason</a>, a nonprofit organization dedicated to providing free home cleaning services to individuals undergoing cancer treatment.</p>
+  <p>Through this partnership, Roamza donates professional home cleaning services to cancer patients in Luzerne and Lackawanna Counties, Pennsylvania — helping them focus on their health and recovery while we take care of their home. We believe cleaning is more than a service: it’s a way to care for our community and support families during difficult times.</p>
+
+  <h2>Relief and comfort during recovery</h2>
+  <p>Cancer patients who qualify through the Cleaning for a Reason program may receive <strong>two free home cleanings</strong>. The program is available to patients in communities including:</p>
+  <ul class="check-list"><li>Wilkes-Barre</li><li>Scranton</li><li>Dallas</li><li>Mountain Top</li><li>The Back Mountain and surrounding areas in Luzerne and Lackawanna Counties</li></ul>
+
+  <h2>A meaningful difference</h2>
+  <p>“Our team feels honored to support individuals and families going through cancer treatment,” said Miriam, owner of Roamza Cleaning Services. “Providing a clean and comfortable home during such a challenging time is one small way we can make a meaningful difference in our community.”</p>
+  <blockquote class="border-l-4 border-lime pl-5 my-6 text-[1.08rem] italic text-navy">“{erin.text}” <span class="block not-italic text-sm text-muted mt-2">— {erin.name}, Google review</span></blockquote>
+
+  <h2>How to apply</h2>
+  <p>Patients undergoing cancer treatment can apply for free home cleaning through the program at <a href="https://cleaningforareason.org/" target="_blank" rel="noopener">cleaningforareason.org</a>.</p>
+  <div class="flex items-center gap-5 my-8">
+    <Image src={img('brand/cleaning-for-a-reason-premium-partner.png')} alt="Cleaning for a Reason Premium Partner badge" width={120} height={120} class="w-28 h-28" />
+    <p class="text-muted">To learn more about our services or schedule a cleaning, call or text <a href="tel:+13473351042" data-track="call_click">(347) 335-1042</a> or <a href="/get-a-quote/">get a Fast Quote</a>.</p>
+  </div>
+</Article>

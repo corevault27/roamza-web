@@ -1,0 +1,36 @@
+---
+/** Real Roamza job photos (client phone photos, EXIF/GPS stripped). */
+import { Image } from 'astro:assets';
+import { img, realAlt, realGallery } from '../lib/images';
+interface Props { photos?: string[]; heading?: string; intro?: string; headingId?: string }
+const { photos = realGallery.slice(0, 8), heading = 'Real homes, really clean', intro = 'Every photo on this strip is from an actual Roamza job — no stock images.', headingId = 'gallery-heading' } = Astro.props;
+---
+<section class="py-20 lg:py-28 overflow-hidden" aria-labelledby={headingId}>
+  <div class="container-x flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div class="max-w-2xl">
+      <p class="eyebrow" data-reveal>Real Roamza work</p>
+      <h2 id={headingId} class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-reveal style="--d:60">{heading}</h2>
+      <p class="lead mt-4" data-reveal style="--d:120">{intro}</p>
+    </div>
+    <p class="text-sm text-muted" aria-hidden="true">Scroll sideways →</p>
+  </div>
+  <ul class="gallery mt-10" tabindex="0" aria-label="Photos of real Roamza cleaning jobs">
+    {photos.map((p, i) => (
+      <li class="g-item" data-reveal style={`--d:${(i % 4) * 80}`}>
+        <figure class="g-fig">
+          <Image src={img(p)} alt={realAlt[p] ?? 'Real Roamza cleaning job'} widths={[360, 540, 720]} sizes="(min-width: 1024px) 22rem, 70vw" class="w-full h-full object-cover" loading="lazy" />
+        </figure>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .gallery { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .5rem max(1.25rem, calc((100vw - 78rem) / 2 + 2rem)) 1.5rem; scrollbar-width: thin; }
+  .g-item { flex: none; width: min(22rem, 70vw); scroll-snap-align: center; }
+  .g-item:nth-child(even) { margin-top: 2.5rem; }
+  .g-fig { aspect-ratio: 3 / 4; border-radius: 1.25rem; overflow: hidden; box-shadow: var(--shadow-soft); transition: transform .6s var(--ease-out-soft), box-shadow .6s var(--ease-out-soft); }
+  .g-fig :global(img) { transition: transform 1.2s var(--ease-out-soft); }
+  .g-item:hover .g-fig { transform: translateY(-8px); box-shadow: var(--shadow-lift); }
+  .g-item:hover .g-fig :global(img) { transform: scale(1.05); }
+</style>

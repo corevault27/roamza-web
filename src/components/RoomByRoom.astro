@@ -1,0 +1,77 @@
+---
+/**
+ * "Room by room" — sticky media column + scrolling task lists.
+ * Desktop: image changes with a wipe as each room scrolls through the center.
+ * Mobile / no-JS: each room renders as a normal stacked block with its image.
+ */
+import { Image } from 'astro:assets';
+import { img } from '../lib/images';
+import type { Room } from '../data/services';
+interface Props { rooms: Room[]; heading: string; intro?: string; note?: string; headingId?: string }
+const { rooms, heading, intro, note, headingId = 'rooms-heading' } = Astro.props;
+---
+<section class="py-20 lg:py-28 bg-linen" aria-labelledby={headingId} data-rooms>
+  <div class="container-x">
+    <div class="max-w-3xl">
+      <p class="eyebrow" data-reveal>Room by room</p>
+      <h2 id={headingId} class="mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.6rem)]" data-reveal style="--d:60">{heading}</h2>
+      {intro && <p class="lead mt-5" data-reveal style="--d:120">{intro}</p>}
+    </div>
+
+    <div class="hidden lg:flex gap-2 mt-10" role="group" aria-label="Jump to a room">
+      {rooms.map((r, i) => <button type="button" class="room-tab" aria-pressed={i === 0 ? 'true' : 'false'} data-room-tab>{r.name}</button>)}
+    </div>
+
+    <div class="mt-8 lg:mt-10 lg:grid lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+      <div class="hidden lg:block">
+        <div class="sticky top-28">
+          <div class="relative aspect-[4/3.4] rounded-[1.75rem] overflow-hidden shadow-[var(--shadow-lift)] bg-cloud">
+            {rooms.map((r, i) => (
+              <div class:list={['room-media', i === 0 && 'is-active']} data-room-media>
+                <Image src={img(r.image)} alt={`${r.name}: illustration of the areas included in this cleaning`} widths={[640, 900, 1200]} sizes="40vw" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+              </div>
+            ))}
+            <div class="absolute left-5 right-5 bottom-5 h-1.5 rounded-full bg-white/50 overflow-hidden" aria-hidden="true">
+              <div class="room-progress h-full bg-lime rounded-full" data-room-progress></div>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-muted">Illustrations show the type of areas included; photos of real Roamza jobs appear throughout the site.</p>
+        </div>
+      </div>
+
+      <ol class="grid gap-6 lg:gap-[22vh] lg:py-[12vh]">
+        {rooms.map((r, i) => (
+          <li class="room-step card p-6 lg:p-8" data-room-step>
+            <div class="lg:hidden -mx-6 -mt-6 mb-6 aspect-[16/10] overflow-hidden rounded-t-[var(--radius-card)]">
+              <Image src={img(r.image)} alt={`${r.name}: illustration of the areas included`} widths={[480, 800]} sizes="100vw" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <p class="font-display text-lime-600 text-xl">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="text-2xl lg:text-[1.9rem] mt-1">{r.name}</h3>
+            <ul class="check-list grid gap-2.5 mt-5 text-[1.02rem]">
+              {r.tasks.map((t) => <li>{t}</li>)}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+    {note && <p class="mt-10 max-w-3xl text-muted text-[.98rem] border-l-4 border-lime pl-4" data-reveal>{note}</p>}
+  </div>
+</section>
+
+<style>
+  .room-tab { padding: .55rem 1rem; border-radius: 999px; font-weight: 600; font-size: .95rem; color: var(--color-navy); background: #fff; box-shadow: inset 0 0 0 1px var(--color-line); transition: background-color .3s, color .3s, box-shadow .3s; }
+  .room-tab:hover { box-shadow: inset 0 0 0 1.5px var(--color-navy); }
+  .room-tab[aria-pressed='true'] { background: var(--color-navy); color: #fff; box-shadow: none; }
+  .room-media { position: absolute; inset: 0; clip-path: inset(0 0 0 100%); transition: clip-path .9s var(--ease-out-soft); }
+  .room-media.is-active { clip-path: inset(0 0 0 0); z-index: 1; }
+  .room-media:first-child { clip-path: inset(0 0 0 0); }
+  .room-progress { width: 100%; transform-origin: left; transform: scaleX(var(--p, .2)); transition: transform .8s var(--ease-out-soft); }
+  @media (min-width: 1024px) {
+    .room-step { transition: opacity .5s, transform .6s var(--ease-out-soft), box-shadow .5s; }
+    :global(.js) .room-step:not(.is-active) { background: transparent; box-shadow: none; border-color: transparent; }
+    .room-step.is-active { box-shadow: var(--shadow-lift); transform: translateX(-6px); }
+    .room-step.is-active li { animation: tick .5s var(--ease-out-soft) both; }
+    .room-step.is-active li:nth-child(2) { animation-delay: .05s } .room-step.is-active li:nth-child(3) { animation-delay: .1s } .room-step.is-active li:nth-child(4) { animation-delay: .15s } .room-step.is-active li:nth-child(5) { animation-delay: .2s } .room-step.is-active li:nth-child(6) { animation-delay: .25s } .room-step.is-active li:nth-child(n+7) { animation-delay: .3s }
+  }
+  @keyframes tick { from { opacity: .3; transform: translateX(6px); } }
+</style>

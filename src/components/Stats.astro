@@ -1,0 +1,22 @@
+---
+/** Animated proof numbers — all values confirmed by the client (business.ts). */
+import { business } from '../data/business';
+const c = business.claims;
+const stats = [
+  { value: c.families, suffix: '+', label: 'local families trust Roamza' },
+  { value: c.rating, decimals: 1, label: 'star rating on Google' },
+  { value: c.responseMinutes, suffix: ' min', label: 'response time promise' },
+  { value: c.daysPerWeek, suffix: ' days', label: 'a week, our teams are available' },
+];
+---
+<dl class="grid grid-cols-2 lg:grid-cols-4 border-y border-line">
+  {stats.map((s, i) => (
+    <div class:list={['py-8 px-2 lg:px-6', i % 2 === 1 && 'border-l border-line', i >= 2 && 'border-t lg:border-t-0 border-line', i === 2 && 'lg:border-l']} data-reveal style={`--d:${i * 90}`}>
+      <dt class="sr-only">{s.label}</dt>
+      <dd>
+        <span class="font-display text-navy text-[clamp(2.4rem,1.6rem+3vw,4rem)] leading-none tabular-nums"><span data-count={s.value} data-decimals={s.decimals ?? 0}>{s.decimals ? s.value.toFixed(s.decimals) : s.value}</span>{s.suffix}</span>
+        <span class="block mt-2 text-muted text-[.95rem] leading-snug" aria-hidden="true">{s.label}</span>
+      </dd>
+    </div>
+  ))}
+</dl>

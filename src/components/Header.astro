@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { business } from '../data/business';
+import { services } from '../data/services';
+import { img } from '../lib/images';
+const path = Astro.url.pathname;
+const nav = [
+  { label: 'Service Areas', href: '/service-areas/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Resources', href: '/resources/' },
+  { label: 'Contact', href: '/contact-us/' },
+];
+const isActive = (href: string) => path.startsWith(href);
+const servicesActive = services.some((s) => path.startsWith(`/${s.slug}/`)) || path.startsWith('/cleaning-services/');
+---
+<header id="site-header" class="sticky top-0 z-50 transition-[background-color,box-shadow,padding] duration-500 bg-white/90 backdrop-blur-md" data-header>
+  <div class="container-x flex items-center gap-4 h-[4.5rem] lg:h-20 transition-[height] duration-500" data-header-inner>
+    <a href="/" class="shrink-0 flex items-center" aria-label={`${business.name} — home`}>
+      <Image src={img('brand/roamza-logo-horizontal.png')} alt={business.name} width={176} height={45} class="h-9 lg:h-11 w-auto" loading="eager" />
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:flex items-center gap-0.5 xl:gap-1 ml-4 xl:ml-6">
+      <div class="relative" data-dropdown>
+        <div class="flex items-center">
+          <a href="/cleaning-services/" class:list={['nav-link', servicesActive && 'is-active']}>Services</a>
+          <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="services-panel" data-dropdown-toggle>
+            <Icon name="chevron" size={16} />
+            <span class="sr-only">Show services</span>
+          </button>
+        </div>
+        <div id="services-panel" class="dropdown-panel" data-dropdown-panel hidden>
+          <ul class="grid grid-cols-2 gap-1 p-3 w-[40rem]">
+            {services.map((s, i) => (
+              <li>
+                <a href={`/${s.slug}/`} class="group flex gap-3 rounded-xl p-3 hover:bg-cloud focus-visible:bg-cloud transition-colors">
+                  <span class="font-display text-lime-600 text-lg leading-none mt-0.5 w-6">{String(i + 1).padStart(2, '0')}</span>
+                  <span>
+                    <span class="block font-semibold text-navy group-hover:text-royal transition-colors">{s.navLabel}</span>
+                    <span class="block text-sm text-muted leading-snug mt-0.5 line-clamp-2">{s.short}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="flex items-center justify-between border-t border-line px-6 py-3 bg-linen rounded-b-2xl text-sm">
+            <span class="text-muted">Weekly · Bi-weekly · Every 3 weeks · Monthly</span>
+            <a href="/cleaning-services/" class="link-u">Compare all services</a>
+          </div>
+        </div>
+      </div>
+      {nav.map((n) => <a href={n.href} class:list={['nav-link', isActive(n.href) && 'is-active']}>{n.label}</a>)}
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2">
+      <a href={business.phone.tel} class="hidden xl:inline-flex md:max-lg:inline-flex whitespace-nowrap items-center gap-2 px-3 py-2 font-semibold text-navy hover:text-royal transition-colors" data-track="call_click">
+        <Icon name="phone" size={18} /> {business.phone.display}
+      </a>
+      <a href="/get-a-quote/" class="btn btn-primary hidden sm:inline-flex whitespace-nowrap" data-track="quote_start" data-magnetic>
+        Get a Fast Quote <Icon name="arrow" size={18} />
+      </a>
+      <button type="button" class="lg:hidden inline-flex items-center justify-center w-12 h-12 rounded-full text-navy hover:bg-cloud" aria-expanded="false" aria-controls="mobile-menu" data-menu-open>
+        <Icon name="menu" size={26} />
+        <span class="sr-only">Open menu</span>
+      </button>
+    </div>
+  </div>
+
+</header>
+
+  <!-- Mobile full-screen menu (curtain) -->
+<div id="mobile-menu" class="mobile-menu lg:hidden" data-mobile-menu hidden>
+  <div class="container-x flex items-center justify-between h-[4.5rem]">
+    <Image src={img('brand/roamza-logo-white-horizontal.png')} alt="" width={160} height={41} class="h-8 w-auto" />
+    <button type="button" class="inline-flex items-center justify-center w-12 h-12 rounded-full text-white hover:bg-white/10" data-menu-close>
+      <Icon name="close" size={26} /><span class="sr-only">Close menu</span>
+    </button>
+  </div>
+  <nav aria-label="Mobile" class="container-x pb-10 pt-4 overflow-y-auto max-h-[calc(100dvh-4.5rem)]">
+    <p class="text-lime text-xs font-semibold tracking-[.18em] uppercase mb-3">Services</p>
+    <ul class="grid gap-1 mb-8">
+      {services.map((s, i) => (
+        <li class="mm-item" style={`--i:${i}`}><a href={`/${s.slug}/`} class="flex items-baseline gap-3 py-2 text-white text-xl font-display"><span class="text-lime/80 text-sm font-sans">{String(i + 1).padStart(2, '0')}</span>{s.navLabel}</a></li>
+      ))}
+    </ul>
+    <ul class="grid gap-1 mb-10">
+      {[{ label: 'All services', href: '/cleaning-services/' }, ...nav, { label: 'FAQ', href: '/faq/' }].map((n, i) => (
+        <li class="mm-item" style={`--i:${i + 6}`}><a href={n.href} class="block py-2 text-white/85 text-lg font-semibold">{n.label}</a></li>
+      ))}
+    </ul>
+    <div class="grid gap-3">
+      <a href="/get-a-quote/" class="btn btn-primary btn-lg w-full" data-track="quote_start">Get a Fast Quote <Icon name="arrow" size={18} /></a>
+      <div class="grid grid-cols-2 gap-3">
+        <a href={business.phone.tel} class="btn btn-ghost w-full" data-track="call_click"><Icon name="phone" size={18} /> Call</a>
+        <a href={business.phone.sms} class="btn btn-ghost w-full" data-track="sms_click"><Icon name="sms" size={18} /> Text</a>
+      </div>
+      <p class="text-white/60 text-sm text-center mt-2">We respond within 15 minutes · 7 days a week</p>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .nav-link { position: relative; white-space: nowrap; padding: .6rem .8rem; font-weight: 600; color: var(--color-navy); text-decoration: none; border-radius: 999px; transition: color .25s; }
+  .nav-link::after { content: ''; position: absolute; left: .8rem; right: .8rem; bottom: .35rem; height: 2px; background: var(--color-lime); transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease-out-soft); }
+  .nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); }
+  .nav-link:hover { color: var(--color-royal); }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; margin-left: 0; border-radius: 999px; color: var(--color-navy); transition: transform .3s, background-color .2s; }
+  .nav-toggle:hover { background: var(--color-cloud); }
+  .nav-toggle[aria-expanded='true'] { transform: rotate(180deg); }
+  .dropdown-panel { position: absolute; left: -1rem; top: calc(100% + .75rem); background: #fff; border: 1px solid var(--color-line); border-radius: 1rem; box-shadow: var(--shadow-lift); transform-origin: top left; animation: drop .35s var(--ease-out-soft); }
+  @keyframes drop { from { opacity: 0; transform: translateY(-6px) scale(.98); } }
+  :global([data-header].is-scrolled) { background: rgb(255 255 255 / .96); box-shadow: 0 1px 0 var(--color-line), 0 10px 30px -18px rgb(21 14 117 / .35); }
+  :global([data-header].is-scrolled [data-header-inner]) { height: 4rem; }
+  .mobile-menu { position: fixed; inset: 0; z-index: 60; background: var(--color-navy); clip-path: inset(0 0 100% 0); transition: clip-path .6s var(--ease-out-soft); }
+  .mobile-menu.is-open { clip-path: inset(0 0 0 0); }
+  .mobile-menu .mm-item { opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s var(--ease-out-soft); transition-delay: calc(var(--i) * 35ms + 150ms); }
+  .mobile-menu.is-open .mm-item { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .mobile-menu .mm-item { opacity: 1; transform: none; } }
+</style>

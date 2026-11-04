@@ -1,0 +1,43 @@
+---
+/** Inner-page hero: editorial split with a real photo under a roof-shaped mask. */
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { business } from '../data/business';
+import { img } from '../lib/images';
+interface Props {
+  eyebrow: string; h1: string; line?: string; answer: string; image: string; imageAlt: string;
+  breadcrumbs: { name: string; href: string }[]; cta?: boolean;
+}
+const { eyebrow, h1, line, answer, image, imageAlt, breadcrumbs, cta = true } = Astro.props;
+---
+<section class="relative overflow-hidden pt-6 pb-16 lg:pb-24">
+  <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
+  <div class="container-x relative">
+    <Breadcrumbs items={breadcrumbs} />
+    <div class="mt-8 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16 items-center">
+      <div>
+        <p class="eyebrow hero-rise">{eyebrow}</p>
+        <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.6rem)] hero-rise">{h1}</h1>
+        {line && <p class="mt-4 font-display italic text-2xl text-royal" data-reveal style="--d:120">{line}</p>}
+        <p class="lead mt-6 max-w-2xl hero-rise" style="animation-delay:.12s">{answer}</p>
+        {cta && (
+          <div class="mt-8 flex flex-wrap gap-3" data-reveal style="--d:220">
+            <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get a Fast Quote <Icon name="arrow" size={18} /></a>
+            <a href={business.phone.sms} class="btn btn-ghost btn-lg" data-track="sms_click"><Icon name="sms" size={18} /> Text {business.phone.display}</a>
+          </div>
+        )}
+        <slot />
+      </div>
+      <div class="relative hero-zoom">
+        <div class="roof-mask overflow-hidden rounded-b-[1.75rem] aspect-[4/4.4] shadow-[var(--shadow-lift)]" data-tilt="4">
+          <Image src={img(image)} alt={imageAlt} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+        </div>
+        <div class="absolute -bottom-5 left-5 md:-left-6 card px-5 py-4 flex items-center gap-3">
+          <span class="flex text-lime" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={16} />)}</span>
+          <span class="text-sm font-semibold text-navy">5.0 on Google · 500+ local families</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

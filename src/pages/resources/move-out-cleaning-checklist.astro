@@ -1,0 +1,49 @@
+---
+import Article from '../../layouts/Article.astro';
+import { serviceBySlug } from '../../data/services';
+const move = serviceBySlug('move-out-in-cleaning');
+const crumbs = [{ name: 'Home', href: '/' }, { name: 'Resources', href: '/resources/' }, { name: 'Move-Out Cleaning Checklist', href: '/resources/move-out-cleaning-checklist/' }];
+const faqs = [
+  { q: 'What should a move-out cleaning include?', a: 'A thorough move-out cleaning covers kitchens (including inside empty cabinets and drawers, appliances’ exteriors and the inside of the microwave), bathrooms, baseboards, doors and door frames, blinds, interior window sills and frames, accessible ceiling fans and light fixtures, and floors throughout.' },
+  { q: 'Should the home be empty for move-out cleaning?', a: 'Yes, ideally. Move-out cleaning is designed for empty or mostly empty homes so every cabinet, drawer and floor area can be reached.' },
+  { q: 'What isn’t included in a move-out cleaning?', a: 'At Roamza, heavy debris removal, hauling, carpet shampooing, exterior window cleaning and specialty restoration are not included.' },
+  { q: 'Can Roamza clean on my moving day?', a: 'We coordinate with your moving day so the home is ready on time. Our teams are available 7 days a week and respond within 15 minutes.' },
+];
+---
+<Article
+  title="Move-Out Cleaning Checklist (Room by Room) | Roamza"
+  description="A room-by-room move-out and move-in cleaning checklist for tenants, homeowners and landlords in Luzerne & Lackawanna Counties, PA — plus what’s not included."
+  h1="Move-out cleaning checklist: room by room"
+  eyebrow="Checklist"
+  answer="A move-out cleaning should cover the kitchen (countertops, backsplash, sink, appliance exteriors, inside the microwave, cabinet exteriors and inside empty cabinets and drawers, stovetop and range hood), bathrooms (toilets, tub and shower, shower glass, sinks, vanity, mirrors and empty cabinets), and every room’s baseboards, doors and frames, blinds, window sills, accessible ceiling fans and light fixtures and floors. The home should be empty or mostly empty."
+  image="real/empty-room-move-out.jpg"
+  imageAlt="Empty room with clean floors after a Roamza move-out cleaning"
+  datePublished="2026-11-04"
+  crumbs={crumbs}
+  faqs={faqs}
+  toc={[{ id: 'before', label: 'Before cleaning day' }, { id: 'checklist', label: 'The checklist' }, { id: 'not-included', label: 'What’s usually not included' }, { id: 'landlords', label: 'Tips for tenants & landlords' }]}
+  related={[{ href: '/move-out-in-cleaning/', label: 'Move-In / Move-Out Cleaning' }, { href: '/deep-cleaning/', label: 'Signature Deep Cleaning' }, { href: '/resources/regular-vs-deep-cleaning/', label: 'Regular vs. deep cleaning' }]}
+>
+  <h2 id="before">Before cleaning day</h2>
+  <ul class="check-list">
+    <li>Empty cabinets, drawers and closets so they can be cleaned inside.</li>
+    <li>Move out furniture and boxes, or group what’s left in one area.</li>
+    <li>Make sure utilities (water and electricity) are still on.</li>
+    <li>Agree on access — key, code or someone on site.</li>
+  </ul>
+
+  <h2 id="checklist">The checklist</h2>
+  <p>This is the checklist Roamza’s team follows for Move-In / Move-Out Cleaning:</p>
+  {move.rooms.map((r) => (<><h3>{r.name}</h3><ul class="check-list">{r.tasks.map((t) => <li>{t}</li>)}</ul></>))}
+
+  <h2 id="not-included">What’s usually not included</h2>
+  <p>{move.notIncluded}</p>
+
+  <h2 id="landlords">Tips for tenants &amp; landlords</h2>
+  <ul class="check-list">
+    <li><strong>Tenants:</strong> review your lease’s move-out requirements and photograph each room after cleaning.</li>
+    <li><strong>Landlords &amp; property managers:</strong> schedule the clean between the move-out and the walkthrough so the next tenant arrives to a sanitized home.</li>
+    <li><strong>Buyers &amp; new owners:</strong> a move-in clean before unpacking is the easiest moment to reach every cabinet and floor.</li>
+  </ul>
+  <p>Moving in Luzerne or Lackawanna County? <a href="/get-a-quote/">Get a Fast Quote</a> or call or text (347) 335-1042 — we coordinate with your moving day.</p>
+</Article>
