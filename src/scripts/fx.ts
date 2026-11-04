@@ -295,7 +295,7 @@ function initFastQuote() {
     };
     box.querySelector('[data-fq-load]')?.addEventListener('click', load);
     if (box.dataset.fastquote === 'idle') {
-      const go = () => ('requestIdleCallback' in window ? (window as any).requestIdleCallback(load, { timeout: 2500 }) : window.setTimeout(load, 1200));
+      const go = () => ('requestIdleCallback' in window ? (window as any).requestIdleCallback(load, { timeout: 2500 }) : setTimeout(load, 1200));
       if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true });
     }
     if (box.dataset.fastquote === 'auto') {

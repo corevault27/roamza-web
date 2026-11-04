@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import FastQuote from '../components/FastQuote.astro';
+import HeroQuote from '../components/HeroQuote.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import { business } from '../data/business';
@@ -28,10 +28,10 @@ const faqs = [
     <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
     <div class="container-x relative">
       <Breadcrumbs items={crumbs} />
-      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 items-start">
+      <div class="mt-8 grid gap-12 lg:grid-cols-[minmax(0,1fr)_31rem] lg:gap-16 items-start">
         <div class="lg:sticky lg:top-28">
           <p class="eyebrow hero-rise">Fast Quote · free · instant</p>
-          <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.4rem)] hero-rise">Get your cleaning price in 15 seconds</h1>
+          <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.8rem)] hero-rise">Get your cleaning price in 15 seconds</h1>
           <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Tell us about your home and see an estimated price instantly. Choose a date and secure it with a ${business.deposit} deposit — no phone tag, no waiting for a callback.</p>
           <ul class="mt-8 grid gap-4">
             {[
@@ -43,7 +43,7 @@ const faqs = [
           </ul>
           <p class="mt-8 text-muted">Prefer to talk? <a href={business.phone.tel} class="link-u" data-track="call_click">Call</a>, <a href={business.phone.sms} class="link-u" data-track="sms_click">text</a> or <a href={business.whatsapp} class="link-u" target="_blank" rel="noopener" data-track="whatsapp_click">WhatsApp</a> {business.phone.display}.</p>
         </div>
-        <div><FastQuote mode="auto" heading="Your instant cleaning estimate" id="quote" level="h2" /></div>
+        <div><h2 class="sr-only">Your instant cleaning estimate</h2><HeroQuote id="quote" /></div>
       </div>
     </div>
   </section>

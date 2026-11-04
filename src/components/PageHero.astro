@@ -3,6 +3,7 @@
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
+import GoogleG from './GoogleG.astro';
 import { business } from '../data/business';
 import { img } from '../lib/images';
 interface Props {
@@ -18,26 +19,33 @@ const { eyebrow, h1, line, answer, image, imageAlt, breadcrumbs, cta = true } = 
     <div class="mt-8 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16 items-center">
       <div>
         <p class="eyebrow hero-rise">{eyebrow}</p>
-        <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.6rem)] hero-rise">{h1}</h1>
+        <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.8rem)] leading-[1.05] hero-rise">{h1}</h1>
         {line && <p class="mt-4 font-display italic text-2xl text-royal" data-reveal style="--d:120">{line}</p>}
         <p class="lead mt-6 max-w-2xl hero-rise" style="animation-delay:.12s">{answer}</p>
         {cta && (
           <div class="mt-8 flex flex-wrap gap-3" data-reveal style="--d:220">
-            <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get a Fast Quote <Icon name="arrow" size={18} /></a>
-            <a href={business.phone.sms} class="btn btn-ghost btn-lg" data-track="sms_click"><Icon name="sms" size={18} /> Text {business.phone.display}</a>
+            <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get my live quote <Icon name="arrow" size={18} /></a>
+            <a href={business.phone.tel} class="btn btn-ghost btn-lg" data-track="call_click"><Icon name="phone" size={18} /> Call {business.phone.display}</a>
           </div>
         )}
         <slot />
       </div>
       <div class="relative hero-zoom">
-        <div class="roof-mask overflow-hidden rounded-b-[1.75rem] aspect-[4/4.4] shadow-[var(--shadow-lift)]" data-tilt="4">
+        <div class="photo-obj roof-obj rounded-b-[1.75rem] max-w-[34rem] lg:ml-auto" data-tilt="4">
+          <div class="photo-inner roof-mask aspect-[4/4.2]">
           <Image src={img(image)} alt={imageAlt} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+          </div>
         </div>
-        <div class="absolute -bottom-5 left-5 md:-left-6 card px-5 py-4 flex items-center gap-3">
-          <span class="flex text-lime" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={16} />)}</span>
-          <span class="text-sm font-semibold text-navy">5.0 on Google · 500+ local families</span>
+        <div class="absolute -bottom-5 left-5 md:-left-6 card px-4 py-3 flex items-center gap-2.5">
+          <GoogleG size={20} />
+          <span class="flex ph-stars" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={14} />)}</span>
+          <span class="text-sm font-semibold text-navy">5.0 · 500+ local families</span>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .ph-stars { color: #FBBC05; }
+</style>

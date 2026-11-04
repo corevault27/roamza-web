@@ -42,12 +42,14 @@ const facts = [
       <div class="mt-8 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 items-center">
         <div>
           <p class="eyebrow hero-rise">About Roamza</p>
-          <h1 class="mt-4 text-[clamp(2.4rem,1.5rem+3.6vw,4.6rem)] hero-rise">A local cleaning company built one home at a time</h1>
+          <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.8rem)] hero-rise">A local cleaning company built one home at a time</h1>
           <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Roamza Cleaning Services LLC is a locally owned cleaning company based in Dallas, Pennsylvania, founded and led by Miriam Rodriguez. With {business.yearsExperience} years of experience, our trained, background-checked team cleans homes, vacation rentals and offices across Luzerne, Lackawanna and Wyoming Counties — trusted by more than 500 local families.</p>
         </div>
         <div class="relative hero-zoom">
-          <div class="roof-mask overflow-hidden rounded-b-[1.75rem] aspect-[4/4.2] shadow-[var(--shadow-lift)]">
+          <div class="photo-obj roof-obj rounded-b-[1.75rem] max-w-[34rem] lg:ml-auto">
+            <div class="photo-inner roof-mask aspect-[4/4.2]">
             <Image src={img('team/roamza-cleaning-team.jpg')} alt="Miriam Rodriguez with the Roamza cleaning team" widths={[480, 720, 960]} sizes="(min-width: 1024px) 32rem, 100vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+            </div>
           </div>
         </div>
       </div>
