@@ -13,11 +13,11 @@ const stats = [
 ---
 <dl class:list={['grid grid-cols-2 lg:grid-cols-4', dark ? 'stats-dark' : 'border-y border-line']}>
   {stats.map((s, i) => (
-    <div class:list={['py-8 px-2 lg:px-6', i % 2 === 1 && 'border-l border-line', i >= 2 && 'border-t lg:border-t-0 border-line', i === 2 && 'lg:border-l']} data-reveal style={`--d:${i * 90}`}>
+    <div class:list={['py-5 px-2 lg:px-6 lg:py-6', i % 2 === 1 && 'border-l border-line', i >= 2 && 'border-t lg:border-t-0 border-line', i === 2 && 'lg:border-l']} data-reveal style={`--d:${i * 90}`}>
       <dt class="sr-only">{s.label}</dt>
       <dd>
-        <span class:list={['font-display text-[clamp(2.4rem,1.6rem+3vw,4rem)] leading-none tabular-nums', dark ? 'text-white' : 'text-navy']}><span data-count={s.value} data-decimals={s.decimals ?? 0}>{s.decimals ? s.value.toFixed(s.decimals) : s.value}</span>{s.suffix}</span>
-        <span class:list={['block mt-2 text-[.95rem] leading-snug', dark ? 'text-white/75' : 'text-muted']} aria-hidden="true">{s.label}</span>
+        <span class:list={['font-display text-[clamp(1.9rem,1.4rem+1.6vw,2.8rem)] leading-none tabular-nums', dark ? 'text-white' : 'text-navy']}><span data-count={s.value} data-decimals={s.decimals ?? 0}>{s.decimals ? s.value.toFixed(s.decimals) : s.value}</span>{s.suffix}</span>
+        <span class:list={['block mt-1.5 text-[.85rem] leading-snug', dark ? 'text-white/75' : 'text-muted']} aria-hidden="true">{s.label}</span>
       </dd>
     </div>
   ))}

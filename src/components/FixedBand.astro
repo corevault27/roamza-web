@@ -9,8 +9,8 @@ import { getImage } from 'astro:assets';
 import { img } from '../lib/images';
 interface Props { image: string; eyebrow?: string; statement: string; sub?: string; id?: string }
 const { image, eyebrow, statement, sub, id } = Astro.props;
-const desk = await getImage({ src: img(image), width: 1920, format: 'webp', quality: 72 });
-const mob = await getImage({ src: img(image), width: 900, format: 'webp', quality: 70 });
+const desk = await getImage({ src: img(image), width: 1600, format: 'webp', quality: 62 });
+const mob = await getImage({ src: img(image), width: 800, format: 'webp', quality: 60 });
 ---
 <section id={id} class="fixed-band on-dark" style={`--bg-d:url(${desk.src});--bg-m:url(${mob.src})`}>
   <div class="fb-shade" aria-hidden="true"></div>

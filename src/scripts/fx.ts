@@ -495,7 +495,40 @@ function initHScroll() {
   });
 }
 
+/* -------- hero background video: respects reduced motion + data saver, pausable -------- */
+function initHeroVideo() {
+  const v = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  if (!v) return;
+  const btn = document.querySelector<HTMLButtonElement>('[data-hero-video-toggle]');
+  const label = btn?.querySelector('[data-label]');
+  const set = (playing: boolean) => {
+    if (playing) v.play().catch(() => {}); else v.pause();
+    btn?.setAttribute('aria-pressed', String(!playing));
+    if (label) label.textContent = playing ? 'Pause video' : 'Play video';
+  };
+  const saveData = (navigator as any).connection?.saveData;
+  let ready = false;
+  // sources are attached only after the page has loaded, so text, widget and images come first
+  const attach = () => {
+    if (ready) return; ready = true;
+    v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; });
+    v.load();
+  };
+  if (reduce() || saveData) set(false);
+  else {
+    const go = () => { attach(); set(true); };
+    if (document.readyState === 'complete') setTimeout(go, 300); else window.addEventListener('load', () => setTimeout(go, 300), { once: true });
+  }
+  btn?.addEventListener('click', () => { attach(); set(v.paused); });
+  // stop decoding when the hero is off-screen
+  new IntersectionObserver(([en]) => {
+    if (!ready || btn?.getAttribute('aria-pressed') === 'true') return;
+    if (en.isIntersecting) v.play().catch(() => {}); else v.pause();
+  }).observe(v);
+}
+
 export function initFx() {
+  initHeroVideo();
   initHScroll();
   initMore();
   initWordReveal();

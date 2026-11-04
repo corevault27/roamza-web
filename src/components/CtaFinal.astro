@@ -13,16 +13,16 @@ const { heading = 'Stop thinking about cleaning. Start enjoying your home again.
 ---
 <section id={id} class="cta-stage on-dark relative overflow-hidden bg-navy text-white" aria-labelledby="cta-heading" data-spotlight>
   <Backdrop variant={['glow', 'roofs']} tone="dark" />
-  <div class="container-x relative py-20 lg:py-32 grid gap-14 lg:grid-cols-[1.25fr_1fr] lg:gap-16 items-center">
+  <div class="container-x relative py-20 lg:py-28 grid gap-14 lg:grid-cols-[1.25fr_1fr] lg:gap-16 items-center">
     <div>
       <p class="eyebrow" data-reveal>Your space, our cleaning mission</p>
-      <h2 id="cta-heading" class="mt-5 text-[clamp(2.4rem,1.3rem+3.8vw,4.8rem)] leading-[1.02]" data-words>{heading}</h2>
+      <h2 id="cta-heading" class="mt-5 text-[clamp(2.1rem,1.4rem+2.4vw,3.6rem)] leading-[1.02]" data-words>{heading}</h2>
       <p class="lead mt-6 max-w-xl" data-reveal style="--d:120">{text}</p>
       <div class="mt-9 flex flex-wrap gap-3" data-reveal style="--d:180">
-        <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get a Fast Quote <Icon name="arrow" size={18} /></a>
+        <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get my live quote <Icon name="arrow" size={18} /></a>
         <a href={business.phone.tel} class="btn btn-ghost btn-lg" data-track="call_click"><Icon name="phone" size={18} /> {business.phone.display}</a>
       </div>
-      <ul class="mt-10 grid sm:grid-cols-3 gap-3" data-reveal style="--d:240">
+      <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2" data-reveal style="--d:240">
         <li><a href={business.phone.sms} class="cta-chip" data-track="sms_click"><Icon name="sms" size={20} /><span><b>Text us</b><small>Reply in ~15 min</small></span></a></li>
         <li><a href={business.whatsapp} class="cta-chip" target="_blank" rel="noopener" data-track="whatsapp_click"><Icon name="whatsapp" size={20} /><span><b>WhatsApp</b><small>7 days a week</small></span></a></li>
         <li><a href={`mailto:${business.email}`} class="cta-chip" data-track="email_click"><Icon name="mail" size={20} /><span><b>Email</b><small>Send details</small></span></a></li>
@@ -46,10 +46,10 @@ const { heading = 'Stop thinking about cleaning. Start enjoying your home again.
   .cta-stage::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 30%), rgb(255 255 255 / .08), transparent 70%); z-index: 1; }
   .cta-word { position: absolute; left: 0; right: 0; top: 2.5rem; overflow: hidden; pointer-events: none; }
   .cta-word p { white-space: nowrap; font-size: clamp(4rem, 2rem + 9vw, 11rem); line-height: 1; font-weight: 600; letter-spacing: -.03em; color: transparent; -webkit-text-stroke: 1.2px rgb(255 255 255 / .1); }
-  .cta-chip { display: flex; align-items: center; gap: .75rem; padding: .85rem 1rem; border-radius: 1rem; background: rgb(255 255 255 / .06); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .14); color: #fff; text-decoration: none; transition: background-color .3s, box-shadow .3s, transform .45s var(--ease-out-soft); }
-  .cta-chip:hover { background: rgb(255 255 255 / .12); box-shadow: inset 0 0 0 1px var(--color-lime); transform: translateY(-3px); }
+  .cta-chip { display: flex; align-items: center; gap: .55rem; min-height: 2.75rem; color: #fff; text-decoration: none; transition: color .3s; }
+  .cta-chip:hover b { text-decoration: underline; text-underline-offset: 4px; }
   .cta-chip :global(svg) { color: var(--color-lime); flex: none; }
   .cta-chip b { display: block; font-weight: 650; }
-  .cta-chip small { display: block; font-size: .8rem; color: rgb(255 255 255 / .7); }
+  .cta-chip small { display: block; font-size: .78rem; color: rgb(255 255 255 / .7); }
   .photo-obj::before { border-color: var(--color-lime); }
 </style>

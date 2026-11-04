@@ -17,6 +17,7 @@ import HeroQuote from '../components/HeroQuote.astro';
 import ServiceTiles from '../components/ServiceTiles.astro';
 import FixedBand from '../components/FixedBand.astro';
 import AnimatedIcon from '../components/AnimatedIcon.astro';
+import GoogleG from '../components/GoogleG.astro';
 import { business } from '../data/business';
 import { services, serviceBySlug } from '../data/services';
 import { generalFaqs } from '../data/faqs';
@@ -25,6 +26,7 @@ import { img } from '../lib/images';
 import { faqSchema } from '../lib/schema';
 
 const regular = serviceBySlug('regular-cleaning');
+const hv = business.heroVideo;
 const homeFaqs = generalFaqs.slice(0, 8);
 const chapters = [
   { id: 'welcome', label: 'Welcome' },
@@ -50,28 +52,39 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 >
   <ChapterRail chapters={chapters} />
 
-  <!-- ============ HERO · Welcome ============ -->
-  <section id="welcome" class="relative overflow-hidden">
-    <Backdrop variant={['glow', 'roofs']} />
-    <div class="container-x relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_31rem] lg:gap-14 items-center pt-6 pb-12 lg:pt-8 lg:pb-14">
-      <div>
+  <!-- ============ HERO · Welcome (video background + live quote) ============ -->
+  <section id="welcome" class="hero-v on-dark relative overflow-hidden">
+    {hv && (
+      <div class="hv-media" aria-hidden="true">
+        <video class="hv-video" muted loop playsinline preload="none" poster={hv.poster} data-hero-video>
+          <source data-src={hv.mp4Mobile} type="video/mp4" media="(max-width: 767.98px)" />
+          <source data-src={hv.webm} type="video/webm" />
+          <source data-src={hv.mp4} type="video/mp4" />
+        </video>
+      </div>
+    )}
+    <div class="hv-shade" aria-hidden="true"></div>
+    <Backdrop variant={['grain']} tone="dark" />
+    <div class="container-x relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_31rem] lg:gap-14 items-center pt-8 pb-10 lg:pt-8 lg:pb-10">
+      <div class="hv-copy">
         <p class="eyebrow hero-rise">Luzerne · Lackawanna · Wyoming Counties</p>
         <h1 class="mt-4 hero-rise">
-          <span class="block font-sans text-[clamp(1rem,.95rem+.35vw,1.2rem)] font-semibold tracking-normal text-royal mb-2">House &amp; office cleaning in Dallas, PA —</span>
+          <span class="block font-sans text-[clamp(1rem,.95rem+.35vw,1.2rem)] font-semibold tracking-normal text-lime mb-2">House &amp; office cleaning in Dallas, PA —</span>
           <span class="block text-[clamp(2.5rem,1.5rem+3.3vw,4.5rem)] leading-[1.02]">Your space, our <mark class="hero-mark">cleaning</mark> mission.</span>
         </h1>
-        <p class="mt-5 max-w-lg text-[1.08rem] leading-relaxed text-muted hero-rise" style="animation-delay:.12s">
+        <p class="mt-5 max-w-lg text-[1.08rem] leading-relaxed hero-rise" style="animation-delay:.12s">
           Locally owned, background-checked cleaning for homes, rentals and offices. See your price in 15 seconds.
         </p>
         <div class="mt-7 flex flex-wrap gap-3 hero-rise" style="animation-delay:.2s">
           <a href="#hero-quote" class="btn btn-primary btn-lg" data-track="quote_start">Get my live quote <Icon name="arrow" size={18} /></a>
           <a href={business.phone.tel} class="btn btn-ghost btn-lg" data-track="call_click"><Icon name="phone" size={18} /> Call {business.phone.display}</a>
         </div>
-        <ul class="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[.92rem] font-semibold text-navy hero-rise" style="animation-delay:.28s">
+        <ul class="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[.92rem] font-semibold text-white hero-rise" style="animation-delay:.28s">
           <li class="flex items-center gap-2"><span class="flex text-lime" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={15} />)}</span>500+ local families</li>
-          <li class="flex items-center gap-2"><Icon name="google" size={17} class="text-royal" /> 5.0 on Google</li>
-          <li class="flex items-center gap-2"><Icon name="shield" size={17} class="text-royal" /> Licensed, bonded &amp; insured</li>
+          <li class="flex items-center gap-2"><GoogleG size={17} /> 5.0 on Google</li>
+          <li class="flex items-center gap-2"><Icon name="shield" size={17} class="text-lime" /> Licensed, bonded &amp; insured</li>
         </ul>
+        {hv && <button type="button" class="hv-toggle" aria-pressed="false" data-hero-video-toggle><span data-label>Pause video</span></button>}
       </div>
 
       <!-- the live quote widget, on its own (like the original site) -->
@@ -80,7 +93,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
   </section>
 
   <!-- ============ PROOF RIBBON (dark) ============ -->
-  <section aria-label="Roamza by the numbers" class="container-x relative z-[2]">
+  <section aria-label="Roamza by the numbers" class="container-x relative z-[2] mt-6 lg:mt-8">
     <div class="relative overflow-hidden rounded-[1.75rem] bg-navy on-dark px-4 md:px-8 shadow-[0_30px_60px_-30px_rgb(14_10_79/.6)]">
       <Backdrop variant={['roofs']} tone="dark" />
       <div class="relative"><Stats dark /></div>
@@ -89,7 +102,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 
   <!-- ============ 01 · WHY FAMILIES CALL ============ -->
   <section id="why" class="relative py-24 lg:py-36 overflow-hidden" aria-labelledby="problem-heading">
-    <Backdrop variant={['cloud']} cloudPos="left" />
+    <Backdrop variant={['cloud', 'grain']} cloudPos="left" />
     <div class="container-x relative">
       <p class="chapter" data-reveal><b>01</b><i></i>Why families call us</p>
       <h2 id="problem-heading" class="sr-only">Cleaning shouldn’t be one more thing you carry every week</h2>
@@ -135,7 +148,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 
   <!-- ============ 02 · SERVICES ============ -->
   <section id="services" class="relative py-24 lg:py-32 overflow-hidden" aria-labelledby="services-heading">
-    <Backdrop variant={['roofs']} />
+    <Backdrop variant={['roofs', 'grain']} />
     <span class="big-num" aria-hidden="true" data-parallax="0.12">06</span>
     <div class="container-x relative">
       <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end mb-12">
@@ -163,7 +176,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 
   <!-- ============ 04 · BEFORE / AFTER ============ -->
   <section id="results" class="relative py-24 lg:py-32 overflow-hidden" aria-labelledby="ba-heading">
-    <Backdrop variant={['glow', 'roofs']} />
+    <Backdrop variant={['glow', 'roofs', 'grain']} />
     <div class="container-x relative grid gap-12 lg:grid-cols-[1fr_1.7fr] lg:gap-16 items-center">
       <div>
         <p class="chapter" data-reveal><b>04</b><i></i>See the difference</p>
@@ -177,7 +190,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 
   <!-- ============ 05 · YOUR NEIGHBORS ============ -->
   <section id="neighbors" class="relative py-24 lg:py-36 overflow-hidden neighbors" aria-labelledby="why-heading">
-    <Backdrop variant={['cloud', 'roofs']} cloudPos="right" />
+    <Backdrop variant={['cloud', 'roofs', 'grain']} cloudPos="right" />
     <div class="container-x relative">
       <p class="chapter" data-reveal><b>05</b><i></i>A local company you can actually trust</p>
       <h2 id="why-heading" class="mt-6 font-display text-[clamp(2.3rem,1.4rem+3vw,4.2rem)] leading-[1.02] max-w-[18ch]" data-words>Not a franchise. Not a call center. Your neighbors.</h2>
@@ -231,13 +244,13 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 
   <div id="how"><Process heading="Getting started is simple" chapter="06" /></div>
 
-  <div id="work" class="bg-linen"><RealGallery chapter="07" /></div>
+  <div id="work" class="bg-linen relative"><Backdrop variant={['grain']} /><RealGallery chapter="07" /></div>
 
   <div id="reviews"><Reviews chapter="08" /></div>
 
   <!-- ============ 09 · SERVICE AREAS ============ -->
   <section id="areas" class="relative py-24 lg:py-32 overflow-hidden" aria-labelledby="areas-heading">
-    <Backdrop variant={['roofs', 'glow']} />
+    <Backdrop variant={['roofs', 'glow', 'grain']} />
     <div class="container-x relative grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16 items-start">
       <div>
         <p class="chapter" data-reveal><b>09</b><i></i>Service areas</p>
@@ -266,6 +279,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 
   <!-- ============ 10 · FAQ ============ -->
   <section id="faq" class="relative py-24 lg:py-32 bg-linen overflow-hidden" aria-label="Frequently asked questions">
+    <Backdrop variant={['grain']} />
     <div class="container-x relative">
       <p class="chapter mb-8" data-reveal><b>10</b><i></i>Questions, answered</p>
       <Faq faqs={homeFaqs} heading="Straight answers before you book" intro="Pricing, scheduling, coverage and what to expect from Roamza." />
@@ -277,7 +291,17 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 </Base>
 
 <style>
-  .hero-mark { color: #4b7a00; background: linear-gradient(transparent 62%, rgb(119 185 0 / .3) 62%, rgb(119 185 0 / .3) 94%, transparent 94%) no-repeat 0 0 / 100% 100%; padding-inline: .06em; border-radius: .08em; }
+  .hero-mark { color: var(--color-lime); background: linear-gradient(transparent 64%, rgb(119 185 0 / .32) 64%, rgb(119 185 0 / .32) 94%, transparent 94%) no-repeat 0 0 / 100% 100%; padding-inline: .06em; border-radius: .08em; }
+  .hero-v { background: var(--color-navy); color: #fff; }
+  .hv-media { position: absolute; inset: 0; }
+  .hv-video { width: 100%; height: 100%; object-fit: cover; }
+  .hv-shade { position: absolute; inset: 0; background:
+      linear-gradient(90deg, rgb(14 10 79 / .94) 0%, rgb(14 10 79 / .82) 38%, rgb(14 10 79 / .45) 70%, rgb(14 10 79 / .35) 100%),
+      linear-gradient(180deg, rgb(14 10 79 / .2) 0%, transparent 30%, rgb(14 10 79 / .5) 100%); }
+  @media (max-width: 1023.98px) { .hv-shade { background: linear-gradient(180deg, rgb(14 10 79 / .62) 0%, rgb(14 10 79 / .84) 50%, rgb(14 10 79 / .95) 100%); } }
+  .hv-toggle { margin-top: 1.25rem; min-height: 2.75rem; font-size: .82rem; font-weight: 600; color: rgb(255 255 255 / .75); text-decoration: underline; text-underline-offset: 4px; }
+  .hv-toggle:hover { color: #fff; }
+  :global(html:not(.js)) .hv-toggle { display: none; }
   @media (prefers-reduced-motion: no-preference) {
     .hero-mark { background-size: 0% 100%; animation: mark-in .9s .55s var(--ease-out-soft) forwards; }
   }

@@ -10,9 +10,10 @@
  *  cloud    → large scalloped cloud-house outline
  *  wordmark → giant outlined "Roamza" set in the display face
  *  glow     → soft brand light (lime / sky)
+ *  grain    → fine paper/film texture so flat fills don't feel static (always on for dark tone)
  */
 interface Props {
-  variant?: ('roofs' | 'cloud' | 'wordmark' | 'glow')[];
+  variant?: ('roofs' | 'cloud' | 'wordmark' | 'glow' | 'grain')[];
   tone?: 'light' | 'dark';
   cloudPos?: 'left' | 'right' | 'center';
   class?: string;
@@ -24,6 +25,7 @@ const cloudStroke = tone === 'dark' ? 'rgb(119 185 0 / .22)' : 'rgb(119 185 0 / 
 const cloudPath = 'M120 520 C 60 520 30 470 52 425 C 18 400 22 340 70 325 C 62 270 112 236 160 252 C 170 196 230 170 275 196 C 300 140 380 130 420 176 C 470 150 530 180 532 236 C 585 240 610 300 585 340 C 625 370 615 440 565 455 C 570 500 530 528 490 520 Z M170 470 V 330 L 320 215 L 470 330 V 470';
 ---
 <div class:list={['backdrop pointer-events-none absolute inset-0 overflow-hidden', cls]} aria-hidden="true">
+  {(variant.includes('grain') || tone === 'dark') && <div class:list={['bd-grain', tone === 'dark' && 'bd-grain-dark']}></div>}
   {variant.includes('glow') && (
     <div class="absolute inset-0">
       <div class:list={['bd-glow glow-drift', tone === 'dark' ? 'bd-glow-dark' : '']}></div>
@@ -55,6 +57,8 @@ const cloudPath = 'M120 520 C 60 520 30 470 52 425 C 18 400 22 340 70 325 C 62 2
 </div>
 
 <style>
+  .bd-grain { position: absolute; inset: 0; background-image: var(--grain); background-size: 180px; opacity: .07; mix-blend-mode: multiply; }
+  .bd-grain-dark { opacity: .5; mix-blend-mode: soft-light; }
   .bd-glow { position: absolute; inset: -20%; background: radial-gradient(38% 42% at 78% 22%, rgb(213 231 247 / .9), transparent 70%), radial-gradient(30% 34% at 12% 82%, rgb(238 247 220 / .85), transparent 70%); }
   .bd-glow-dark { background: radial-gradient(36% 40% at 82% 18%, rgb(29 11 240 / .55), transparent 70%), radial-gradient(28% 32% at 10% 88%, rgb(119 185 0 / .22), transparent 70%); }
   .bd-cloud { width: min(46rem, 85vw); height: auto; }

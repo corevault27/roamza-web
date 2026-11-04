@@ -47,9 +47,15 @@ export const business = {
     bridge: 'https://widget.homesuitepro.com/fastquoted-bridge.js',
   },
   agency: { name: 'Helice Digital Solutions LLC', url: 'https://heliceds.com/' },
-  // Hero media behind the quote widget. To use a short muted loop, set
-  // video: '/media/roamza-hero.mp4' (put file in public/media, <= 3 MB, 8-12 s) and poster: '/media/roamza-hero.jpg'.
-  heroMedia: { image: 'team/roamza-cleaning-team.jpg', video: null as string | null, poster: undefined as string | undefined },
+  // Hero background loop (muted, ~12 s). Source: Recursos/xmas-cleaning-services-in-Dallas-Pennsylvania.mp4
+  // re-encoded with ffmpeg (14.9 MB -> ~1 MB desktop / ~0.36 MB mobile). Seasonal (Christmas):
+  // swap the files in public/media (same names) or set heroVideo to null after the holidays.
+  heroVideo: {
+    poster: '/media/roamza-hero-poster.webp',
+    webm: '/media/roamza-hero-720.webm',
+    mp4: '/media/roamza-hero-720.mp4',
+    mp4Mobile: '/media/roamza-hero-360.mp4',
+  } as { poster: string; webm: string; mp4: string; mp4Mobile: string } | null,
 } as const;
 
 /** Feature flags for content that depends on client confirmation. */
