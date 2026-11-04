@@ -12,7 +12,7 @@ Estado al 04/nov/2026. Todo lo de esta lista está **fuera** de la interfaz púb
 | 6 | **Condiciones del descuento de primera limpieza** | Solo "Ask about our first cleaning discount" | Confirmar las condiciones |
 | 7 | **Apellido de la fundadora** | Notion y nombre de archivo: *Miriam Rodriguez*. El post de 2026 decía *Miriam Elliott*. La web usa "Miriam Rodriguez" (About y schema) y "Miriam" en la cita del post | **Confirmar el nombre público correcto** |
 | 8 | **Email público** `info@roamzacleaningservices.com` | Publicado como email principal | Verificar que el buzón recibe correo (si no, cambiar a gmail en `business.ts`) |
-| 9 | **Teléfono en el Google Business Profile** | Web: (347) 335-1042. Se eliminó el enlace erróneo a (272) 203-3263 | Comprobar que el GBP muestra el mismo número (consistencia NAP) |
+| 9 | **Teléfono nuevo (272) 203-3263** | Web actualizada al nuevo número (antes (347) 335-1042), incluido WhatsApp | Confirmar que el GBP, redes y directorios usan (272) 203-3263 y que WhatsApp funciona en ese número (consistencia NAP) |
 | 10 | **Ciudad de cada foto real** | Alt genérico, sin ciudad | Si Miriam indica la ciudad de cada trabajo, usarlas como evidencia local en las páginas de ciudad |
 | 11 | **Evidencias locales para la Ola 2** (Harveys Lake, Clarks Summit, Pittston, Plains, Forty Fort, Nanticoke) | Aparecen como texto en los hubs de condado (`status: 'draft'`) | Por ciudad: trabajos con foto, reseñas o tipo de propiedad. Luego pasar a `published` y redactar `page` |
 | 12 | **Back Mountain Chamber**: URL oficial | Se enlaza `backmountainchamber.org` solo en el schema (`memberOf`) | Verificar la URL |
