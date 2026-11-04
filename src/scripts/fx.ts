@@ -86,7 +86,7 @@ function initMobileMenu() {
 
 /* -------- reveals -------- */
 function initReveals() {
-  const els = $$('[data-reveal], [data-split], [data-wipe], [data-roofwipe]');
+  const els = $$('[data-reveal], [data-split], [data-wipe], [data-roofwipe], [data-ai]');
   if (reduce() || !('IntersectionObserver' in window)) { els.forEach((e) => e.classList.add('is-in')); return; }
   const io = new IntersectionObserver((entries) => {
     entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
@@ -284,6 +284,10 @@ function initFastQuote() {
       track('quote_widget_loaded');
     };
     box.querySelector('[data-fq-load]')?.addEventListener('click', load);
+    if (box.dataset.fastquote === 'idle') {
+      const go = () => ('requestIdleCallback' in window ? (window as any).requestIdleCallback(load, { timeout: 2500 }) : window.setTimeout(load, 1200));
+      if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true });
+    }
     if (box.dataset.fastquote === 'auto') {
       new IntersectionObserver(([en], io) => { if (en.isIntersecting) { load(); io.disconnect(); } }, { rootMargin: '300px' }).observe(box);
     }
@@ -437,7 +441,23 @@ function initChapters() {
   map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
 }
 
+/* -------- compact lists on mobile: "show more" toggles (content is always in the HTML) -------- */
+function initMore() {
+  $$<HTMLButtonElement>('[data-more-btn]').forEach((btn) => {
+    const host = btn.closest<HTMLElement>('[data-more]');
+    if (!host) return;
+    const closedLabel = btn.textContent || '';
+    btn.addEventListener('click', () => {
+      const open = !host.classList.contains('is-open');
+      host.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Show less' : closedLabel;
+    });
+  });
+}
+
 export function initFx() {
+  initMore();
   initWordReveal();
   initScrub();
   initScrollX();

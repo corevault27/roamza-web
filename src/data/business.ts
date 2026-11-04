@@ -47,6 +47,9 @@ export const business = {
     bridge: 'https://widget.homesuitepro.com/fastquoted-bridge.js',
   },
   agency: { name: 'Helice Digital Solutions LLC', url: 'https://heliceds.com/' },
+  // Hero media behind the quote widget. To use a short muted loop, set
+  // video: '/media/roamza-hero.mp4' (put file in public/media, <= 3 MB, 8-12 s) and poster: '/media/roamza-hero.jpg'.
+  heroMedia: { image: 'team/roamza-cleaning-team.jpg', video: null as string | null, poster: undefined as string | undefined },
 } as const;
 
 /** Feature flags for content that depends on client confirmation. */

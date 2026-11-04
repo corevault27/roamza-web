@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Stats from '../components/Stats.astro';
-import ServiceList from '../components/ServiceList.astro';
 import RoomByRoom from '../components/RoomByRoom.astro';
 import BeforeAfter from '../components/BeforeAfter.astro';
 import Process from '../components/Process.astro';
@@ -14,6 +13,10 @@ import Faq from '../components/Faq.astro';
 import CtaFinal from '../components/CtaFinal.astro';
 import Backdrop from '../components/Backdrop.astro';
 import ChapterRail from '../components/ChapterRail.astro';
+import HeroQuote from '../components/HeroQuote.astro';
+import ServiceTiles from '../components/ServiceTiles.astro';
+import FixedBand from '../components/FixedBand.astro';
+import AnimatedIcon from '../components/AnimatedIcon.astro';
 import { business } from '../data/business';
 import { services, serviceBySlug } from '../data/services';
 import { generalFaqs } from '../data/faqs';
@@ -50,7 +53,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
   <!-- ============ HERO · Welcome ============ -->
   <section id="welcome" class="relative overflow-hidden">
     <Backdrop variant={['glow', 'roofs', 'cloud']} cloudPos="right" />
-    <div class="container-x relative grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-10 items-center pt-8 pb-28 lg:pt-14 lg:pb-40">
+    <div class="container-x relative grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12 items-center pt-8 pb-28 lg:pt-12 lg:pb-40">
       <div>
         <p class="eyebrow hero-rise">Luzerne · Lackawanna · Wyoming Counties</p>
         <h1 class="mt-5 hero-rise">
@@ -58,11 +61,11 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
           <span class="block text-[clamp(3rem,1.6rem+5.6vw,6.4rem)] leading-[.95]">Your space, our <em class="not-italic text-[#5f9400] relative whitespace-nowrap">cleaning<svg class="hero-underline" viewBox="0 0 300 18" aria-hidden="true" preserveAspectRatio="none"><path d="M3 13 C 80 3, 200 3, 297 11" /></svg></em> mission.</span>
         </h1>
         <p class="lead mt-7 max-w-xl hero-rise" style="animation-delay:.12s">
-          A locally owned, background-checked team cleaning homes, vacation rentals and offices across northeastern Pennsylvania. Know your price in under 15 seconds — we respond within 15 minutes, 7 days a week.
+          Locally owned, background-checked cleaning for homes, vacation rentals and offices across northeastern Pennsylvania. See your price in 15 seconds — right here.
         </p>
         <div class="mt-8 flex flex-wrap gap-3 hero-rise" style="animation-delay:.2s">
-          <a href="/get-a-quote/" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get a Fast Quote <Icon name="arrow" size={18} /></a>
-          <a href={business.phone.tel} class="btn btn-ghost btn-lg" data-track="call_click"><Icon name="phone" size={18} /> Call or text {business.phone.display}</a>
+          <a href="#hero-quote" class="btn btn-primary btn-lg" data-track="quote_start" data-magnetic>Get my price <Icon name="arrow" size={18} /></a>
+          <a href={business.phone.tel} class="btn btn-ghost btn-lg" data-track="call_click"><Icon name="phone" size={18} /> {business.phone.display}</a>
         </div>
         <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-[.95rem] font-semibold text-navy hero-rise" style="animation-delay:.28s">
           <li class="flex items-center gap-2"><span class="flex text-lime" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={16} />)}</span>Trusted by 500+ local families</li>
@@ -71,32 +74,8 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
         </ul>
       </div>
 
-      <!-- layered collage -->
-      <div class="relative min-h-[26rem] sm:min-h-[34rem] lg:min-h-[40rem]">
-        <div class="absolute right-0 top-0 w-[78%] hero-zoom" data-parallax="0.04">
-          <div class="photo-obj rounded-b-[2rem]" data-tilt="4">
-            <div class="photo-inner roof-mask aspect-[4/4.6]">
-              <Image src={img('team/roamza-cleaning-team.jpg')} alt="Roamza Cleaning Services owner Miriam and her cleaning team with their equipment" widths={[420, 640, 840, 1024]} sizes="(min-width: 1024px) 30rem, 78vw" class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
-            </div>
-          </div>
-        </div>
-        <div class="absolute left-0 bottom-6 w-[46%] hidden sm:block" data-parallax="-0.08">
-          <figure class="rounded-[1.5rem] overflow-hidden border-[6px] border-white shadow-[var(--shadow-lift)] aspect-[3/4] rotate-[-3deg]">
-            <Image src={img('real/open-kitchen-quartz-counter.jpg')} alt="Spotless kitchen counter after a real Roamza cleaning" widths={[280, 420, 560]} sizes="14rem" class="w-full h-full object-cover" loading="eager" />
-          </figure>
-          <p class="mt-2 text-xs font-semibold text-muted pl-2">Real Roamza job</p>
-        </div>
-        <a href="/get-a-quote/" class="quote-chip card absolute left-[6%] sm:left-[30%] top-[62%] sm:top-auto sm:bottom-0 flex items-center gap-4 px-5 py-4 max-w-[19rem]" data-track="quote_start" data-parallax="-0.03">
-          <span class="grid place-items-center w-12 h-12 rounded-full bg-lime text-navy flex-none qc-pulse"><Icon name="bolt" size={22} /></span>
-          <span>
-            <span class="block text-xs font-semibold tracking-[.12em] uppercase text-royal">Fast Quote</span>
-            <span class="block font-semibold text-navy leading-snug">See your price in under 15 seconds</span>
-          </span>
-        </a>
-        <div class="absolute right-3 -top-3 sm:right-[-.5rem] sm:top-10 w-24 sm:w-28 rotate-[8deg]" data-parallax="0.1">
-          <Image src={img('brand/licensed-bonded-insured-seal.png')} alt="Licensed, bonded and insured seal" width={140} height={121} class="w-full h-auto drop-shadow-xl" />
-        </div>
-      </div>
+      <!-- quote stage: widget framed over the team photo (video-ready) -->
+      <HeroQuote />
     </div>
     <a href="#why" class="scroll-cue hidden lg:flex" aria-label="Scroll to the next section"><span></span></a>
   </section>
@@ -144,12 +123,17 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
     </div>
   </section>
 
-  <!-- giant scrolling band (real service names) -->
-  <div class="mega-band border-y border-line bg-white" aria-hidden="true">
-    <p data-scroll-x="-0.4">
-      {[...band, ...band].map((b, i) => <><span class={i % 2 ? 'f' : 'o'}>{b}</span><span class="dot"></span></>)}
-    </p>
-  </div>
+  <FixedBand
+    image="proof/living-room-after.jpg"
+    eyebrow="Imagine it"
+    statement="Walk into clean — every single time."
+    sub="Same standard, same checklist, every visit. That’s the Roamza promise to 500+ local families."
+  >
+    <div class="mt-8 flex flex-wrap gap-3" data-reveal style="--d:220">
+      <a href="#hero-quote" class="btn btn-primary btn-lg" data-track="quote_start">Get my price <Icon name="arrow" size={18} /></a>
+      <a href="/deep-cleaning/" class="btn btn-ghost btn-lg">See Signature Deep Cleaning</a>
+    </div>
+  </FixedBand>
 
   <!-- ============ 02 · SERVICES ============ -->
   <section id="services" class="relative py-24 lg:py-32 overflow-hidden" aria-labelledby="services-heading">
@@ -164,7 +148,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
         </div>
         <a href="/cleaning-services/" class="btn btn-ghost" data-reveal>Compare all services <Icon name="arrow" size={18} /></a>
       </div>
-      <ServiceList />
+      <ServiceTiles />
     </div>
   </section>
 
@@ -185,7 +169,7 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
     <div class="container-x relative grid gap-12 lg:grid-cols-[1fr_1.7fr] lg:gap-16 items-center">
       <div>
         <p class="chapter" data-reveal><b>04</b><i></i>See the difference</p>
-        <h2 id="ba-heading" class="mt-5 text-[clamp(2.3rem,1.4rem+3.2vw,4.4rem)]" data-words>Imagine walking into clean — every time.</h2>
+        <h2 id="ba-heading" class="mt-5 text-[clamp(2.3rem,1.4rem+3.2vw,4.4rem)]" data-words>See the difference in one swipe.</h2>
         <p class="lead mt-5" data-reveal style="--d:120">Drag the handle to compare the same room before and after a Roamza visit.</p>
         <a href="/deep-cleaning/" class="link-u inline-block mt-7" data-reveal style="--d:160">Explore Signature Deep Cleaning →</a>
       </div>
@@ -229,10 +213,10 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
               { i: 'clock', t: 'Real reliability', d: 'We show up. On time. Every time.' },
               { i: 'user', t: 'Professional team', d: 'Trained, background-checked cleaners — not random workers.' },
               { i: 'home', t: 'Respect for your space', d: 'We clean like we’re cleaning our own home.' },
-              { i: 'sms', t: 'Easy communication', d: 'Call. Text. Book. Done.' },
+              { i: 'chat', t: 'Easy communication', d: 'Call. Text. Book. Done.' },
             ].map((v, idx) => (
-              <li class="value-card" data-reveal style={`--d:${idx * 80}`} data-spotlight>
-                <span class="value-ico"><Icon name={v.i} size={22} /></span>
+              <li class="value-card ai-host" data-reveal style={`--d:${idx * 80}`} data-spotlight>
+                <span class="value-ico"><AnimatedIcon name={v.i} size={26} /></span>
                 <span class="block font-semibold text-navy text-lg mt-4">{v.t}</span>
                 <span class="block text-muted mt-1">{v.d}</span>
               </li>
@@ -263,13 +247,16 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
         <p class="lead mt-5" data-reveal style="--d:120">From our base in Dallas, PA we clean homes, rentals and offices across Luzerne, Lackawanna and Wyoming Counties. Hover a town on the map — or pick it from the list.</p>
         <div class="mt-9 grid gap-8">
           {Object.entries(counties).map(([slug, c]) => (
-            <div data-reveal>
+            <div data-reveal data-more class="towns">
               <h3 class="text-xl"><a href={`/service-areas/${slug}/`} class="hover:text-royal">{c.name}</a></h3>
               <ul class="mt-3 flex flex-wrap gap-2">
                 {citiesIn(slug as keyof typeof counties).map((city) => city.status === 'published'
                   ? <li><a href={cityUrl(city)} class="town-pill is-pub"><Icon name="pin" size={14} />{city.name}</a></li>
-                  : <li class="town-pill">{city.name}</li>)}
+                  : <li class="town-pill more-item">{city.name}</li>)}
               </ul>
+              {citiesIn(slug as keyof typeof counties).filter((x) => x.status === 'draft').length > 0 && (
+                <button type="button" class="more-btn lg:hidden" aria-expanded="false" data-more-btn>+ {citiesIn(slug as keyof typeof counties).filter((x) => x.status === 'draft').length} more towns</button>
+              )}
             </div>
           ))}
         </div>
@@ -325,5 +312,8 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
   .town-pill { display: inline-flex; align-items: center; gap: .35rem; border-radius: 999px; padding: .45rem .9rem; font-size: .9rem; background: rgb(255 255 255 / .8); box-shadow: inset 0 0 0 1px var(--color-line); color: var(--color-ink); }
   .town-pill.is-pub { background: var(--color-navy); color: #fff; font-weight: 600; box-shadow: none; transition: background-color .3s, transform .4s var(--ease-out-soft); }
   .town-pill.is-pub:hover { background: var(--color-royal); transform: translateY(-2px); }
+  @media (max-width: 1023.98px) { :global(.js) .towns:not(.is-open) .more-item { display: none; } }
+  .more-btn { margin-top: .75rem; font-weight: 650; font-size: .92rem; color: var(--color-royal); text-decoration: underline; text-underline-offset: 4px; min-height: 2.75rem; }
+  :global(html:not(.js)) .more-btn { display: none; }
   .map-frame :global(svg) { box-shadow: inset 0 0 0 1px var(--color-line), 0 30px 60px -30px rgb(21 14 117 / .35); }
 </style>

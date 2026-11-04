@@ -8,7 +8,7 @@ const { heading = 'Neighbors who trust us with their homes', items = featuredRev
 const initials = (n: string) => n.split(' ').slice(0, 2).map((p) => p[0]).join('');
 ---
 <section class:list={['relative py-20 lg:py-28 overflow-hidden', dark ? 'on-dark bg-navy text-white' : 'bg-cloud']} aria-labelledby="reviews-heading">
-  <Backdrop variant={['wordmark', 'glow']} tone={dark ? 'dark' : 'light'} />
+  <Backdrop variant={['glow', 'roofs']} tone={dark ? 'dark' : 'light'} />
   <div class="relative container-x flex flex-col lg:flex-row lg:items-end gap-6 justify-between">
     <div class="max-w-2xl">
       {chapter ? <p class="chapter" data-reveal><b>{chapter}</b><i></i>Google reviews</p> : <p class="eyebrow" data-reveal>Google reviews</p>}

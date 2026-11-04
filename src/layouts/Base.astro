@@ -66,7 +66,7 @@ const graph = [organization(logoUrl, ogUrl), website(), ...(breadcrumbs ? [bread
     <meta name="geo.placename" content="Dallas, Pennsylvania" />
 
     {graph.map((g) => <script type="application/ld+json" set:html={JSON.stringify(g)} />)}
-    <script is:inline>document.documentElement.classList.add('js');setTimeout(function(){document.querySelectorAll('[data-reveal],[data-split],[data-wipe],[data-roofwipe]').forEach(function(e){e.classList.add('is-in')})},4500);</script>
+    <script is:inline>document.documentElement.classList.add('js');setTimeout(function(){document.querySelectorAll('[data-reveal],[data-split],[data-wipe],[data-roofwipe],[data-ai]').forEach(function(e){e.classList.add('is-in')})},4500);</script>
     <slot name="head" />
   </head>
   <body class="min-h-dvh flex flex-col">

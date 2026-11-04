@@ -1,0 +1,31 @@
+---
+/**
+ * Full-bleed "fixed image" scene. On desktop the photo stays fixed while the
+ * page scrolls over it (background-attachment: fixed). On touch devices
+ * (where fixed backgrounds are unreliable) it falls back to a static cover.
+ * Text is real HTML; the photo is decorative (real Roamza job).
+ */
+import { getImage } from 'astro:assets';
+import { img } from '../lib/images';
+interface Props { image: string; eyebrow?: string; statement: string; sub?: string; id?: string }
+const { image, eyebrow, statement, sub, id } = Astro.props;
+const desk = await getImage({ src: img(image), width: 1920, format: 'webp', quality: 72 });
+const mob = await getImage({ src: img(image), width: 900, format: 'webp', quality: 70 });
+---
+<section id={id} class="fixed-band on-dark" style={`--bg-d:url(${desk.src});--bg-m:url(${mob.src})`}>
+  <div class="fb-shade" aria-hidden="true"></div>
+  <div class="container-x relative">
+    {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
+    <h2 class="fb-statement font-display" data-words>{statement}</h2>
+    {sub && <p class="lead mt-5 max-w-xl" data-reveal style="--d:150">{sub}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .fixed-band { position: relative; display: flex; align-items: center; min-height: 78vh; padding-block: 6rem; color: #fff; background-image: var(--bg-m); background-size: cover; background-position: center; }
+  @media (min-width: 1024px) and (hover: hover) { .fixed-band { background-image: var(--bg-d); background-attachment: fixed; } }
+  .fb-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(14 10 79 / .9) 0%, rgb(14 10 79 / .65) 45%, rgb(14 10 79 / .2) 100%); }
+  @media (max-width: 767.98px) { .fb-shade { background: linear-gradient(180deg, rgb(14 10 79 / .55), rgb(14 10 79 / .88)); } }
+  .fb-statement { margin-top: 1rem; max-width: 14ch; font-size: clamp(2.6rem, 1.4rem + 5vw, 6.2rem); line-height: .98; letter-spacing: -.025em; font-weight: 600; color: #fff; text-wrap: balance; }
+</style>

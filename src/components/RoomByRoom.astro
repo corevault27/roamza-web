@@ -42,17 +42,19 @@ const dark = tone === 'dark';
         </div>
       </div>
 
-      <ol class="grid gap-6 lg:gap-[22vh] lg:py-[12vh]">
+      <p class:list={['lg:hidden text-sm mb-3', dark ? 'text-white/70' : 'text-muted']} aria-hidden="true">Swipe through the rooms →</p>
+      <ol class="rooms-list grid gap-6 lg:gap-[22vh] lg:py-[12vh]">
         {rooms.map((r, i) => (
-          <li class="room-step card p-6 lg:p-8" data-room-step>
+          <li class="room-step card p-6 lg:p-8" data-room-step data-more>
             <div class="lg:hidden -mx-6 -mt-6 mb-6 aspect-[16/10] overflow-hidden rounded-t-[var(--radius-card)]">
               <Image src={img(r.image)} alt={`${r.name}: illustration of the areas included`} widths={[480, 800]} sizes="100vw" class="w-full h-full object-cover" loading="lazy" />
             </div>
             <p class="font-display text-lime-600 text-xl">{String(i + 1).padStart(2, '0')}</p>
             <h3 class="text-2xl lg:text-[1.9rem] mt-1">{r.name}</h3>
             <ul class="check-list grid gap-2.5 mt-5 text-[1.02rem]">
-              {r.tasks.map((t) => <li>{t}</li>)}
+              {r.tasks.map((t, k) => <li class:list={[k >= 4 && 'more-item']}>{t}</li>)}
             </ul>
+            {r.tasks.length > 4 && <button type="button" class="more-btn lg:hidden" aria-expanded="false" data-more-btn>Show all {r.tasks.length} tasks</button>}
           </li>
         ))}
       </ol>
@@ -80,5 +82,14 @@ const dark = tone === 'dark';
     .room-step.is-active li { animation: tick .5s var(--ease-out-soft) both; }
     .room-step.is-active li:nth-child(2) { animation-delay: .05s } .room-step.is-active li:nth-child(3) { animation-delay: .1s } .room-step.is-active li:nth-child(4) { animation-delay: .15s } .room-step.is-active li:nth-child(5) { animation-delay: .2s } .room-step.is-active li:nth-child(6) { animation-delay: .25s } .room-step.is-active li:nth-child(n+7) { animation-delay: .3s }
   }
+  @media (max-width: 1023.98px) {
+    .rooms-list { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -1.25rem; padding: .25rem 1.25rem 1rem; scrollbar-width: none; align-items: flex-start; }
+    .rooms-list::-webkit-scrollbar { display: none; }
+    .rooms-list > li { flex: none; width: 86%; scroll-snap-align: center; }
+    :global(.js) .room-step:not(.is-open) :global(.more-item) { display: none; }
+  }
+  @media (min-width: 640px) and (max-width: 1023.98px) { .rooms-list > li { width: 60%; } }
+  .more-btn { margin-top: 1rem; font-weight: 650; font-size: .92rem; color: var(--color-royal); text-decoration: underline; text-underline-offset: 4px; min-height: 2.75rem; }
+  :global(html:not(.js)) .more-btn { display: none; }
   @keyframes tick { from { opacity: .3; transform: translateX(6px); } }
 </style>
