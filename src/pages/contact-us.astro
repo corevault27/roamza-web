@@ -3,8 +3,6 @@ import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Icon from '../components/Icon.astro';
 import { business } from '../data/business';
-import { services } from '../data/services';
-import { cities } from '../data/areas';
 import { img } from '../lib/images';
 import { abs } from '../lib/schema';
 
@@ -15,7 +13,6 @@ const channels = [
   { icon: 'whatsapp', label: 'WhatsApp', value: business.phone.display, href: business.whatsapp, track: 'whatsapp_click' },
   { icon: 'mail', label: 'Email', value: business.email, href: `mailto:${business.email}`, track: 'email_click' },
 ];
-const towns = [...cities].sort((a, b) => a.name.localeCompare(b.name));
 ---
 <Base
   title="Contact Roamza Cleaning Services | Dallas, PA"
@@ -28,12 +25,21 @@ const towns = [...cities].sort((a, b) => a.name.localeCompare(b.name));
     <div class="absolute inset-0 glow-window pointer-events-none" aria-hidden="true"></div>
     <div class="container-x relative">
       <Breadcrumbs items={crumbs} />
-      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16 items-start">
+      <div class="mt-8 grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16 items-start">
         <div>
           <p class="eyebrow hero-rise">Contact</p>
           <h1 class="mt-4 text-[clamp(2.2rem,1.5rem+2.6vw,3.8rem)] hero-rise">Contact Roamza Cleaning Services</h1>
-          <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Tell us about your property and the service you need, and we’ll help you choose the best cleaning option. Our response time promise is 15 minutes, and our teams are available 7 days a week.</p>
-          <ul class="mt-9 grid sm:grid-cols-2 gap-4">
+          <p class="lead mt-6 hero-rise" style="animation-delay:.12s">Tell us about your property and the service you need, and we’ll help you choose the best cleaning option — or see your price yourself with the live quote. Our response time promise is 15 minutes, and our teams are available 7 days a week.</p>
+          <div class="mt-8 rounded-2xl bg-cloud p-6">
+            <p class="font-semibold text-navy">Service area</p>
+            <p class="text-muted mt-1">Based in {business.base.locality}, {business.base.region} {business.base.postalCode}. Proudly serving Luzerne, Lackawanna &amp; Wyoming Counties. <a href="/service-areas/" class="link-u">See all areas</a></p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-[clamp(1.6rem,1.3rem+1vw,2.1rem)]">Call, text, WhatsApp or email</h2>
+          <p class="text-muted mt-2">A real person answers — usually within 15 minutes, 7 days a week.</p>
+          <ul class="mt-6 grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
             {channels.map((c) => (
               <li><a href={c.href} class="card flex items-center gap-4 p-5 hover:shadow-[var(--shadow-lift)] transition-shadow" data-track={c.track} target={c.icon === 'whatsapp' ? '_blank' : undefined} rel={c.icon === 'whatsapp' ? 'noopener' : undefined}>
                 <span class="grid place-items-center w-12 h-12 rounded-full bg-lime-100 text-lime-600 flex-none"><Icon name={c.icon} size={22} /></span>
@@ -41,54 +47,10 @@ const towns = [...cities].sort((a, b) => a.name.localeCompare(b.name));
               </a></li>
             ))}
           </ul>
-          <div class="mt-8 rounded-2xl bg-cloud p-6">
-            <p class="font-semibold text-navy">Service area</p>
-            <p class="text-muted mt-1">Based in {business.base.locality}, {business.base.region} {business.base.postalCode}. Proudly serving Luzerne, Lackawanna &amp; Wyoming Counties. <a href="/service-areas/" class="link-u">See all areas</a></p>
-          </div>
-          <p class="mt-6 text-muted">Want a price right now? <a href="/get-a-quote/" class="link-u" data-track="quote_start">Get a Fast Quote in 15 seconds →</a></p>
-        </div>
-
-        <div class="card p-6 md:p-8">
-          <h2 class="text-3xl">Send us a message</h2>
-          <p class="text-muted mt-2">Fields marked * are required.</p>
-          <form name="contact" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company" class="mt-6 grid gap-5" data-validate novalidate>
-            <input type="hidden" name="form-name" value="contact" />
-            <p class="hidden"><label>Leave this field empty <input name="company" tabindex="-1" autocomplete="off" /></label></p>
-            <div class="grid sm:grid-cols-2 gap-5">
-              <div class="field"><label for="f-name">Full name *</label><input id="f-name" name="name" autocomplete="name" required /><span class="err">Please enter your name.</span></div>
-              <div class="field"><label for="f-phone">Phone *</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required pattern="[0-9()+\-\s.]{7,}" /><span class="err">Please enter a valid phone number.</span></div>
-            </div>
-            <div class="field"><label for="f-email">Email *</label><input id="f-email" name="email" type="email" autocomplete="email" required /><span class="err">Please enter a valid email.</span></div>
-            <div class="grid sm:grid-cols-2 gap-5">
-              <div class="field"><label for="f-service">Service *</label>
-                <select id="f-service" name="service" required>
-                  <option value="">Choose a service</option>
-                  {services.map((s) => <option>{s.name}</option>)}
-                  <option>Before / after party cleaning</option>
-                  <option>Organization services</option>
-                  <option>Not sure yet</option>
-                </select><span class="err">Please choose a service.</span></div>
-              <div class="field"><label for="f-city">Town *</label>
-                <input id="f-city" name="city" list="towns" autocomplete="address-level2" required />
-                <datalist id="towns">{towns.map((c) => <option value={`${c.name}, PA`} />)}</datalist>
-                <span class="err">Please tell us your town.</span></div>
-            </div>
-            <div class="field"><label for="f-msg">Tell us about your property</label><textarea id="f-msg" name="message" rows="4" placeholder="Home size, rooms, preferred dates or frequency…"></textarea></div>
-            <button type="submit" class="btn btn-primary btn-lg w-full sm:w-auto justify-self-start">Send message <Icon name="arrow" size={18} /></button>
-            <p class="text-xs text-muted">By sending this form you agree to be contacted about your request. See our <a href="/privacy-policy/" class="link-u">Privacy Policy</a>.</p>
-          </form>
+          <a href="/get-a-quote/" class="btn btn-primary btn-lg mt-8" data-track="quote_start">Get my live quote <Icon name="arrow" size={18} /></a>
         </div>
       </div>
     </div>
   </section>
 </Base>
 
-<style>
-  .field { display: grid; gap: .4rem; }
-  .field label { font-weight: 600; color: var(--color-navy); font-size: .95rem; }
-  .field :is(input, select, textarea) { width: 100%; border-radius: .8rem; border: 1.5px solid var(--color-line); background: #fff; padding: .8rem 1rem; font: inherit; color: var(--color-ink); transition: border-color .2s, box-shadow .2s; }
-  .field :is(input, select, textarea):focus { outline: none; border-color: var(--color-royal); box-shadow: 0 0 0 4px rgb(29 11 240 / .12); }
-  .field .err { display: none; color: #b42318; font-size: .85rem; font-weight: 600; }
-  form:global(.was-validated) .field :is(input, select):invalid { border-color: #b42318; }
-  form:global(.was-validated) .field :is(input, select):invalid ~ .err { display: block; }
-</style>
