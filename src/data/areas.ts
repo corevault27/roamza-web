@@ -88,7 +88,7 @@ export const cities: City[] = [
       faqs: [
         { q: 'Is Roamza a local Dallas, PA company?', a: 'Yes. Roamza Cleaning Services is locally owned and based in Dallas, PA 18612. We are not a franchise or a call center.' },
         { q: 'Do you clean in the Back Mountain outside Dallas?', a: 'Yes. We serve Dallas, Shavertown, Harveys Lake and nearby Back Mountain communities, along with the rest of Luzerne County.' },
-        { q: 'How quickly can I get a cleaning price in Dallas?', a: 'Use Fast Quote online for an estimate in under 15 seconds, or call or text (347) 335-1042. We respond within 15 minutes, 7 days a week.' },
+        { q: 'How quickly can I get a cleaning price in Dallas?', a: 'Use Fast Quote online for an estimate in under 15 seconds, or call or text (272) 203-3263. We respond within 15 minutes, 7 days a week.' },
       ],
       nearby: ['shavertown-pa', 'kingston-pa', 'wilkes-barre-pa'],
     },
@@ -176,7 +176,7 @@ export const cities: City[] = [
       faqs: [
         { q: 'Do you offer recurring house cleaning in Mountain Top?', a: 'Yes. Choose weekly, bi-weekly, every 3 weeks or monthly cleaning for your Mountain Top home.' },
         { q: 'What is the best first service for a new client?', a: 'Most homes start with Signature Deep Cleaning, which covers baseboards, blinds, fans and behind appliances, then continue with Regular Cleaning.' },
-        { q: 'How do I book?', a: 'Get an estimate online in under 15 seconds and secure your date with a $50 deposit, or call or text (347) 335-1042.' },
+        { q: 'How do I book?', a: 'Get an estimate online in under 15 seconds and secure your date with a $50 deposit, or call or text (272) 203-3263.' },
       ],
       nearby: ['wilkes-barre-pa', 'kingston-pa', 'dallas-pa'],
     },

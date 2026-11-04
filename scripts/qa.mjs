@@ -29,7 +29,7 @@ const exists = (path) => {
 const errors = [], warns = [], pages = [];
 const titles = new Map(), descs = new Map();
 const get = (s, re) => (s.match(re) || [])[1];
-const PHONE_OK = '3473351042';
+const PHONE_OK = '2722033263';
 
 for (const f of html) {
   const s = readFileSync(f, 'utf8');
@@ -82,7 +82,7 @@ for (const f of html) {
     const n = m[1] + m[2] + m[3];
     if (n !== PHONE_OK && !/^(19|20)\d\d/.test(m[0])) W(`unexpected phone-like number ${m[0]}`);
   }
-  if (/272[\s)-]*203/.test(s)) E('old wrong phone (272) 203-3263 present');
+  if (/347[\s)-]*335/.test(s)) E('old phone (347) 335-1042 present');
   pages.push({ url, noindex, title });
 }
 
