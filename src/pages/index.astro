@@ -291,21 +291,21 @@ const band = services.map((s) => s.name.replace(' & Vacation Rental Turnover', '
 </Base>
 
 <style>
-  .hero-mark { color: var(--color-lime); background: linear-gradient(transparent 64%, rgb(119 185 0 / .32) 64%, rgb(119 185 0 / .32) 94%, transparent 94%) no-repeat 0 0 / 100% 100%; padding-inline: .06em; border-radius: .08em; }
+  .hero-mark { color: var(--color-navy); background: linear-gradient(transparent 14%, var(--color-lime) 14%, var(--color-lime) 92%, transparent 92%) no-repeat 0 0 / 100% 100%; padding-inline: .14em; border-radius: .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
   .hero-v { background: var(--color-navy); color: #fff; }
   .hv-media { position: absolute; inset: 0; }
   .hv-video { width: 100%; height: 100%; object-fit: cover; }
   .hv-shade { position: absolute; inset: 0; background:
-      linear-gradient(90deg, rgb(14 10 79 / .94) 0%, rgb(14 10 79 / .82) 38%, rgb(14 10 79 / .45) 70%, rgb(14 10 79 / .35) 100%),
-      linear-gradient(180deg, rgb(14 10 79 / .2) 0%, transparent 30%, rgb(14 10 79 / .5) 100%); }
-  @media (max-width: 1023.98px) { .hv-shade { background: linear-gradient(180deg, rgb(14 10 79 / .62) 0%, rgb(14 10 79 / .84) 50%, rgb(14 10 79 / .95) 100%); } }
+      linear-gradient(90deg, rgb(14 10 79 / .82) 0%, rgb(14 10 79 / .62) 38%, rgb(14 10 79 / .22) 70%, rgb(14 10 79 / .12) 100%),
+      linear-gradient(180deg, rgb(14 10 79 / .1) 0%, transparent 30%, rgb(14 10 79 / .35) 100%); }
+  @media (max-width: 1023.98px) { .hv-shade { background: linear-gradient(180deg, rgb(14 10 79 / .45) 0%, rgb(14 10 79 / .7) 50%, rgb(14 10 79 / .88) 100%); } }
   .hv-toggle { margin-top: 1.25rem; min-height: 2.75rem; font-size: .82rem; font-weight: 600; color: rgb(255 255 255 / .75); text-decoration: underline; text-underline-offset: 4px; }
   .hv-toggle:hover { color: #fff; }
   :global(html:not(.js)) .hv-toggle { display: none; }
   @media (prefers-reduced-motion: no-preference) {
-    .hero-mark { background-size: 0% 100%; animation: mark-in .9s .55s var(--ease-out-soft) forwards; }
+    .hero-mark { background-size: 0% 100%; color: #fff; animation: mark-in .9s .55s var(--ease-out-soft) forwards; }
   }
-  @keyframes mark-in { to { background-size: 100% 100%; } }
+  @keyframes mark-in { 40% { color: #fff; } to { background-size: 100% 100%; color: var(--color-navy); } }
   .quote-chip { transition: transform .5s var(--ease-out-soft), box-shadow .5s; z-index: 3; }
   .quote-chip:hover { box-shadow: var(--shadow-lift); }
   .qc-pulse { position: relative; }
