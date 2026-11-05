@@ -211,3 +211,72 @@ Todo queda ⚠️ pendiente de la publicación y del acceso del cliente:
   3. "who does Airbnb turnover cleaning near Harveys Lake PA"
   4. "move out cleaning Scranton PA"
   5. "maid service Back Mountain PA"
+
+---
+
+# Actualización 05/nov/2026: auditoría LIVE y correcciones aplicadas
+
+La web **sí está publicada** en https://roamzacleaningservices.com (Netlify, desplegada automáticamente desde GitHub `corevault27/roamza-web`).
+
+## Comprobaciones en vivo (curl)
+| Comprobación | Resultado |
+|---|---|
+| Archivos clave | `/`, `/robots.txt`, `/sitemap-index.xml` y `/llms.txt` responden ✅ 200. |
+| Página inexistente | Devuelve ✅ 404 real. |
+| HTTP y www | `http://` → `https://` y `www` → raíz, ambas ✅ 301. |
+| HSTS | ✅ `max-age=31536000`. |
+| URLs viejas de WordPress | `/house-cleaning/`, `/special-offer/`, `/contact/` y `/wp-login.php` dan ✅ 301 a su equivalente. |
+| Sitemaps viejos | `/sitemap.xml` y `/sitemap_index.xml` ✅ 301 al sitemap nuevo. `page-sitemap.xml` y `post-sitemap.xml` daban ❌ 404; ✅ ya están corregidos y verificados en vivo con 301. |
+| Meta robots en producción | `index, follow`. |
+
+## Correcciones aplicadas (commit `4344914`, ya en vivo)
+1. **Arranque móvil más ligero:**
+   - Los efectos visuales (scroll horizontal, parallax, contadores, mapa, marquee, etc.) se inician cuando el navegador queda libre. Navegación, tracking, cotizador, revelados y FAQ siguen inmediatos.
+   - En móvil el video del hero empieza con el primer toque o scroll; antes de eso se ve el póster y el botón dice "Play video". Esto también ahorra datos.
+   - El iframe del cotizador usa `loading="lazy"`. En escritorio sigue apareciendo de inmediato porque está en pantalla; en móvil, que queda debajo del texto, se carga al acercarse.
+2. **Previews de Netlify nunca indexables.** Si `CONTEXT` no es `production`, todas las páginas llevan `noindex` y robots.txt dice `Disallow: /`. Verificado con un build `CONTEXT=deploy-preview`.
+3. **301 de los sitemaps de WordPress que faltaban:** `page-`, `post-`, `category-` y `author-sitemap.xml`.
+4. **Sinónimos del rubro.** "maid service", "house cleaners" y "housekeeping" aparecen ahora en Regular Cleaning, en Dallas, PA y en los títulos de Contacto y Mountain Top.
+5. **Títulos más completos:**
+   - Scranton: "House & Office Cleaning Services in Scranton, PA | Roamza".
+   - Mountain Top: "House Cleaning & Maid Service in Mountain Top, PA | Roamza".
+   - Contacto: "Contact Roamza Cleaning | House Cleaners in Dallas, PA".
+6. **`og:image:alt` y `twitter:image:alt`** en todas las páginas.
+7. **Una sola etiqueta de CTA:** el header, el menú móvil y el footer dicen ahora "Get my live quote".
+8. **robots.txt** declara Bingbot y Applebot explícitamente.
+
+Verificación: `astro check` sin errores, QA sin errores, y axe con 0 violaciones en `/` (1440 y 375), `/regular-cleaning/`, `/contact-us/` y Scranton, sin desbordamiento horizontal.
+
+## Lighthouse sobre la URL pública, después del deploy
+
+| Página | Móvil | Escritorio |
+|---|---|---|
+| Home | **89** / 100 / 100 / 100 (LCP 3.4 s, TBT 50 ms) | 71 / 100 / 100 / 100 (LCP 1.6 s, TBT 280 ms) |
+| Regular cleaning | 99 / 100 / 100 / 100 (LCP 1.5 s) | 99 / 100 / 100 / 100 |
+| Scranton | 99 / 100 / 100 / 100 (LCP 1.3 s) | 96 / 100 / 100 / 100 |
+
+Formato: rendimiento / accesibilidad / buenas prácticas / SEO.
+
+**Comparación:** antes de las correcciones, la misma medición en vivo daba 33 en la home móvil (LCP 7.2 s y TBT 1.7 s).
+
+**Escritorio:** la home se queda en 71 porque el cotizador de HomeSuite (unos 280 KB de JS de terceros) se carga desde el inicio. Así se decidió, para que el cotizador aparezca al lado del texto sin esperar.
+
+**Advertencia:** los números de esta máquina varían mucho de una corrida a otra. PageSpeed Insights superó la cuota diaria; conviene confirmar con pagespeed.web.dev.
+
+## Mapa GET CHOSEN actualizado
+| Capa | Nota |
+|---|---|
+| FOUND | **3/5**. Está publicada, indexable y con las 301 comprobadas. Faltan Search Console/Bing con el sitemap y conocer la posición en el mapa. |
+| UNDERSTOOD | **5/5**. |
+| TRUSTED | **3/5**. Sin cambios: depende del cliente. |
+| CHOSEN | **3/5**. |
+| ACTIONABLE | **4/5**. |
+
+## Sigue pendiente (requiere acceso o al cliente)
+- **Search Console (propiedad de dominio):** enviar `https://roamzacleaningservices.com/sitemap-index.xml` y pedir la indexación de la home, `/regular-cleaning/`, `/deep-cleaning/`, `/airbnb-cleaning/`, `/service-areas/dallas-pa/` y `/service-areas/wilkes-barre-pa/`.
+- **Bing Webmaster:** importar desde Search Console.
+- **GA4:** verificar en vivo los eventos `call_click`, `sms_click`, `quote_start` y `quote_widget_loaded`.
+- **Google Business Profile:** confirmar el teléfono (272) 203-3263, las categorías, las zonas y el enlace a la web con UTM.
+- **Citaciones con el número nuevo:** Yelp, BBB, Facebook, Bing Places y Apple Business Connect.
+- **Línea base de IA:** las 5 preguntas de la sección 6 en ChatGPT y Perplexity, en ventana nueva.
+- **Validación externa:** Rich Results Test y validator.schema.org sobre la URL pública.
