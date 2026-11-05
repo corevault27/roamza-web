@@ -517,7 +517,12 @@ function initHeroVideo() {
   if (reduce() || saveData) set(false);
   else {
     const go = () => { attach(); set(true); };
-    if (document.readyState === 'complete') setTimeout(go, 300); else window.addEventListener('load', () => setTimeout(go, 300), { once: true });
+    if (matchMedia('(max-width: 767.98px)').matches) {
+      // phones: the poster is shown first; the loop starts on the first touch/scroll (saves data, keeps the page fast)
+      set(false);
+      const once = () => { ['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach((e) => removeEventListener(e, once)); go(); };
+      ['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach((e) => addEventListener(e, once, { passive: true }));
+    } else if (document.readyState === 'complete') setTimeout(go, 300); else window.addEventListener('load', () => setTimeout(go, 300), { once: true });
   }
   btn?.addEventListener('click', () => { attach(); set(v.paused); });
   // stop decoding when the hero is off-screen
@@ -528,27 +533,23 @@ function initHeroVideo() {
 }
 
 export function initFx() {
-  initHeroVideo();
-  initHScroll();
-  initMore();
-  initWordReveal();
-  initScrub();
-  initScrollX();
-  initChapters();
+  // critical: navigation, contact tracking, quote widget, hero video
   initTracking();
   initHeader();
   initDropdown();
   initMobileMenu();
-  initReveals();
-  initCounters();
-  initPointerFx();
-  initParallax();
-  initBeforeAfter();
-  initRooms();
-  initDraw();
-  initMap();
   initFastQuote();
+  initHeroVideo();
   initFaq();
-  initMarquee();
   initForms();
+  initReveals();
+  initWordReveal();
+  // visual effects run after first paint, when the main thread is idle
+  const rest = () => {
+    initHScroll(); initMore(); initScrub(); initScrollX(); initChapters();
+    initCounters(); initPointerFx(); initParallax(); initBeforeAfter();
+    initRooms(); initDraw(); initMap(); initMarquee();
+  };
+  const idle = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => void) | undefined;
+  requestAnimationFrame(() => (idle ? idle(rest, { timeout: 1200 }) : setTimeout(rest, 200)));
 }

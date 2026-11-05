@@ -21,7 +21,9 @@ interface Props {
   breadcrumbs?: { name: string; href: string }[];
   ogType?: 'website' | 'article';
 }
-const { title, description, image, noindex = false, schema = [], breadcrumbs, ogType = 'website' } = Astro.props;
+// Netlify previews / branch deploys are never indexable (CONTEXT is unset locally and 'production' on the live site)
+const isPreview = !!process.env.CONTEXT && process.env.CONTEXT !== 'production';
+const { title, description, image, noindex: noindexProp = false, schema = [], breadcrumbs, ogType = 'website' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
 
 const ogImg = await getImage({ src: image ?? img('team/roamza-cleaning-team.jpg'), width: 1200, height: 630, fit: 'cover', format: 'jpg' });
@@ -39,7 +41,7 @@ const graph = [organization(logoUrl, ogUrl), website(), ...(breadcrumbs ? [bread
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="robots" content={noindexProp || isPreview ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
     <meta name="theme-color" content="#150E75" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
@@ -58,6 +60,8 @@ const graph = [organization(logoUrl, ogUrl), website(), ...(breadcrumbs ? [bread
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:alt" content={`${business.name} — house and office cleaning in Dallas, PA`} />
+    <meta name="twitter:image:alt" content={`${business.name} — house and office cleaning in Dallas, PA`} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />

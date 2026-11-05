@@ -77,7 +77,7 @@ export const cities: City[] = [
       title: 'House Cleaning in Dallas, PA | Roamza Cleaning Services',
       description: 'Locally owned house cleaning in Dallas, PA and the Back Mountain: regular, deep, move-out, Airbnb and office cleaning. 5.0 on Google. Instant quote.',
       h1: 'House Cleaning Services in Dallas, PA',
-      answer: 'Roamza Cleaning Services is based in Dallas, PA. Our local, background-checked team provides regular house cleaning, Signature Deep Cleaning, move-in/move-out, Airbnb turnover, office and post-construction cleaning throughout Dallas and the Back Mountain, with estimates online in under 15 seconds.',
+      answer: 'Roamza Cleaning Services is based in Dallas, PA. Our local, background-checked team provides regular house cleaning, Signature Deep Cleaning, move-in/move-out, Airbnb turnover, office and post-construction cleaning throughout Dallas and the Back Mountain, with estimates online in under 15 seconds. Neighbors searching for house cleaners or a maid service in Dallas reach the same local team.',
       intro: [
         'Dallas is where Roamza began, and it is still our home base. That means the team cleaning your home is local — we are not a franchise and not a call center — and Dallas, Dallas Township and the surrounding Back Mountain are the areas we know best.',
         'Families here often book recurring visits so weekends stay free, start with a Signature Deep Cleaning for a seasonal reset, or call us before a move. Local businesses rely on us for office cleaning built around their hours.',
@@ -162,7 +162,7 @@ export const cities: City[] = [
   {
     slug: 'mountain-top-pa', name: 'Mountain Top', county: 'luzerne-county', lat: 41.1690, lng: -75.8774, wave: 1, status: 'published', focus: ['residential'],
     page: {
-      title: 'House Cleaning in Mountain Top, PA | Roamza',
+      title: 'House Cleaning & Maid Service in Mountain Top, PA | Roamza',
       description: 'Recurring house cleaning, Signature Deep Cleaning and move-in/move-out cleaning in Mountain Top, PA. Background-checked local team. Instant quote online.',
       h1: 'House Cleaning in Mountain Top, PA',
       answer: 'Roamza Cleaning Services offers house cleaning in Mountain Top, PA, including recurring cleaning (weekly, bi-weekly, every 3 weeks or monthly), Signature Deep Cleaning and move-in/move-out cleaning. Our local, background-checked team is licensed, bonded and insured, and estimates are available online in under 15 seconds.',
@@ -184,7 +184,7 @@ export const cities: City[] = [
   {
     slug: 'scranton-pa', name: 'Scranton', county: 'lackawanna-county', lat: 41.4090, lng: -75.6624, wave: 1, status: 'published', focus: ['residential', 'airbnb', 'commercial'],
     page: {
-      title: 'Cleaning Services in Scranton, PA | Roamza',
+      title: 'House & Office Cleaning Services in Scranton, PA | Roamza',
       description: 'House, deep, move-out, Airbnb and office cleaning in Scranton, PA and Lackawanna County. 5.0 on Google, licensed, bonded & insured. Instant estimate.',
       h1: 'Cleaning Services in Scranton, PA',
       answer: 'Roamza Cleaning Services provides residential, rental and commercial cleaning in Scranton, PA and Lackawanna County. Services include recurring house cleaning, Signature Deep Cleaning, move-in/move-out cleaning, Airbnb and vacation rental turnovers and office cleaning, with online estimates in under 15 seconds.',

@@ -44,7 +44,7 @@ export const services: Service[] = [
     h1: 'Regular House Cleaning in Dallas, PA & Luzerne County',
     eyebrow: 'Recurring home cleaning',
     heroLine: 'A clean home. More time for you.',
-    answer: 'Roamza’s Regular Cleaning is a recurring house cleaning service for homes in Dallas, PA and across Luzerne, Lackawanna and Wyoming Counties. A trained, background-checked team cleans your kitchen, bathrooms, bedrooms and living areas on a weekly, bi-weekly, every-3-weeks or monthly schedule. You can get an estimated price online in under 15 seconds.',
+    answer: 'Roamza’s Regular Cleaning is a recurring house cleaning service for homes in Dallas, PA and across Luzerne, Lackawanna and Wyoming Counties. A trained, background-checked team cleans your kitchen, bathrooms, bedrooms and living areas on a weekly, bi-weekly, every-3-weeks or monthly schedule. You can get an estimated price online in under 15 seconds. If you are looking for a reliable maid service or local house cleaners in the Back Mountain, this is our recurring housekeeping plan.',
     hero: 'real/living-room-white-sofa.jpg',
     card: 'rooms/regular-living.jpg',
     audience: ['Busy families and working professionals', 'Homeowners who want to stop spending weekends cleaning', 'Anyone who wants to feel “caught up” every week'],

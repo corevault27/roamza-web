@@ -57,7 +57,7 @@ const servicesActive = services.some((s) => path.startsWith(`/${s.slug}/`)) || p
         <Icon name="phone" size={18} /> {business.phone.display}
       </a>
       <a href="/get-a-quote/" class="btn btn-primary hidden sm:inline-flex whitespace-nowrap" data-track="quote_start" data-magnetic>
-        Get a Fast Quote <Icon name="arrow" size={18} />
+        Get my live quote <Icon name="arrow" size={18} />
       </a>
       <button type="button" class="lg:hidden inline-flex items-center justify-center w-12 h-12 rounded-full text-navy hover:bg-cloud" aria-expanded="false" aria-controls="mobile-menu" data-menu-open>
         <Icon name="menu" size={26} />
@@ -89,7 +89,7 @@ const servicesActive = services.some((s) => path.startsWith(`/${s.slug}/`)) || p
       ))}
     </ul>
     <div class="grid gap-3">
-      <a href="/get-a-quote/" class="btn btn-primary btn-lg w-full" data-track="quote_start">Get a Fast Quote <Icon name="arrow" size={18} /></a>
+      <a href="/get-a-quote/" class="btn btn-primary btn-lg w-full" data-track="quote_start">Get my live quote <Icon name="arrow" size={18} /></a>
       <div class="grid grid-cols-2 gap-3">
         <a href={business.phone.tel} class="btn btn-ghost w-full" data-track="call_click"><Icon name="phone" size={18} /> Call</a>
         <a href={business.phone.sms} class="btn btn-ghost w-full" data-track="sms_click"><Icon name="sms" size={18} /> Text</a>
